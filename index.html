@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>AI Ecosystem Test</title>
+<script id="hatch-space-target">
+    (() => {
+      const params = new URLSearchParams(location.hash.slice(1));
+      const root = document.documentElement;
+      if (params.get("hatch_target") === "tv") root.dataset.hatchTarget = "tv";
+      const widget = params.get("hatch_view") === "widget";
+      root.dataset.hatchView = widget ? "widget" : "app";
+      if (widget) {
+        root.dataset.hatchWidget = params.get("hatch_widget") || "default";
+        root.dataset.hatchInstance = params.get("hatch_instance") || "";
+        const sizes = ["small", "medium", "large", "watch", "watch_round"];
+        root.dataset.hatchSize = sizes.includes(params.get("hatch_size")) ? params.get("hatch_size") : "small";
+        const style = document.createElement("style");
+        style.textContent = 'html[data-hatch-view="widget"], html[data-hatch-view="widget"] body { background: transparent; }';
+        document.head.prepend(style);
+      }
+    })();
+  </script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f5f1; --surface:#ffffff; --surface2:#eeece6; --ink:#171a17; --muted:#5c655c; --line:#ddd9ce;
+  --accent:#d95d1e; --accent-ink:#fff; --teal:#0f766e; --amber:#b45309; --red:#b91c1c; --green:#15803d;
+  --radius:14px;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#111311; --surface:#1a1d1a; --surface2:#232623; --ink:#eef0eb; --muted:#a7afa5; --line:#2e332e; --accent:#ff7a2e; --teal:#2dd4bf; }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans",system-ui,sans-serif;line-height:1.5}
+a{color:var(--teal)}
+button{min-height:40px}
+.mono{font-family:"IBM Plex Mono",monospace}
+.wrap{max-width:1120px;margin:0 auto;padding:20px 18px 48px}
+html[data-hatch-view="widget"] .app{display:none}
+html:not([data-hatch-view="widget"]) .widget{display:none}
+.widget{padding:12px;font-family:"IBM Plex Sans",system-ui,sans-serif;color:var(--ink)}
+.widget h2{margin:0;font-size:14px;line-height:1.15}
+.widget .big{font-size:28px;font-weight:800;line-height:1;margin:4px 0 2px}
+.widget p{margin:0;font-size:11px;color:var(--muted);line-height:1.35}
+html[data-hatch-size="small"] .widget p:last-child{display:none}
+/* header */
+.top{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:flex-start;padding:18px 0 8px;border-bottom:3px solid var(--ink)}
+.top h1{font-size:clamp(32px,6vw,56px);line-height:.95;letter-spacing:-.03em;margin:6px 0 10px;max-width:640px}
+.top h1 span{color:var(--accent)}
+.lede{font-size:17px;color:var(--muted);max-width:620px;margin:0}
+.pill{display:inline-flex;align-items:center;gap:7px;background:var(--ink);color:var(--bg);font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:7px 10px;border-radius:999px}
+.pill i{width:7px;height:7px;border-radius:50%;background:#4ade80;display:block}
+.meta{font-family:"IBM Plex Mono",monospace;font-size:12px;text-align:right;line-height:1.7;color:var(--muted)}
+.meta b{color:var(--ink)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px}
+.stat b{font-size:26px;display:block;line-height:1}
+.stat span{font-size:12px;color:var(--muted);font-family:"IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.06em}
+h2.sec{font-size:22px;letter-spacing:-.02em;margin:32px 0 6px}
+.sub{color:var(--muted);margin:0 0 14px;max-width:720px}
+/* flow */
+.flow{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.flow div{background:var(--surface);border:1px solid var(--line);padding:14px;border-radius:12px;position:relative}
+.flow b{font-size:13px;display:block}
+.flow p{font-size:13px;color:var(--muted);margin:6px 0 0}
+.flow .num{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--accent);font-weight:700}
+.note{background:#fff7ed;border:1px solid #fed7aa;color:#7c2d12;border-radius:12px;padding:14px 16px;margin-top:10px;font-size:14px}
+@media(prefers-color-scheme:dark){.note{background:#2a1a0e;border-color:#7c2d12;color:#fdba74}}
+/* filters */
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.filters button{border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:9px 14px;border-radius:999px;font-weight:600;cursor:pointer;font-size:14px}
+.filters button.active{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px}
+.card-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.card h3{margin:0;font-size:16px;line-height:1.2}
+.card p{margin:7px 0 0;color:var(--muted);font-size:14px}
+.tag{font-family:"IBM Plex Mono",monospace;font-size:11px;white-space:nowrap;padding:4px 7px;border-radius:999px;border:1px solid var(--line)}
+.tag.factory{color:var(--teal)} .tag.research{color:var(--amber)} .tag.measure{color:var(--accent)} .tag.report{color:var(--muted)}
+.kpi{display:flex;gap:14px;margin-top:12px;padding-top:10px;border-top:1px dashed var(--line);font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--muted)}
+.kpi b{color:var(--ink)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+.panel h3{margin:0 0 10px}
+.panel ul{margin:0;padding-left:18px} .panel li{margin:6px 0;font-size:14px}
+.panel li::marker{color:var(--accent)}
+.timeline{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.phase{background:var(--ink);color:var(--bg);border-radius:var(--radius);padding:18px}
+.phase:nth-child(2){background:var(--surface);color:var(--ink);border:1px solid var(--line)}
+.phase:nth-child(3){background:var(--surface2);color:var(--ink);border:1px solid var(--line)}
+.phase b{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;opacity:.7}
+.phase h3{margin:6px 0} .phase p{font-size:14px;opacity:.85;margin:0}
+.repo{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin-top:10px}
+.repo code{font-family:"IBM Plex Mono",monospace;font-size:13px;background:var(--surface2);padding:6px 8px;border-radius:8px}
+footer{margin-top:28px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:13px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+@media(max-width:760px){.stats{grid-template-columns:1fr 1fr}.flow,.grid,.two,.timeline{grid-template-columns:1fr}.meta{text-align:left}.top h1{font-size:36px}}
+</style>
+</head>
+<body>
+<!-- WIDGET -->
+<section class="widget">
+  <p class="mono" style="font-size:11px;letter-spacing:.08em">AI ECOSYSTEM • TEST</p>
+  <div class="big">10 rooms</div>
+  <h2>Workers first. Prove, then scale.</h2>
+  <p style="margin-top:8px">Phase 0 proving • Sweep is pull-only • Realistic 90 days: $0–$1,000</p>
+</section>
+
+<div class="app wrap">
+  <header class="top">
+    <div>
+      <span class="pill"><i></i> Test build • Workers first • Phase 0</span>
+      <h1>AI Ecosystem<br>Test <span>— prove the<br>loop, not the hype.</span></h1>
+      <p class="lede">One venture per room. Workers prove the lanes for 30 days first. Only lanes with a sale on file move into rooms under an ecosystem Muse. Muse3 stays the hub and tells you where the money is — dead rooms included.</p>
+    </div>
+    <div class="meta">
+      <div>SPACE <b>ai-ecosystem-test</b></div>
+      <div>REPO <b>paired — updated after space</b></div>
+      <div>UPDATED <b>Nov 25, 2026</b></div>
+      <div>STATUS <b>Test / not live selling</b></div>
+    </div>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><b>10</b><span>First rooms</span></div>
+    <div class="stat"><b>1 / day</b><span>Scheduled sweep</span></div>
+    <div class="stat"><b>20k chars</b><span>Relay cap / message</span></div>
+    <div class="stat"><b>$0–$1,000</b><span>Realistic 90-day profit</span></div>
+  </div>
+
+  <h2 class="sec">How it actually works</h2>
+  <p class="sub">This is not rooms reporting on their own. The technical check was clear: the loop is pull-only. Without a sweep, rooms stay silent.</p>
+  <div class="flow">
+    <div><span class="num">01</span><b>Room does one job</b><p>Etsy Store 1 only runs Etsy Store 1. Thumbnails only does thumbnails. Betting only reports the book.</p></div>
+    <div><span class="num">02</span><b>Worker sweeps</b><p>A scheduled worker opens each room and collects a 5-line report, under ~600 chars per room.</p></div>
+    <div><span class="num">03</span><b>Ecosystem Muse consolidates</b><p>Collects, checks, passes on. It does not do the store work itself.</p></div>
+    <div><span class="num">04</span><b>Relay carries it</b><p>10 rooms fit in 1 relay message. 100 rooms need 3 chunked messages. Last 200 messages per inbox.</p></div>
+    <div><span class="num">05</span><b>Muse3 ranks it</b><p>Top 5 and dead 5, every day. Dead rooms get reported, never hidden. You decide: scale, fix, close.</p></div>
+  </div>
+  <div class="note"><strong>Reality check on the numbers that started this:</strong> $532.47 across 16 orders is $33.28 per order — roughly $130–$300 profit total. $16,000 in two months would need 481 orders at that value. Thumbnails at $3,400 would be 170 jobs at $20, $2,720 net after Fiverr's 20%. Those are claims, not a forecast for this test.</div>
+
+  <h2 class="sec">The first 10 rooms</h2>
+  <p class="sub">Picked on money alone from the verification work. Music, a second blog, a third Etsy store, and a second prototype are out until the lane ahead of them has sold.</p>
+  <div class="filters" role="group" aria-label="Filter rooms">
+    <button class="active" data-filter="all">All 10</button>
+    <button data-filter="factory">Factory — sells</button>
+    <button data-filter="research">Research</button>
+    <button data-filter="measure">Measure existing</button>
+    <button data-filter="report">Report only</button>
+  </div>
+  <div class="grid" id="rooms">
+    <article class="card" data-type="factory"><div class="card-head"><h3>1. Etsy Store 1</h3><span class="tag factory">FACTORY</span></div><p>One niche only. Original designs only, Printify mockups, AI + production partner disclosures, human review on every listing.</p><div class="kpi"><span>Gate: <b>First sale unlocks Store 2</b></span></div></article>
+    <article class="card" data-type="factory"><div class="card-head"><h3>2. Thumbnails</h3><span class="tag factory">FACTORY</span></div><p>Fiverr thumbnails plus a direct-price test at $75–$150. Ranked #1 for near-term profit in the money check.</p><div class="kpi"><span>Reports: <b>Jobs • Revenue • Stuck</b></span></div></article>
+    <article class="card" data-type="measure"><div class="card-head"><h3>3. FedPromptly Shop</h3><span class="tag measure">MEASURE</span></div><p>Existing payer — measure for 30 days before spending to grow it. No assumptions.</p><div class="kpi"><span>Reports: <b>Revenue • Orders</b></span></div></article>
+    <article class="card" data-type="measure"><div class="card-head"><h3>4. FED-SPA</h3><span class="tag measure">MEASURE</span></div><p>Existing payer — measure for 30 days. Licensed establishments only, licence numbers on file, no sexual-services language.</p><div class="kpi"><span>Risk: <b>High if criteria slip</b></span></div></article>
+    <article class="card" data-type="factory"><div class="card-head"><h3>5. App Store Prototype 1</h3><span class="tag factory">FACTORY</span></div><p>One product that already exists, listed in the Muse AI App Store lane. No new build until this one is measured.</p><div class="kpi"><span>Reports: <b>Listings • Sales</b></span></div></article>
+    <article class="card" data-type="factory"><div class="card-head"><h3>6. Etsy Store 2</h3><span class="tag factory">FACTORY • GATED</span></div><p>Locked. Opens only after Store 1 has a sale on file. Distinct shop, distinct product line from Store 1.</p><div class="kpi"><span>Status: <b>Waiting on Store 1</b></span></div></article>
+    <article class="card" data-type="factory"><div class="card-head"><h3>7. Game Asset Pack 1</h3><span class="tag factory">FACTORY</span></div><p>One pack, prepped by workers first. Sell the pack before making a second one.</p><div class="kpi"><span>Reports: <b>Packs • Sales</b></span></div></article>
+    <article class="card" data-type="factory"><div class="card-head"><h3>8. Blog 1</h3><span class="tag factory">FACTORY</span></div><p>One blog only. Affiliate disclosures on every post. Second blog is dropped for this test.</p><div class="kpi"><span>Reports: <b>Posts • Affiliate $</b></span></div></article>
+    <article class="card" data-type="report"><div class="card-head"><h3>9. Betting — Reporting Only</h3><span class="tag report">REPORT ONLY</span></div><p>muse2 book as a room, same daily report as a store. $0 income lane in this plan. Latest file checked Nov 24: real 30–14, −$5.37; practice 227–100, +$37.69 paper.</p><div class="kpi"><span>Reports: <b>Record • Bankroll • Stuck</b></span></div></article>
+    <article class="card" data-type="research"><div class="card-head"><h3>10. Etsy Research</h3><span class="tag research">RESEARCH</span></div><p>Finds what is selling and feeds Store 1 with original-design briefs. Sells nothing itself. Copy-and-tweak is out entirely.</p><div class="kpi"><span>Output: <b>Briefs, not copies</b></span></div></article>
+  </div>
+
+  <h2 class="sec">Workers first — what that means</h2>
+  <p class="sub">Workers run Phase 0 so you do not pay the cost of a new ecosystem Muse slot — provisioning, relay key, and slot cap are still unverified — before anything has sold.</p>
+  <div class="two">
+    <div class="panel"><h3>✓ Workers can do first</h3><ul><li>Etsy trend research and original design prep</li><li>Thumbnail drafts and portfolio prep</li><li>Game asset pack prep and blog draft prep</li><li>Prototype listing prep</li><li>Measure the three existing payers and write a receipt file per lane</li><li>Run the daily sweep and collect the 5-line reports</li></ul></div>
+    <div class="panel"><h3>✕ Workers cannot do</h3><ul><li>Own a side chat long-term or self-report without a scheduled sweep</li><li>Log in to Etsy or Fiverr for you, or publish a live listing alone</li><li>Place a bet, or take wagers from anyone else</li><li>Copy a selling design and change it slightly — banned lane, high ban risk on Etsy and Printify</li></ul><p style="font-size:14px;color:var(--muted)">A human reviews and does the live listing and delivery step, especially on Etsy and Fiverr.</p></div>
+  </div>
+
+  <h2 class="sec">Build order</h2>
+  <div class="timeline">
+    <div class="phase"><b>Days 1–30 • Prove</b><h3>Workers prove 5 lanes</h3><p>Thumbnails, Etsy research + Store 1 prep, game assets, blog, prototype — plus measuring the existing payers. Receipt per lane.</p></div>
+    <div class="phase"><b>Day 30 • Gate</b><h3>Dead means dead</h3><p>Any room with $0 revenue and $0 orders is reported dead and closed or repurposed. No exceptions, no hiding it in the ranking.</p></div>
+    <div class="phase"><b>After a sale • Scale</b><h3>Rooms, then 100</h3><p>Only lanes with a sale move into rooms under the ecosystem Muse. No 100-room launch on a calendar date. Visual tour is last, and only if you want it.</p></div>
+  </div>
+
+  <div class="repo">
+    <div><strong>Space + Repo — update both, one after the other</strong><br><span style="color:var(--muted);font-size:14px">This test ships as a pair. Space first, repo second, same content, same version.</span></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><code>Space: ai-ecosystem-test</code><code>Repo: ai-ecosystem-test</code><code>v0.1.0 TEST</code></div>
+  </div>
+
+  <h2 class="sec">Still your calls</h2>
+  <p class="sub" style="margin-bottom:0">New Muse slot or repurpose one • Etsy Store 1 niche • Direct thumbnail price test yes or no • Confirm betting stays reporting-only • Visual tour yes or no, last only. Nothing goes live selling until you call those.</p>
+
+  <footer><span>AI Ecosystem Test — test plan only. No live listings, no bets placed, no rooms opened by this page.</span><span class="mono">SPACE → REPO • v0.1.0</span></footer>
+</div>
+<script>
+document.querySelectorAll('.filters button').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    document.querySelectorAll('.filters button').forEach(function(b){b.classList.remove('active')});
+    btn.classList.add('active');
+    var f = btn.getAttribute('data-filter');
+    document.querySelectorAll('#rooms .card').forEach(function(card){
+      card.style.display = (f==='all' || card.getAttribute('data-type')===f) ? '' : 'none';
+    });
+  });
+});
+</script>
+</body>
+</html>
