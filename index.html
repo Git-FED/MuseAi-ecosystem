@@ -5,308 +5,185 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="color-scheme" content="light dark" />
 <link rel="icon" href="data:," />
-<title>AI Ecosystem Space Station</title>
+<title>Muse AI Ecosystem</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --bg:#e9ebec; --panel:#f7f7f5; --panel2:#ffffff; --ink:#14181b; --muted:#5b666d;
-    --line:#cfd6d8; --line-strong:#9fb0b5;
-    --amber:#b97a08; --teal:#0f766e; --red:#b42318; --blue:#1d4ed8;
-    --station-bg:#080d12; --station-panel:#0e171f; --station-line:#243746;
-    --core:#ffb020; --core-ink:#1a1200;
-    --good:#2dd4a8; --warn:#ffb020; --bad:#ff6b5e; --lock:#8a9aa5;
-    --radius:14px;
-  }
-  @media (prefers-color-scheme: dark){
-    :root{
-      --bg:#0b0e11; --panel:#12181d; --panel2:#171f26; --ink:#eef3f4; --muted:#9db0b8;
-      --line:#26323a; --line-strong:#3a4c57;
-      --amber:#ffb020; --teal:#2dd4a8;
-    }
-  }
-  *{box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{margin:0;background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans",system-ui,sans-serif;line-height:1.5}
-  button{font:inherit;min-height:44px;cursor:pointer}
-  .wrap{max-width:1240px;margin:0 auto;padding:18px 16px 56px}
+:root{
+  --bg:#fff7e8; --panel:#ffffff; --panel2:#fffdf7; --ink:#1c1917; --muted:#57534e;
+  --line:#e7ddd0; --line-strong:#c9bba6;
+  --amber:#d97706; --teal:#0f766e; --red:#dc2626; --blue:#2563eb;
+  --good:#16a34a; --warn:#f59e0b; --bad:#ef4444; --lock:#78716c;
+  --radius:16px;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#1c1917; --panel:#292524; --panel2:#1c1917; --ink:#fafaf9; --muted:#d6d3d1; --line:#44403c; --line-strong:#78716c; }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans",system-ui,sans-serif;line-height:1.5}
+button{font:inherit;min-height:44px;cursor:pointer}
+.wrap{max-width:1240px;margin:0 auto;padding:18px 16px 56px}
+.status-strip{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
+.chip{display:inline-flex;align-items:center;gap:8px;border:2px solid var(--line);background:var(--panel);border-radius:999px;padding:8px 13px;font-family:"IBM Plex Mono",monospace;font-size:.78rem;font-weight:600}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--good);flex:none}
+.dot.amber{background:var(--warn)} .dot.grey{background:var(--lock)}
+.strip-note{margin-left:auto;font-family:"IBM Plex Mono",monospace;font-size:.78rem;color:var(--muted)}
+@media(max-width:640px){.strip-note{margin-left:0;width:100%}}
+h1{font-family:"Chakra Petch",sans-serif;font-size:clamp(1.8rem,4.5vw,2.7rem);line-height:1.05;margin:2px 0 8px}
+h1 .c1{color:#ea580c} h1 .c2{color:#9333ea} h1 .c3{color:#0891b2}
+.lede{max-width:74ch;color:var(--muted);font-size:1.02rem;margin:0 0 18px}
+.lede strong{color:var(--ink)}
 
-  /* ---------- status strip ---------- */
-  .status-strip{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
-  .chip{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:8px 13px;font-family:"IBM Plex Mono",monospace;font-size:.78rem;font-weight:600;letter-spacing:.02em}
-  .chip b{color:var(--ink)}
-  .dot{width:9px;height:9px;border-radius:50%;background:var(--good);flex:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--good) 22%, transparent)}
-  .dot.amber{background:var(--warn);box-shadow:0 0 0 3px color-mix(in srgb,var(--warn) 22%, transparent)}
-  .dot.grey{background:var(--lock);box-shadow:none}
-  .strip-note{margin-left:auto;font-family:"IBM Plex Mono",monospace;font-size:.78rem;color:var(--muted)}
-  @media(max-width:640px){.strip-note{margin-left:0;width:100%}}
+/* ===== GAME BOARD ===== */
+.station{background:#292524;border:3px solid #1c1917;border-radius:20px;overflow:hidden;box-shadow:0 20px 44px rgba(28,25,23,.35);color:#fff}
+.station-head{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;padding:13px 16px;background:linear-gradient(90deg,#7c3aed,#db2777,#ea580c)}
+.station-head .hud{font-family:"IBM Plex Mono",monospace;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:#fff;font-weight:700}
+.sweep-btn{background:#facc15;color:#422006;border:3px solid #422006;border-radius:10px;padding:10px 18px;font-family:"Chakra Petch",sans-serif;font-weight:700;box-shadow:0 4px 0 #422006}
+.sweep-btn:active{transform:translateY(2px);box-shadow:0 2px 0 #422006}
+.sweep-btn:disabled{opacity:.6;cursor:wait}
+.hallway{position:relative;height:34px;background:repeating-linear-gradient(90deg,#44403c 0 34px,#3a3532 34px 68px);border-bottom:3px solid #1c1917;overflow:hidden}
+.hallway .walker{position:absolute;top:1px;font-size:24px;animation:walk 11s linear infinite}
+.hallway .walker2{animation-duration:17s;animation-delay:-6s;font-size:20px;top:5px}
+.hallway .sign{position:absolute;right:10px;top:7px;font-family:"IBM Plex Mono",monospace;font-size:.6rem;letter-spacing:.14em;color:#fde68a}
+@keyframes walk{from{left:-40px}to{left:102%}}
+.deck{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:12px;background:radial-gradient(circle at 20% 20%,#3b332e,#292524 70%)}
+.core{grid-column:span 2;display:flex;gap:14px;align-items:center;background:linear-gradient(135deg,#f59e0b,#f97316);border:3px solid #fff7ed;border-radius:14px;padding:14px;color:#431407;min-height:170px}
+.core .big{font-size:62px;line-height:1;animation:bob 2s ease-in-out infinite;filter:drop-shadow(0 4px 0 rgba(0,0,0,.2))}
+.core h2{font-family:"Chakra Petch",sans-serif;margin:0;font-size:1.15rem;letter-spacing:.04em}
+.core p{margin:3px 0 0;font-size:.8rem;font-weight:600}
+.core .relay-tag{display:inline-block;margin-top:8px;background:#431407;color:#fde68a;border-radius:999px;padding:4px 10px;font-family:"IBM Plex Mono",monospace;font-size:.64rem}
+.core .minirow{font-size:22px;margin-top:6px;letter-spacing:4px}
 
-  h1{font-family:"Chakra Petch",sans-serif;font-size:clamp(1.7rem,4.5vw,2.6rem);line-height:1.05;margin:2px 0 8px;letter-spacing:.01em}
-  .lede{max-width:72ch;color:var(--muted);font-size:1.02rem;margin:0 0 18px}
-  .lede strong{color:var(--ink)}
+/* ===== ROOMS / PODS ===== */
+.pod{position:relative;border:3px solid rgba(0,0,0,.55);border-radius:14px;padding:0;text-align:left;color:#1c1917;overflow:hidden;background:#fff;transition:transform .15s, box-shadow .15s;display:flex;flex-direction:column}
+.pod:hover{transform:translateY(-2px)}
+.pod.selected{box-shadow:0 0 0 4px #facc15,0 10px 24px rgba(0,0,0,.4);z-index:2}
+.pod.scanning{box-shadow:0 0 0 4px #4ade80,0 0 30px #4ade80;z-index:2}
+.pod.dim{opacity:.25;filter:saturate(.3)}
+.pod .wall{padding:7px 10px 6px;color:#fff;display:flex;justify-content:space-between;align-items:center;gap:6px}
+.pod .wall .rn{font-family:"IBM Plex Mono",monospace;font-size:.6rem;font-weight:700;letter-spacing:.1em;opacity:.95}
+.pod .lamp{width:9px;height:9px;border-radius:50%;background:#4ade80;border:2px solid rgba(255,255,255,.8);flex:none;animation:blink 2.4s steps(1) infinite}
+.pod[data-state="QUEUED"] .lamp{background:#facc15}.pod[data-state="LOCKED"] .lamp{background:#a8a29e;animation:none}.pod[data-state="REPORTING"] .lamp{background:#7dd3fc}
+@keyframes blink{0%,70%{opacity:1}71%,100%{opacity:.25}}
+.pod .wall h3{font-family:"Chakra Petch",sans-serif;font-size:.86rem;margin:0;line-height:1.1;color:#fff;text-shadow:0 1px 0 rgba(0,0,0,.25)}
+.pod .scene{position:relative;height:108px;flex:none;overflow:hidden;border-top:2px solid rgba(0,0,0,.15);border-bottom:2px solid rgba(0,0,0,.12)}
+.pod .scene::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 26px,rgba(0,0,0,.05) 26px 27px),repeating-linear-gradient(90deg,transparent 0 26px,rgba(0,0,0,.05) 26px 27px);pointer-events:none}
+.person{position:absolute;font-size:30px;line-height:1;z-index:3;animation:bob 1.7s ease-in-out infinite;filter:drop-shadow(0 3px 2px rgba(0,0,0,.25))}
+.person.slow{animation-duration:2.6s}.person.fast{animation-duration:1s}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.prop{position:absolute;font-size:21px;line-height:1;z-index:2}
+.prop.big{font-size:30px}.prop.sm{font-size:15px}
+.bubble{position:absolute;z-index:4;background:#fff;border:2px solid #1c1917;border-radius:8px;font-size:12px;padding:1px 4px;animation:bob 2.2s ease-in-out infinite}
+.spin{animation:spinA 5s linear infinite;display:inline-block}@keyframes spinA{to{transform:rotate(360deg)}}
+.pod .info{padding:7px 10px 9px;background:#fff;flex:1}
+.pod .task{font-size:.68rem;color:#57534e;line-height:1.35;margin:0;min-height:2.6em;font-weight:600}
+.pod .bar{display:block;height:6px;background:#e7e5e4;border-radius:99px;margin-top:6px;overflow:hidden}
+.pod .bar i{display:block;height:100%;border-radius:99px}
+.pod[data-state="LOCKED"] .scene{filter:grayscale(.9) brightness(.75)}
+.station-foot{display:flex;flex-wrap:wrap;gap:8px 22px;padding:11px 16px;background:#1c1917;font-family:"IBM Plex Mono",monospace;font-size:.72rem;color:#d6d3d1}
+.station-foot b{color:#facc15}
+@media(max-width:900px){.deck{grid-template-columns:repeat(2,1fr)} .core{grid-column:span 2;order:-1}}
+@media(max-width:420px){.pod .scene{height:92px}.person{font-size:25px}}
 
-  /* ---------- station viewport : blueprint floorplan, not a wheel ---------- */
-  .station{
-    position:relative;background:
-      radial-gradient(1.5px 1.5px at 12% 22%, #ffffffcc 50%, transparent 51%),
-      radial-gradient(1px 1px at 78% 12%, #ffffff99 50%, transparent 51%),
-      radial-gradient(1.5px 1.5px at 88% 68%, #ffffffaa 50%, transparent 51%),
-      radial-gradient(1px 1px at 34% 84%, #ffffff88 50%, transparent 51%),
-      radial-gradient(1px 1px at 58% 34%, #ffffff77 50%, transparent 51%),
-      linear-gradient(rgba(70,110,135,.10) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(70,110,135,.10) 1px, transparent 1px),
-      var(--station-bg);
-    background-size:auto,auto,auto,auto,auto,44px 44px,44px 44px,auto;
-    border:1px solid #2b3d4c;border-radius:18px;overflow:hidden;color:#e8f1f4;
-    box-shadow:0 18px 44px rgba(4,10,14,.35);
-  }
-  .station-head{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;padding:13px 16px;border-bottom:1px solid var(--station-line);background:rgba(255,255,255,.03)}
-  .station-head .hud{font-family:"IBM Plex Mono",monospace;font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:#9fc0cf}
-  .station-head .hud b{color:#fff}
-  .sweep-btn{background:var(--core);color:var(--core-ink);border:0;border-radius:9px;padding:10px 18px;font-family:"Chakra Petch",sans-serif;font-weight:700;letter-spacing:.04em}
-  .sweep-btn:disabled{opacity:.55;cursor:wait}
-  .deck{position:relative;height:640px}
-  .deck svg.wires{position:absolute;inset:0;width:100%;height:100%}
-  /* structural corridors drawn under the modules */
-  .spine{position:absolute;left:6%;right:5%;top:calc(46% - 19px);height:38px;background:linear-gradient(180deg,#101c26,#0c1620);border-top:1px solid #2b4457;border-bottom:1px solid #2b4457;pointer-events:none}
-  .spine::after{content:"";position:absolute;left:0;right:0;top:50%;height:2px;margin-top:-1px;background:repeating-linear-gradient(90deg,#3d6076 0 26px, transparent 26px 44px)}
-  .trunk{position:absolute;top:5%;bottom:4%;left:calc(52% - 15px);width:30px;background:linear-gradient(90deg,#101c26,#0c1620);border-left:1px solid #2b4457;border-right:1px solid #2b4457;pointer-events:none}
-  .trunk::after{content:"";position:absolute;top:0;bottom:0;left:50%;width:2px;margin-left:-1px;background:repeating-linear-gradient(180deg,#3d6076 0 26px, transparent 26px 44px)}
-  .deck.sweeping .spine,.deck.sweeping .trunk{border-color:#2dd4a8;box-shadow:0 0 22px rgba(45,212,168,.25)}
-  .sector{position:absolute;font-family:"IBM Plex Mono",monospace;font-size:.6rem;letter-spacing:.18em;color:#5f7d8f;pointer-events:none;white-space:nowrap}
-  .sector::before{content:"";display:inline-block;width:7px;height:7px;background:#2dd4a8;margin-right:7px;animation:blink 2.6s steps(1) infinite}
-  .sector.s-tl{left:14px;top:10px}.sector.s-tr{right:14px;top:10px;text-align:right}
-  .sector.s-bl{left:14px;bottom:10px}.sector.s-br{right:14px;bottom:10px;text-align:right}
-  .sector.s-br::before{background:var(--warn)}
-  @keyframes blink{0%,72%{opacity:1}73%,100%{opacity:.15}}
-  /* future expansion: a construction row of unbuilt module slots, not a ring */
-  .future-bay{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);display:flex;align-items:center;gap:6px;pointer-events:none}
-  .future-bay .slot{width:20px;height:14px;border:1px dashed #3a5a70;background:rgba(255,255,255,.02)}
-  .future-bay .slot.locked-slot{background:repeating-linear-gradient(45deg,rgba(138,154,165,.16) 0 4px, transparent 4px 8px)}
-  .future-bay span{font-family:"IBM Plex Mono",monospace;font-size:.58rem;letter-spacing:.14em;color:#6f8b9c;white-space:nowrap;margin-left:4px}
-
-  /* command core — a housed reactor module sitting on the spine, off-centre */
-  .core{position:absolute;left:52%;top:46%;transform:translate(-50%,-50%);width:208px;text-align:center;z-index:3;background:rgba(10,19,27,.92);border:1px solid #4a3a10;border-top:3px solid var(--core);padding:14px 12px 12px;box-shadow:0 0 0 5px rgba(8,13,18,.55),0 0 44px rgba(255,176,32,.20)}
-  .core::before,.core::after{content:"";position:absolute;width:10px;height:10px;border:2px solid #6b5510}
-  .core::before{left:-2px;top:-2px;border-right:0;border-bottom:0}
-  .core::after{right:-2px;bottom:-2px;border-left:0;border-top:0}
-  .core-orb{position:relative;width:92px;height:92px;margin:0 auto 9px;border-radius:50%;
-    background:radial-gradient(circle at 36% 32%, #ffe3a1, var(--core) 46%, #c47f06 78%, #7a4d02);
-    box-shadow:0 0 0 6px rgba(255,176,32,.14),0 0 54px rgba(255,176,32,.45), inset 0 -14px 26px rgba(0,0,0,.35);animation:pulse 3.4s ease-in-out infinite}
-  .core-orb::before{content:"";position:absolute;inset:-13px;border-radius:50%;border:2px solid rgba(255,176,32,.5);border-top-color:transparent;border-bottom-color:transparent;animation:spin 14s linear infinite}
-  @keyframes spin{to{transform:rotate(360deg)}}
-  @keyframes pulse{0%,100%{box-shadow:0 0 0 6px rgba(255,176,32,.14),0 0 40px rgba(255,176,32,.35), inset 0 -14px 26px rgba(0,0,0,.35)}50%{box-shadow:0 0 0 8px rgba(255,176,32,.18),0 0 64px rgba(255,176,32,.55), inset 0 -14px 26px rgba(0,0,0,.35)}}
-  .core-face{position:absolute;inset:0;display:grid;place-items:center}
-  .core h2{font-family:"Chakra Petch",sans-serif;font-size:1rem;margin:0;letter-spacing:.08em;color:#fff}
-  .core p{margin:2px 0 0;font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.1em;color:#a9c4d2;text-transform:uppercase}
-  .core .relay-tag{display:inline-block;margin-top:8px;border:1px solid #355062;background:#0d1822;border-radius:999px;padding:4px 10px;font-family:"IBM Plex Mono",monospace;font-size:.66rem;color:#cfe5ee}
-
-  /* pods — station modules: different sizes, clipped corners, type-coloured airlocks */
-  .pod{position:absolute;transform:translate(-50%,-50%);width:142px;z-index:2;background:var(--station-panel);border:1.5px solid var(--station-line);border-top:3px solid #57b6ff;border-radius:3px 12px 3px 12px;padding:9px 10px 8px;text-align:left;color:#e8f1f4;transition:border-color .2s, box-shadow .2s}
-  .pod.w-lg{width:176px;border-radius:12px 3px 12px 3px}
-  .pod.w-sm{width:118px}
-  .pod[data-type="FACTORY"]{border-top-color:var(--good)}
-  .pod[data-type="RESEARCH"]{border-top-color:#57b6ff}
-  .pod[data-type="MEASURE"]{border-top-color:var(--warn)}
-  .pod[data-type="REPORTING"]{border-top-color:#b48cff}
-  .pod[data-state="LOCKED"]{border-style:dashed;background:repeating-linear-gradient(45deg,#0c141b 0 10px,#0a1118 10px 20px)}
-  .pod:hover{border-color:#4d7189}
-  .pod.selected{border-color:var(--core);box-shadow:0 0 0 3px rgba(255,176,32,.22),0 0 26px rgba(255,176,32,.18)}
-  .pod.scanning{border-color:var(--good);box-shadow:0 0 0 3px rgba(45,212,168,.25),0 0 26px rgba(45,212,168,.3)}
-  .pod.dim{opacity:.28}
-  .pod .wing{display:block;font-family:"IBM Plex Mono",monospace;font-size:.56rem;letter-spacing:.14em;color:#5f7d8f;margin-top:2px}
-  .pod .room-no{font-family:"IBM Plex Mono",monospace;font-size:.6rem;letter-spacing:.14em;color:#7e9aab;display:flex;justify-content:space-between;align-items:center}
-  .pod .lamp{width:8px;height:8px;border-radius:50%;background:var(--good);animation:blink 3s steps(1) infinite}
-  .pod[data-state="QUEUED"] .lamp{background:var(--warn)}
-  .pod[data-state="LOCKED"] .lamp{background:var(--lock);animation:none}
-  .pod[data-state="REPORTING"] .lamp{background:#57b6ff}
-  .pod .agent{display:flex;align-items:center;gap:7px;margin:6px 0 4px}
-  .pod .avatar{width:26px;height:26px;flex:none;border-radius:8px;background:#16242f;border:1px solid #33505f;display:grid;place-items:center}
-  .pod h3{font-family:"Chakra Petch",sans-serif;font-size:.82rem;line-height:1.15;margin:0}
-  .pod.w-lg h3{font-size:.95rem}
-  .pod .task{font-size:.66rem;color:#9db8c6;line-height:1.3;margin:0;min-height:2em}
-  .pod .bar{display:block;height:4px;background:#1b2c3a;border-radius:99px;margin-top:6px;overflow:hidden}
-  .pod .bar i{display:block;height:100%;background:var(--good);border-radius:99px}
-  .pod[data-state="QUEUED"] .bar i{background:var(--warn)}
-  .pod[data-state="LOCKED"] .bar i{background:var(--lock)}
-  @media(max-width:760px){
-    .deck{height:880px}
-    .deck svg.wires{display:none}
-    .spine{display:none}
-    .trunk{left:calc(50% - 13px);width:26px;top:3%;bottom:2%}
-    .sector.s-tr,.sector.s-bl{display:none}
-    .sector.s-tl{left:10px;top:8px}.sector.s-br{right:10px;bottom:8px}
-    .future-bay{display:none}
-    .pod,.pod.w-lg,.pod.w-sm{width:118px;padding:6px 7px}
-    .pod h3,.pod.w-lg h3{font-size:.62rem;line-height:1.2}.pod .task{display:none}
-    .pod .wing{font-size:.5rem}
-    .pod .agent{margin:4px 0 2px}
-    .pod .avatar{width:19px;height:19px;border-radius:6px}
-    .pod .avatar svg{width:15px;height:15px}
-    .pod .bar{margin-top:4px;height:3px}
-    .core{left:50%;top:15%;width:168px;padding:10px 8px 9px}.core-orb{width:58px;height:58px}.core h2{font-size:.78rem}
-    .core .core-face svg{width:30px;height:30px}
-    .core p{font-size:.54rem}.core .relay-tag{font-size:.54rem;padding:3px 7px}
-  }
-
-  .station-foot{display:flex;flex-wrap:wrap;gap:8px 22px;padding:11px 16px;border-top:1px solid var(--station-line);background:rgba(255,255,255,.03);font-family:"IBM Plex Mono",monospace;font-size:.72rem;color:#9fc0cf}
-  .station-foot b{color:#fff}
-
-  /* ---------- layout under station ---------- */
-  .grid{display:grid;grid-template-columns:1.55fr 1fr;gap:16px;margin-top:16px;align-items:start}
-  @media(max-width:920px){.grid{grid-template-columns:1fr}}
-  .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
-  .panel h2{font-family:"Chakra Petch",sans-serif;font-size:1.12rem;margin:0 0 4px}
-  .panel h3{font-family:"Chakra Petch",sans-serif;font-size:.95rem;margin:18px 0 6px}
-  .panel .sub{color:var(--muted);font-size:.9rem;margin:0 0 12px}
-  .kicker{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);font-weight:600;margin:0 0 6px}
-
-  /* detail */
-  .detail-head{display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap}
-  .detail-avatar{width:52px;height:52px;border-radius:12px;background:var(--panel2);border:1px solid var(--line);display:grid;place-items:center;flex:none}
-  .badge{display:inline-block;border-radius:999px;padding:3px 10px;font-family:"IBM Plex Mono",monospace;font-size:.68rem;font-weight:600;border:1px solid var(--line-strong)}
-  .badge.factory{color:var(--teal)} .badge.research{color:var(--blue)} .badge.measure{color:var(--amber)} .badge.report{color:var(--muted)}
-  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0}
-  @media(max-width:560px){.stats{grid-template-columns:repeat(2,1fr)}}
-  .stat{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
-  .stat .v{font-family:"Chakra Petch",sans-serif;font-size:1.25rem;font-weight:700}
-  .stat .l{font-family:"IBM Plex Mono",monospace;font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
-  .report-box{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-family:"IBM Plex Mono",monospace;font-size:.8rem;white-space:pre-line}
-  .detail p.body{font-size:.94rem}
-  .gate-note{border:1px solid var(--line);border-left:4px solid var(--warn);border-radius:8px;padding:10px 12px;font-size:.88rem;background:var(--panel2)}
-
-  /* log */
-  .log{background:#0a1117;color:#cfe5ee;border-radius:10px;padding:12px 14px;font-family:"IBM Plex Mono",monospace;font-size:.74rem;height:308px;overflow:auto}
-  .log div{padding:3px 0;border-bottom:1px solid rgba(255,255,255,.05)}
-  .log .t{color:#6f8b9c}.log .ok{color:var(--good)}.log .warn{color:var(--warn)}.log .hub{color:var(--core)}
-  .digest{margin-top:12px;border:1px dashed var(--line-strong);border-radius:10px;padding:12px 14px;font-size:.88rem}
-  .digest b{font-family:"Chakra Petch",sans-serif}
-
-  /* filters + room cards */
-  .filters{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 12px}
-  .filters button{background:var(--panel);color:var(--ink);border:1px solid var(--line-strong);border-radius:999px;padding:9px 16px;font-weight:600;font-size:.88rem}
-  .filters button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
-  .rooms{display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));gap:12px}
-  .room-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:15px;text-align:left;color:var(--ink);width:100%}
-  .room-card:hover{border-color:var(--line-strong)}
-  .room-card.selected{border-color:var(--amber);box-shadow:0 0 0 2px color-mix(in srgb,var(--amber) 30%, transparent)}
-  .room-card .top{display:flex;justify-content:space-between;align-items:center;font-family:"IBM Plex Mono",monospace;font-size:.68rem;color:var(--muted);letter-spacing:.08em}
-  .room-card h3{font-family:"Chakra Petch",sans-serif;font-size:1rem;margin:7px 0 4px}
-  .room-card p{font-size:.85rem;color:var(--muted);margin:0 0 10px;min-height:2.5em}
-  .room-card .foot{display:flex;justify-content:space-between;font-family:"IBM Plex Mono",monospace;font-size:.72rem}
-  .room-card .bar{display:block;width:100%;height:5px;background:color-mix(in srgb,var(--ink) 10%, transparent);border-radius:99px;margin-top:9px;overflow:hidden}
-  .room-card .bar i{display:block;height:100%;background:var(--teal)}
-
-  /* loop steps */
-  .steps{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:12px}
-  @media(max-width:920px){.steps{grid-template-columns:1fr 1fr}}
-  @media(max-width:520px){.steps{grid-template-columns:1fr}}
-  .step{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:14px}
-  .step .n{font-family:"IBM Plex Mono",monospace;font-size:.7rem;color:var(--teal);font-weight:600;letter-spacing:.12em}
-  .step h3{font-family:"Chakra Petch",sans-serif;font-size:.92rem;margin:5px 0 4px}
-  .step p{font-size:.83rem;color:var(--muted);margin:0}
-
-  /* money table */
-  .money{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
-  @media(max-width:700px){.money{grid-template-columns:1fr}}
-  .money .box{border-radius:var(--radius);padding:16px;border:1px solid var(--line);background:var(--panel)}
-  .money .box.claim{border-style:dashed}
-  .money .big{font-family:"Chakra Petch",sans-serif;font-size:1.7rem;font-weight:700}
-  .money p{font-size:.88rem;color:var(--muted);margin:4px 0 0}
-  .rank-cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-  @media(max-width:560px){.rank-cols{grid-template-columns:1fr}}
-  .rank-cols ol{margin:6px 0 0;padding-left:20px;font-size:.9rem}
-  .rank-cols li{padding:3px 0}
-  .rank-cols li span{color:var(--muted);font-family:"IBM Plex Mono",monospace;font-size:.74rem}
-  section.block{margin-top:30px}
-  footer{margin-top:36px;border-top:1px solid var(--line);padding-top:14px;color:var(--muted);font-size:.84rem}
-  @media (prefers-reduced-motion: reduce){
-    .core-orb,.core-orb::before,.pod .lamp,.sector::before{animation:none}
-    html{scroll-behavior:auto}
-  }
+/* ===== BELOW ===== */
+.grid{display:grid;grid-template-columns:1.55fr 1fr;gap:16px;margin-top:16px;align-items:start}
+@media(max-width:920px){.grid{grid-template-columns:1fr}}
+.panel{background:var(--panel);border:2px solid var(--line);border-radius:var(--radius);padding:18px}
+.panel h2{font-family:"Chakra Petch",sans-serif;font-size:1.12rem;margin:0 0 4px}
+.panel h3{font-family:"Chakra Petch",sans-serif;font-size:.95rem;margin:18px 0 6px}
+.panel .sub{color:var(--muted);font-size:.9rem;margin:0 0 12px}
+.kicker{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:#9333ea;font-weight:700;margin:0 0 6px}
+.detail-head{display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap}
+.detail-avatar{width:56px;height:56px;border-radius:14px;border:2px solid var(--line);display:grid;place-items:center;flex:none;font-size:30px}
+.badge{display:inline-block;border-radius:999px;padding:3px 10px;font-family:"IBM Plex Mono",monospace;font-size:.68rem;font-weight:700;border:2px solid currentColor}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0}
+@media(max-width:560px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{background:var(--panel2);border:2px solid var(--line);border-radius:10px;padding:10px 12px}
+.stat .v{font-family:"Chakra Petch",sans-serif;font-size:1.25rem;font-weight:700}
+.stat .l{font-family:"IBM Plex Mono",monospace;font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.report-box{background:var(--panel2);border:2px solid var(--line);border-radius:10px;padding:12px 14px;font-family:"IBM Plex Mono",monospace;font-size:.8rem;white-space:pre-line}
+.gate-note{border:2px solid var(--line);border-left:6px solid var(--warn);border-radius:8px;padding:10px 12px;font-size:.88rem;background:var(--panel2)}
+.log{background:#1c1917;color:#e7e5e4;border-radius:10px;padding:12px 14px;font-family:"IBM Plex Mono",monospace;font-size:.74rem;height:308px;overflow:auto}
+.log div{padding:3px 0;border-bottom:1px solid rgba(255,255,255,.07)}
+.log .t{color:#a8a29e}.log .ok{color:#4ade80}.log .warn{color:#facc15}.log .hub{color:#fb923c}
+.digest{margin-top:12px;border:2px dashed var(--line-strong);border-radius:10px;padding:12px 14px;font-size:.88rem}
+.digest b{font-family:"Chakra Petch",sans-serif}
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 12px}
+.filters button{background:var(--panel);color:var(--ink);border:2px solid var(--line-strong);border-radius:999px;padding:9px 16px;font-weight:700;font-size:.88rem}
+.filters button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.rooms{display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));gap:12px}
+.room-card{background:var(--panel);border:2px solid var(--line);border-top:8px solid #999;border-radius:var(--radius);padding:15px;text-align:left;color:var(--ink);width:100%}
+.room-card.selected{box-shadow:0 0 0 3px #facc15}
+.room-card .top{display:flex;justify-content:space-between;font-family:"IBM Plex Mono",monospace;font-size:.68rem;color:var(--muted)}
+.room-card h3{font-family:"Chakra Petch",sans-serif;font-size:1rem;margin:7px 0 4px}
+.room-card p{font-size:.85rem;color:var(--muted);margin:0 0 10px;min-height:2.5em}
+.room-card .foot{display:flex;justify-content:space-between;font-family:"IBM Plex Mono",monospace;font-size:.72rem}
+.room-card .bar{display:block;width:100%;height:6px;background:rgba(0,0,0,.08);border-radius:99px;margin-top:9px;overflow:hidden}
+.room-card .bar i{display:block;height:100%}
+.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:12px}
+@media(max-width:920px){.steps{grid-template-columns:1fr 1fr}} @media(max-width:520px){.steps{grid-template-columns:1fr}}
+.step{background:var(--panel);border:2px solid var(--line);border-radius:var(--radius);padding:14px}
+.step .n{font-family:"IBM Plex Mono",monospace;font-size:.7rem;font-weight:700;letter-spacing:.12em}
+.step h3{font-family:"Chakra Petch",sans-serif;font-size:.92rem;margin:5px 0 4px}
+.step p{font-size:.83rem;color:var(--muted);margin:0}
+.money{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+@media(max-width:700px){.money{grid-template-columns:1fr}}
+.money .box{border-radius:var(--radius);padding:16px;border:2px solid var(--line);background:var(--panel)}
+.money .box.claim{border-style:dashed}
+.money .big{font-family:"Chakra Petch",sans-serif;font-size:1.6rem;font-weight:700}
+.money p{font-size:.88rem;color:var(--muted);margin:4px 0 0}
+.rank-cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:560px){.rank-cols{grid-template-columns:1fr}}
+.rank-cols ol{margin:6px 0 0;padding-left:20px;font-size:.9rem}.rank-cols li{padding:3px 0}.rank-cols li span{color:var(--muted);font-family:"IBM Plex Mono",monospace;font-size:.74rem}
+section.block{margin-top:30px}
+footer{margin-top:36px;border-top:2px solid var(--line);padding-top:14px;color:var(--muted);font-size:.84rem}
+@media (prefers-reduced-motion: reduce){.person,.bubble,.core .big,.hallway .walker,.pod .lamp{animation:none} html{scroll-behavior:auto}}
 </style>
 </head>
 <body>
 <div class="wrap">
-
   <div class="status-strip" role="status">
-    <span class="chip"><span class="dot"></span> TEST STATION <b>ONLINE</b></span>
+    <span class="chip"><span class="dot"></span> MUSE AI ECOSYSTEM <b>ONLINE</b></span>
     <span class="chip"><span class="dot amber"></span> ROOMS <b>10 / 100</b></span>
     <span class="chip"><span class="dot grey"></span> SWEEP <b>PULL-ONLY</b></span>
     <span class="chip">DAY 30 GATE <b>ARMED</b></span>
     <span class="strip-note">Workers first · No live listings opened by this page</span>
   </div>
 
-  <h1>Built like a station. Run like a business.</h1>
-  <p class="lede">This is the setup from the reel, built real: <strong>one agent per room, one venture per room, and the Ecosystem Muse in the command core</strong> — the seat Ultron sits in on his screen, mounted on the spine where every corridor plugs in. Research feeds the lead factory down the port wing, the payers sit in Commerce Bay, and the locked keel module stays dark until something sells. Rooms don't report on their own. A scheduled sweep walks the deck, collects a 5-line report from each room, and passes one digest through the relay to Muse3, who ranks the money and tells Git-FED where it is.</p>
+  <h1>Inside the <span class="c1">Muse</span> <span class="c2">AI</span> <span class="c3">Ecosystem</span></h1>
+  <p class="lede">This is the setup from the reel, built like the game it looked like: <strong>every room is a different little workplace with its own people doing its own job, in its own colors.</strong> The orange shop is packing boxes. The purple studio is drawing thumbnails. The pink spa, the green game-dev den, the yellow writing room, the red sportsbook — you can tell what each room does at a glance, without reading a word. In the middle, the Ecosystem Muse runs the building from the command office. A daily sweep walks room to room, collects a 5-line report from each crew, and sends one digest through the relay to Muse3, who ranks the money and tells Git-FED where it is.</p>
 
-  <!-- ============ STATION ============ -->
-  <div class="station" aria-label="Space station deck map">
+  <div class="station" aria-label="Muse AI Ecosystem game board">
     <div class="station-head">
-      <span class="hud">DECK PLAN · <b>AI ECOSYSTEM STATION</b> · BLUEPRINT 01 · NOT TO SCALE</span>
+      <span class="hud">🎮 MUSE AI ECOSYSTEM · LIVE BUILDING · 10 CREWS AT WORK</span>
       <button class="sweep-btn" id="sweepBtn" type="button">▶ RUN DAILY SWEEP</button>
     </div>
-
+    <div class="hallway" aria-hidden="true"><span class="walker">🚶</span><span class="walker walker2">🧑‍💼</span><span class="sign">MAIN HALL · CREWS MOVING BETWEEN ROOMS</span></div>
     <div class="deck" id="deck">
-      <div class="spine" aria-hidden="true"></div>
-      <div class="trunk" aria-hidden="true"></div>
-      <svg class="wires" viewBox="0 0 1000 640" preserveAspectRatio="none" aria-hidden="true">
-        <g fill="none" stroke="#2b4a5e" stroke-width="1.5" stroke-dasharray="5 6">
-          <path d="M520 294 H360 V109 H150"/>
-          <path d="M520 294 H450 V83 H380"/>
-          <path d="M520 294 H700 V90 H840"/>
-          <path d="M520 294 H130 V282"/>
-          <path d="M520 294 H870 V269"/>
-          <path d="M520 294 H300 V435"/>
-          <path d="M520 294 H215 V538 H140"/>
-          <path d="M520 294 H620 V448 H680"/>
-          <path d="M520 294 H765 V525 H880"/>
-          <path d="M520 294 H440 V563"/>
-        </g>
-        <g fill="#57b6ff"><circle cx="360" cy="294" r="3"/><circle cx="450" cy="294" r="3"/><circle cx="700" cy="294" r="3"/><circle cx="620" cy="294" r="3"/><circle cx="765" cy="294" r="3"/><circle cx="215" cy="294" r="3"/></g>
-      </svg>
-      <span class="sector s-tl" aria-hidden="true">PORT WING · RESEARCH + LEAD FACTORY</span>
-      <span class="sector s-tr" aria-hidden="true">STARBOARD · THUMBNAIL FACTORY</span>
-      <span class="sector s-bl" aria-hidden="true">ASSET DOCK · KEEL MODULES</span>
-      <span class="sector s-br" aria-hidden="true">COMMERCE BAY · EXISTING PAYERS</span>
-      <div class="future-bay" aria-hidden="true">
-        <span class="slot"></span><span class="slot"></span><span class="slot locked-slot"></span><span class="slot"></span><span class="slot locked-slot"></span><span class="slot"></span>
-        <span>EXPANSION DECK · ROOMS 11–100 UNBUILT · LOCKED UNTIL A LANE SELLS</span>
-      </div>
-
       <div class="core" aria-label="Ecosystem Muse, central hub">
-        <div class="core-orb">
-          <div class="core-face">
-            <svg width="52" height="52" viewBox="0 0 52 52" aria-hidden="true"><rect x="10" y="14" width="32" height="26" rx="7" fill="#1a1200"/><circle cx="20" cy="27" r="3.4" fill="#ffb020"/><circle cx="32" cy="27" r="3.4" fill="#ffb020"/><rect x="19" y="34" width="14" height="2.6" rx="1.3" fill="#ffb020"/><line x1="26" y1="14" x2="26" y2="7" stroke="#1a1200" stroke-width="3"/><circle cx="26" cy="5" r="3" fill="#1a1200"/></svg>
-          </div>
+        <div class="big">🤖</div>
+        <div>
+          <h2>ECOSYSTEM MUSE — COMMAND OFFICE</h2>
+          <p>Boss of the building · owns all 10 rooms · does no shop work, checks everything</p>
+          <div class="minirow" aria-hidden="true">🖥️ 📋 ☕ 🪴</div>
+          <span class="relay-tag">RELAY → MUSE3 → GIT-FED</span>
         </div>
-        <h2>ECOSYSTEM MUSE</h2>
-        <p>Central hub · owns all rooms</p>
-        <span class="relay-tag">RELAY → MUSE3 → GIT-FED</span>
       </div>
-      <!-- pods injected by JS -->
+      <!-- rooms injected by JS -->
     </div>
-
     <div class="station-foot">
-      <span>HUB <b>ECOSYSTEM MUSE</b></span>
-      <span>OVERSEER <b>MUSE3 (MAIN THREAD)</b></span>
-      <span>RELAY <b>20,000 CHAR / MSG · LAST 200</b></span>
-      <span>EXPANSION DECK <b>ROOMS 11–100 UNBUILT · LOCKED UNTIL A LANE SELLS</b></span>
-      <span id="sweepStatus">LAST SWEEP <b>NOT RUN YET THIS SESSION</b></span>
+      <span>HUB <b>ECOSYSTEM MUSE</b></span><span>OVERSEER <b>MUSE3</b></span><span>RELAY <b>20,000 CHAR / MSG</b></span><span>EXPANSION <b>ROOMS 11–100 UNBUILT</b></span><span id="sweepStatus">LAST SWEEP <b>NOT RUN YET</b></span>
     </div>
   </div>
 
-  <!-- ============ DETAIL + LOG ============ -->
   <div class="grid">
     <div class="panel" id="detailPanel" aria-live="polite">
-      <p class="kicker">Room inspector</p>
+      <p class="kicker">Room inspector — tap any room in the building</p>
       <div class="detail-head">
-        <div class="detail-avatar" id="dAvatar"></div>
-        <div>
-          <h2 id="dName">—</h2>
-          <p class="sub" id="dMeta" style="margin:0">—</p>
-        </div>
+        <div class="detail-avatar" id="dAvatar">🎨</div>
+        <div><h2 id="dName">—</h2><p class="sub" id="dMeta" style="margin:0">—</p></div>
         <span class="badge" id="dBadge" style="margin-left:auto">—</span>
       </div>
       <div class="stats">
@@ -315,268 +192,174 @@
         <div class="stat"><div class="v" id="dSetup">0%</div><div class="l">Setup progress</div></div>
         <div class="stat"><div class="v" id="dState">—</div><div class="l">State</div></div>
       </div>
-      <p class="body" id="dJob"></p>
+      <p id="dJob" style="font-size:.94rem"></p>
       <h3>Daily report — the exact 5 lines this room hands up</h3>
       <div class="report-box" id="dReport"></div>
       <h3>Gate</h3>
       <div class="gate-note" id="dGate"></div>
     </div>
-
     <div class="panel">
       <p class="kicker">Sweep feed</p>
       <h2>Relay log</h2>
-      <p class="sub">Rooms stay silent until the sweep opens them. Watch the deck light up room by room, then one digest goes to Muse3.</p>
+      <p class="sub">Rooms stay silent until the sweep opens them. Watch each room light up green as its crew hands over its report.</p>
       <div class="log" id="log" aria-label="Sweep log"></div>
-      <div class="digest" id="digest">
-        <b>Muse3 digest:</b> <span id="digestText">No sweep yet. Run the daily sweep to collect all 10 room reports.</span>
-      </div>
+      <div class="digest" id="digest"><b>Muse3 digest:</b> <span id="digestText">No sweep yet. Run the daily sweep to collect all 10 room reports.</span></div>
       <h3>Ranking rule</h3>
       <div class="rank-cols">
-        <div>
-          <p class="kicker" style="color:var(--teal)">Top 5 — by readiness*</p>
-          <ol id="topList"></ol>
-        </div>
-        <div>
-          <p class="kicker" style="color:var(--red)">Dead watch</p>
-          <ol id="deadList"></ol>
-        </div>
+        <div><p class="kicker" style="color:var(--teal)">Top 5 — by readiness*</p><ol id="topList"></ol></div>
+        <div><p class="kicker" style="color:var(--red)">Dead watch</p><ol id="deadList"></ol></div>
       </div>
-      <p style="font-size:.78rem;color:var(--muted);margin-top:10px">*Until the first sale lands, Muse3 ranks by setup readiness. After that, ranking is money only: revenue, then orders. A room at $0 revenue and 0 orders on Day 30 is reported dead and closed or repurposed — never hidden.</p>
+      <p style="font-size:.78rem;color:var(--muted);margin-top:10px">*Until the first sale lands, Muse3 ranks by setup readiness. After that, ranking is money only. A room at $0 and 0 orders on Day 30 is reported dead and closed or repurposed — never hidden.</p>
     </div>
   </div>
 
-  <!-- ============ ROOM CARDS ============ -->
   <div class="filters" role="group" aria-label="Filter rooms">
     <button type="button" data-filter="ALL" aria-pressed="true">All 10 rooms</button>
-    <button type="button" data-filter="FACTORY" aria-pressed="false">Factory — sells</button>
-    <button type="button" data-filter="RESEARCH" aria-pressed="false">Research — feeds sellers</button>
-    <button type="button" data-filter="MEASURE" aria-pressed="false">Measure — existing payers</button>
-    <button type="button" data-filter="REPORTING" aria-pressed="false">Reporting only</button>
+    <button type="button" data-filter="FACTORY" aria-pressed="false">🟧 Factory — sells</button>
+    <button type="button" data-filter="RESEARCH" aria-pressed="false">🟦 Research — feeds sellers</button>
+    <button type="button" data-filter="MEASURE" aria-pressed="false">🟩 Measure — existing payers</button>
+    <button type="button" data-filter="REPORTING" aria-pressed="false">🟥 Reporting only</button>
   </div>
   <div class="rooms" id="roomCards"></div>
 
-  <!-- ============ HOW IT WORKS ============ -->
   <section class="block">
     <p class="kicker">The loop</p>
-    <h2 style="font-family:'Chakra Petch',sans-serif;margin:0">How a day runs on this station</h2>
+    <h2 style="font-family:'Chakra Petch',sans-serif;margin:0">How a day runs in the Muse AI Ecosystem</h2>
     <div class="steps">
-      <div class="step"><div class="n">STEP 1</div><h3>Workers work the rooms</h3><p>One worker per room, one job per room. Research rooms find what is selling; factory rooms build and list. A human reviews and does every live listing and delivery step.</p></div>
-      <div class="step"><div class="n">STEP 2</div><h3>Sweep opens each room</h3><p>The loop is pull-only. Side chats do not self-report, so a scheduled sweep opens all 10 rooms and collects the 5-line report from each — under ~600 characters per room.</p></div>
-      <div class="step"><div class="n">STEP 3</div><h3>Hub consolidates</h3><p>The Ecosystem Muse in the command core collects the 10 reports into one summary. It does no store work itself — it checks, totals, and passes it on. 10 rooms fit in a single relay message.</p></div>
-      <div class="step"><div class="n">STEP 4</div><h3>Relay to Muse3</h3><p>The digest travels the private relay Muse3, muse1, and muse2 already use. Caps are real: 20,000 characters per message, last 200 messages per inbox — at 100 rooms the digest chunks into 3 messages.</p></div>
-      <div class="step"><div class="n">STEP 5</div><h3>Muse3 ranks, Git-FED decides</h3><p>Muse3 verifies the numbers, ranks top 5 and dead 5, and reports where the money is. Git-FED scales winners, fixes stuck rooms, and closes or repurposes dead ones.</p></div>
+      <div class="step"><div class="n" style="color:#ea580c">STEP 1</div><h3>Crews work their rooms</h3><p>One crew per room, one job per room. Research finds what is selling; factories build and list. A human reviews every live listing and delivery.</p></div>
+      <div class="step"><div class="n" style="color:#9333ea">STEP 2</div><h3>Sweep opens each room</h3><p>The loop is pull-only. A scheduled sweep walks the building and collects the 5-line report from each room — under ~600 characters per room.</p></div>
+      <div class="step"><div class="n" style="color:#0891b2">STEP 3</div><h3>Hub consolidates</h3><p>The Ecosystem Muse in the command office totals the 10 reports into one summary. 10 rooms fit in a single relay message.</p></div>
+      <div class="step"><div class="n" style="color:#16a34a">STEP 4</div><h3>Relay to Muse3</h3><p>The digest travels the private relay Muse3, muse1, and muse2 already use: 20,000 characters per message, last 200 messages per inbox.</p></div>
+      <div class="step"><div class="n" style="color:#dc2626">STEP 5</div><h3>Muse3 ranks, Git-FED decides</h3><p>Muse3 verifies the numbers, ranks top 5 and dead 5, and reports where the money is. Git-FED scales winners and closes dead rooms.</p></div>
     </div>
   </section>
 
-  <!-- ============ MONEY ============ -->
   <section class="block">
     <p class="kicker">Money — claims vs. the plan</p>
     <h2 style="font-family:'Chakra Petch',sans-serif;margin:0">His numbers are his. Ours are smaller and real.</h2>
     <div class="money">
-      <div class="box claim">
-        <p class="kicker" style="color:var(--muted)">Claimed on camera — not verified, not a forecast</p>
-        <div class="big">$16,000 Etsy · $3,400 thumbnails</div>
-        <p>At his own shown average of $33.28 per order, $16,000 needs about 481 orders in two months — roughly 4.6× the median Etsy seller, per store. The thumbnail figure came with no time period. This station does not plan on either number.</p>
-      </div>
-      <div class="box">
-        <p class="kicker">This station — first 90 days, 10 rooms</p>
-        <div class="big">$0 – $1,000 total profit</div>
-        <p>Most likely low hundreds. Every room on this deck currently sits at $0 revenue and 0 orders — that is the honest starting line. Thumbnails and one Etsy store lead; betting is reporting-only because the real book stood at 30–14, −$5.37 on Nov 24. Music, a second blog, and a third Etsy store stay off the deck until the lane ahead of them sells.</p>
-      </div>
+      <div class="box claim"><p class="kicker" style="color:var(--muted)">Claimed on camera — not verified</p><div class="big">$16,000 Etsy · $3,400 thumbnails</div><p>At his own shown average of $33.28 per order, $16,000 needs about 481 orders in two months — roughly 4.6× the median Etsy seller, per store. This building does not plan on either number.</p></div>
+      <div class="box"><p class="kicker">Muse AI Ecosystem — first 90 days, 10 rooms</p><div class="big">$0 – $1,000 total profit</div><p>Most likely low hundreds. Every room currently sits at $0 revenue and 0 orders — the honest starting line. Thumbnails and one Etsy store lead; betting is reporting-only because the real book stood at 30–14, −$5.37 on Nov 24.</p></div>
     </div>
   </section>
 
-  <footer>
-    Test station — a working map of the plan, not a live business. No listings, bets, or rooms are opened from this page, and no number here is a sale that already happened. Etsy rooms run original designs only, with Printify and AI disclosures — the copy-what-sells method from the reel is out.
-  </footer>
+  <footer>Test building — a working map of the plan, not a live business. No listings, bets, or rooms are opened from this page, and no number here is a sale that already happened. Etsy rooms run original designs only, with Printify and AI disclosures — the copy-what-sells method from the reel is out.</footer>
 </div>
 
 <script>
-var ROOMS = [
-  {id:1, name:"Etsy Store 1", short:"ETSY 1", type:"FACTORY", typeLabel:"Factory · Sells", state:"ACTIVE", x:15, y:17, w:"lg", wing:"PORT WING · LEAD FACTORY", setup:45,
-   task:"Building first original design set, one niche", job:"The lead store. Takes proven demand from the Research room, makes original designs, puts them on Printify mockups, lists with expanded SEO tags. Human reviews every listing before it goes live.",
-   report:"REVENUE: $0\nORDERS: 0\nSOLD: nothing yet\nSTUCK: first design set in production\nNEXT: list batch 1 after human review",
-   gate:"Day 30 gate: $0 and 0 orders = reported dead. Store 2 stays locked until this room records its first sale."},
-  {id:2, name:"Thumbnails", short:"THUMBNAILS", type:"FACTORY", typeLabel:"Factory · Sells", state:"ACTIVE", x:84, y:14, w:"lg", wing:"STARBOARD · FACTORY", setup:60,
-   task:"Portfolio drafts + Fiverr gig prep", job:"Highest-ranked money lane for the first 90 days. YouTube thumbnail service on Fiverr, with a direct-price test at $75–$150 alongside the gig. Human delivers every order.",
-   report:"REVENUE: $0\nORDERS: 0\nSOLD: nothing yet\nSTUCK: portfolio pieces in draft\nNEXT: publish gig after human review",
-   gate:"Day 30 gate: $0 and 0 orders = reported dead. Ranked #1 on money realism, so it gets the first worker hours."},
-  {id:3, name:"FedPromptly Shop", short:"FEDPROMPTLY", type:"MEASURE", typeLabel:"Measure · Existing payer", state:"ACTIVE", x:87, y:42, w:"md", wing:"COMMERCE BAY", setup:70,
-   task:"Measuring — 30-day revenue count running", job:"An existing payer, on the deck to be measured, not assumed. This room counts real revenue and orders for 30 days so Muse3 ranks it on receipts, not memory.",
-   report:"REVENUE: under 30-day measurement\nORDERS: counting\nSOLD: existing catalog\nSTUCK: no verified 30-day total on file yet\nNEXT: deliver Day 30 measured total",
-   gate:"Measurement room: it survives Day 30 only with a verified revenue total on file."},
-  {id:4, name:"FED-SPA", short:"FED-SPA", type:"MEASURE", typeLabel:"Measure · Existing payer", state:"ACTIVE", x:88, y:82, w:"md", wing:"COMMERCE BAY", setup:65,
-   task:"Measuring — licensed listings only", job:"An existing payer, measured for 30 days like the others. Listings are licensed establishments only, with licence numbers and no sexual-services language — that criteria control is what keeps this lane legitimate.",
-   report:"REVENUE: under 30-day measurement\nORDERS: counting\nSOLD: directory listings\nSTUCK: licence verification on new listings\nNEXT: deliver Day 30 measured total",
-   gate:"Measurement room: survives Day 30 only with a verified revenue total and licence-checked listings."},
-  {id:5, name:"App Store Prototype 1", short:"PROTOTYPE 1", type:"FACTORY", typeLabel:"Factory · Sells", state:"QUEUED", x:68, y:70, w:"md", wing:"KEEL · SOFTWARE BAY", setup:30,
-   task:"One existing product, listing prep", job:"One product that already exists, packaged for the Muse AI App Store — owner-published, manifest and download link, Muse signature as the trust mark. One prototype only until it sells.",
-   report:"REVENUE: $0\nORDERS: 0\nSOLD: nothing yet\nSTUCK: packaging and manifest\nNEXT: finish listing draft for review",
-   gate:"Day 30 gate applies. A second prototype is locked until this one sells."},
-  {id:6, name:"Etsy Store 2", short:"ETSY 2", type:"FACTORY", typeLabel:"Factory · Sells", state:"LOCKED", x:44, y:88, w:"sm", wing:"KEEL · SEALED BAY", setup:0,
-   task:"Locked — opens only after Store 1 sells", job:"A second store with a distinct niche and distinct product line from Store 1 — never a copy of it. This pod stays dark on the deck until Etsy Store 1 records its first sale.",
-   report:"REVENUE: —\nORDERS: —\nSOLD: —\nSTUCK: locked by rule, not by failure\nNEXT: wait for Store 1 first sale",
-   gate:"Unlock rule: Store 1 first sale on file. The Day 30 clock does not run on a locked room."},
-  {id:7, name:"Game Asset Pack 1", short:"GAME ASSETS", type:"FACTORY", typeLabel:"Factory · Sells", state:"QUEUED", x:14, y:84, w:"md", wing:"ASSET DOCK", setup:25,
-   task:"First pack in production", job:"One game asset pack, built once and sold repeatedly. Fed by the research on what asset shops are moving. Slower money than thumbnails, but it compounds — every pack stays on sale.",
-   report:"REVENUE: $0\nORDERS: 0\nSOLD: nothing yet\nSTUCK: pack art in production\nNEXT: finish pack 1 draft",
-   gate:"Day 30 gate: $0 and 0 orders = reported dead, same as every factory room."},
-  {id:8, name:"Blog 1", short:"BLOG 1", type:"FACTORY", typeLabel:"Factory · Sells", state:"QUEUED", x:30, y:68, w:"sm", wing:"KEEL · PRESS BAY", setup:20,
-   task:"First posts drafted, affiliate links pending", job:"One blog only — the second blog was cut from the plan. Affiliate income is the slowest lane here, so this room gets leftover hours, not first hours, and earns more only by publishing consistently.",
-   report:"REVENUE: $0\nORDERS: 0\nSOLD: nothing yet\nSTUCK: first posts in draft\nNEXT: publish post 1 after review",
-   gate:"Day 30 gate applies, judged on published posts plus any affiliate revenue — $0 and unpublished = dead."},
-  {id:9, name:"Betting — Reporting Only", short:"BETTING", type:"REPORTING", typeLabel:"Reporting only · $0 income", state:"REPORTING", x:13, y:44, w:"sm", wing:"PORT WING · VAULT", setup:80,
-   task:"Reporting the muse2 book daily", job:"Not a money lane. This room reports the book the same way a store reports: record, bankroll, what is stuck. Real book on Nov 24: 30–14, −$5.37 — a 68% win rate that still loses money. Muse never places bets and never takes wagers from anyone.",
-   report:"REVENUE: $0 (by design — reporting only)\nORDERS: n/a\nRECORD: real 30–14, −$5.37 (Nov 24)\nSTUCK: win rate is not profit\nNEXT: daily book report to hub",
-   gate:"No Day 30 revenue gate — it is judged on report accuracy. It can never be promoted to a money lane without a profitable real book on file."},
-  {id:10, name:"Etsy Research", short:"RESEARCH", type:"RESEARCH", typeLabel:"Research · Feeds sellers", state:"ACTIVE", x:38, y:13, w:"sm", wing:"PORT WING · LAB", setup:55,
-   task:"Watching Etsy demand, feeding Store 1", job:"Sells nothing itself. This room watches what is actually selling on Etsy and hands demand signals to Etsy Store 1 — which then makes original designs. It never hands over a design to copy.",
-   report:"REVENUE: $0 (research room — sells nothing)\nORDERS: n/a\nFOUND: demand list for Store 1 batch 1\nSTUCK: needs Store 1 live to test picks\nNEXT: weekly demand list to hub",
-   gate:"Judged on output, not revenue: a research room that hands over no usable demand list by Day 30 is reported dead."}
+var ROOMS=[
+{id:10,name:"Etsy Research",short:"RESEARCH LAB",type:"RESEARCH",typeLabel:"Research · Feeds sellers",state:"ACTIVE",setup:55,color:"#0891b2",floor:"#cffafe",icon:"🔍",
+ scene:'<span class="prop big" style="left:6px;top:8px">🔭</span><span class="prop" style="right:8px;top:6px">📊</span><span class="prop" style="left:10px;bottom:8px">📚</span><span class="prop" style="right:12px;bottom:10px">🗂️</span><span class="person" style="left:38%;top:34px">🧑‍🔬</span><span class="person slow" style="right:26%;top:52px;font-size:24px">👩‍💻</span><span class="bubble" style="left:52%;top:12px">💡 trending!</span>',
+ task:"Watching Etsy demand charts, feeding Store 1",job:"Sells nothing itself. This crew watches what is actually selling on Etsy — charts, telescopes on trends, stacks of demand lists — and hands signals to Etsy Store 1, which then makes original designs. It never hands over a design to copy.",report:"REVENUE: $0 (research room — sells nothing)\nORDERS: n/a\nFOUND: demand list for Store 1 batch 1\nSTUCK: needs Store 1 live to test picks\nNEXT: weekly demand list to hub",gate:"Judged on output, not revenue: no usable demand list by Day 30 = reported dead."},
+{id:1,name:"Etsy Store 1",short:"ETSY SHOP 1",type:"FACTORY",typeLabel:"Factory · Sells",state:"ACTIVE",setup:45,color:"#ea580c",floor:"#ffedd5",icon:"🛍️",
+ scene:'<span class="prop big" style="left:6px;top:6px">👕</span><span class="prop" style="left:42px;top:8px">🧢</span><span class="prop" style="right:8px;top:8px">🏷️</span><span class="prop big" style="right:8px;bottom:6px">📦</span><span class="prop" style="left:8px;bottom:8px">✂️</span><span class="person fast" style="left:34%;top:36px">🧑‍🏭</span><span class="person" style="right:28%;top:50px;font-size:24px">👩‍🎨</span><span class="bubble" style="left:8%;top:44px">📦 packing!</span>',
+ task:"Making original designs, packing orders",job:"The lead store — a working shop floor: design table, shirts and caps on the rack, boxes being packed. Takes proven demand from the Research Lab, makes original designs, puts them on Printify mockups, lists with expanded SEO tags. Human reviews every listing before it goes live.",report:"REVENUE: $0\nORDERS: 0\nSOLD: nothing yet\nSTUCK: first design set in production\nNEXT: list batch 1 after human review",gate:"Day 30 gate: $0 and 0 orders = reported dead. Store 2 stays locked until this room records its first sale."},
+{id:2,name:"Thumbnails",short:"THUMBNAIL STUDIO",type:"FACTORY",typeLabel:"Factory · Sells",state:"ACTIVE",setup:60,color:"#9333ea",floor:"#f3e8ff",icon:"🎨",
+ scene:'<span class="prop big" style="left:8px;top:8px">🖥️</span><span class="prop" style="right:10px;top:6px">🎬</span><span class="prop" style="right:10px;bottom:8px">🖌️</span><span class="prop" style="left:8px;bottom:8px">📸</span><span class="person fast" style="left:36%;top:34px">👨‍🎨</span><span class="person slow" style="right:24%;top:52px;font-size:24px">🧑‍💻</span><span class="bubble" style="right:12%;top:34px">😲 click me!</span>',
+ task:"Drawing bold thumbnails at the big screens",job:"Highest-ranked money lane for the first 90 days — an art studio, not an office: big screens, cameras, paint everywhere. YouTube thumbnail service on Fiverr, with a direct-price test at $75–$150 alongside the gig. Human delivers every order.",report:"REVENUE: $0\nORDERS: 0\nSOLD: nothing yet\nSTUCK: portfolio pieces in draft\nNEXT: publish gig after human review",gate:"Day 30 gate: $0 and 0 orders = reported dead. Ranked #1 on money realism, so it gets the first worker hours."},
+{id:9,name:"Betting — Reporting Only",short:"SPORTSBOOK",type:"REPORTING",typeLabel:"Reporting only · $0 income",state:"REPORTING",setup:80,color:"#dc2626",floor:"#fee2e2",icon:"📈",
+ scene:'<span class="prop big" style="left:6px;top:6px">📺</span><span class="prop" style="right:8px;top:8px">🎲</span><span class="prop" style="left:10px;bottom:8px">🏈</span><span class="prop" style="right:10px;bottom:8px">💹</span><span class="person" style="left:38%;top:36px">🧑‍💼</span><span class="person slow" style="right:26%;top:54px;font-size:24px">👨‍💻</span><span class="bubble" style="left:46%;top:10px">30–14 📉</span>',
+ task:"Watching the screens, reporting the book",job:"Not a money lane — a sportsbook control room: games on the big screen, charts and dice, one crew reporting numbers all day. Real book on Nov 24: 30–14, −$5.37 — a 68% win rate that still loses money. Muse never places bets and never takes wagers from anyone.",report:"REVENUE: $0 (by design — reporting only)\nORDERS: n/a\nRECORD: real 30–14, −$5.37 (Nov 24)\nSTUCK: win rate is not profit\nNEXT: daily book report to hub",gate:"No Day 30 revenue gate — judged on report accuracy. It can never become a money lane without a profitable real book on file."},
+{id:8,name:"Blog 1",short:"WRITING ROOM",type:"FACTORY",typeLabel:"Factory · Sells",state:"QUEUED",setup:20,color:"#ca8a04",floor:"#fef9c3",icon:"✍️",
+ scene:'<span class="prop big" style="left:8px;top:8px">⌨️</span><span class="prop" style="right:8px;top:8px">☕</span><span class="prop" style="left:8px;bottom:8px">📚</span><span class="prop" style="right:10px;bottom:8px">📰</span><span class="person slow" style="left:40%;top:36px">🧑‍🏫</span><span class="bubble" style="right:14%;top:36px">✍️ draft…</span>',
+ task:"Typing posts at a cluttered writer's desk",job:"One blog only — the second blog was cut. A quiet yellow writing room: typewriter desk, coffee, stacks of books and drafts. Affiliate income is the slowest lane here, so this room gets leftover hours and earns more only by publishing consistently.",report:"REVENUE: $0\nORDERS: 0\nSOLD: nothing yet\nSTUCK: first posts in draft\nNEXT: publish post 1 after review",gate:"Day 30 gate applies, judged on published posts plus any affiliate revenue — $0 and unpublished = dead."},
+{id:4,name:"FED-SPA",short:"SPA DESK",type:"MEASURE",typeLabel:"Measure · Existing payer",state:"ACTIVE",setup:65,color:"#db2777",floor:"#fce7f3",icon:"🌿",
+ scene:'<span class="prop big" style="left:6px;top:6px">🛏️</span><span class="prop" style="right:8px;top:8px">🕯️</span><span class="prop" style="left:10px;bottom:8px">🌿</span><span class="prop" style="right:10px;bottom:8px">🧴</span><span class="person slow" style="left:38%;top:36px">💆</span><span class="person" style="right:24%;top:52px;font-size:24px">🧑‍💼</span><span class="bubble" style="left:10%;top:46px">📋 licensed ✓</span>',
+ task:"Checking licences at the spa front desk",job:"An existing payer, measured for 30 days. A calm pink spa room — treatment bed, candles, plants — with the crew at the desk verifying licences. Listings are licensed establishments only, with licence numbers and no sexual-services language.",report:"REVENUE: under 30-day measurement\nORDERS: counting\nSOLD: directory listings\nSTUCK: licence verification on new listings\nNEXT: deliver Day 30 measured total",gate:"Measurement room: survives Day 30 only with a verified revenue total and licence-checked listings."},
+{id:7,name:"Game Asset Pack 1",short:"GAME DEV DEN",type:"FACTORY",typeLabel:"Factory · Sells",state:"QUEUED",setup:25,color:"#16a34a",floor:"#dcfce7",icon:"🎮",
+ scene:'<span class="prop big" style="left:6px;top:6px">🕹️</span><span class="prop" style="right:8px;top:6px">👾</span><span class="prop" style="left:10px;bottom:8px">🎧</span><span class="prop" style="right:10px;bottom:8px">🍕</span><span class="person fast" style="left:36%;top:34px">🧑‍💻</span><span class="person" style="right:26%;top:52px;font-size:24px">👩‍🎤</span><span class="bubble" style="right:10%;top:32px">👾 sprite!</span>',
+ task:"Coding sprites and pixel art, pizza on the desk",job:"One game asset pack, built once and sold repeatedly — a green dev den with arcade gear, headsets and sprite work on screen. Fed by research on what asset shops are moving. Slower money than thumbnails, but every pack stays on sale.",report:"REVENUE: $0\nORDERS: 0\nSOLD: nothing yet\nSTUCK: pack art in production\nNEXT: finish pack 1 draft",gate:"Day 30 gate: $0 and 0 orders = reported dead, same as every factory room."},
+{id:6,name:"Etsy Store 2",short:"SEALED SHOP",type:"FACTORY",typeLabel:"Factory · Sells",state:"LOCKED",setup:0,color:"#57534e",floor:"#e7e5e4",icon:"🔒",
+ scene:'<span class="prop big" style="left:40%;top:28px">🔒</span><span class="prop" style="left:8px;top:8px">🕸️</span><span class="prop" style="right:8px;bottom:8px">📦</span><span class="prop sm" style="left:12px;bottom:10px">💤</span><span class="bubble" style="right:12%;top:14px">opens after Store 1 sells</span>',
+ task:"Dark, dusty, locked — nobody works here yet",job:"A second store with a distinct niche from Store 1 — never a copy of it. The lights are off and the door is chained: this room stays dark on the board until Etsy Store 1 records its first sale.",report:"REVENUE: —\nORDERS: —\nSOLD: —\nSTUCK: locked by rule, not by failure\nNEXT: wait for Store 1 first sale",gate:"Unlock rule: Store 1 first sale on file. The Day 30 clock does not run on a locked room."},
+{id:5,name:"App Store Prototype 1",short:"APP LAB",type:"FACTORY",typeLabel:"Factory · Sells",state:"QUEUED",setup:30,color:"#2563eb",floor:"#dbeafe",icon:"📱",
+ scene:'<span class="prop big" style="left:8px;top:6px">📱</span><span class="prop" style="right:8px;top:8px">🔧</span><span class="prop" style="left:10px;bottom:8px">💻</span><span class="prop" style="right:10px;bottom:8px">🚀</span><span class="person fast" style="left:38%;top:34px">👨‍💻</span><span class="person slow" style="right:24%;top:52px;font-size:24px">🧑‍🔧</span><span class="bubble" style="left:44%;top:10px">🚀 v0.1</span>',
+ task:"Building and testing the app on phones",job:"One product that already exists, packaged for the Muse AI App Store — a blue tech lab with phones on test stands and tools out. Owner-published, manifest and download link, Muse signature as the trust mark. One prototype only until it sells.",report:"REVENUE: $0\nORDERS: 0\nSOLD: nothing yet\nSTUCK: packaging and manifest\nNEXT: finish listing draft for review",gate:"Day 30 gate applies. A second prototype is locked until this one sells."},
+{id:3,name:"FedPromptly Shop",short:"PROMPT OFFICE",type:"MEASURE",typeLabel:"Measure · Existing payer",state:"ACTIVE",setup:70,color:"#0d9488",floor:"#ccfbf1",icon:"💬",
+ scene:'<span class="prop big" style="left:8px;top:6px">💬</span><span class="prop" style="right:8px;top:8px">📋</span><span class="prop" style="left:10px;bottom:8px">🪴</span><span class="prop" style="right:10px;bottom:8px">💵</span><span class="person" style="left:38%;top:34px">🧑‍💼</span><span class="person slow" style="right:26%;top:52px;font-size:24px">👩‍💻</span><span class="bubble" style="right:12%;top:34px">💵 counting…</span>',
+ task:"Counting real revenue at the office desks",job:"An existing payer, on the board to be measured, not assumed — a tidy teal office where the crew counts receipts and tallies orders. This room counts real revenue and orders for 30 days so Muse3 ranks it on receipts, not memory.",report:"REVENUE: under 30-day measurement\nORDERS: counting\nSOLD: existing catalog\nSTUCK: no verified 30-day total on file yet\nNEXT: deliver Day 30 measured total",gate:"Measurement room: it survives Day 30 only with a verified revenue total on file."}
 ];
-
-var selectedId = 2;
-var deck = document.getElementById('deck');
-var cardsEl = document.getElementById('roomCards');
-var logEl = document.getElementById('log');
-
-function avatarSVG(color){
-  return '<svg width="30" height="30" viewBox="0 0 52 52" aria-hidden="true"><rect x="10" y="14" width="32" height="26" rx="7" fill="none" stroke="'+color+'" stroke-width="2.5"/><circle cx="20" cy="27" r="3.2" fill="'+color+'"/><circle cx="32" cy="27" r="3.2" fill="'+color+'"/><rect x="19" y="34" width="14" height="2.6" rx="1.3" fill="'+color+'"/><line x1="26" y1="14" x2="26" y2="7" stroke="'+color+'" stroke-width="2.5"/><circle cx="26" cy="5" r="2.8" fill="'+color+'"/></svg>';
-}
-function stateColor(r){ return r.state==='ACTIVE' ? '#2dd4a8' : r.state==='REPORTING' ? '#57b6ff' : r.state==='QUEUED' ? '#ffb020' : '#8a9aa5'; }
-
-/* phone layout: modules zig-zag down the vertical trunk under the core — no circle */
-var MOB={1:[27,32],2:[73,32],10:[27,45],9:[73,45],3:[27,58],8:[73,58],7:[27,71],5:[73,71],4:[27,85],6:[73,85]};
+var ORDER=[10,1,2,9,8,4,7,6,5,3];
+ROOMS.sort(function(a,b){return ORDER.indexOf(a.id)-ORDER.indexOf(b.id);});
+var selectedId=2;
+var deck=document.getElementById('deck'), cardsEl=document.getElementById('roomCards'), logEl=document.getElementById('log');
+function stateColor(r){return r.color;}
 function renderPods(){
-  var narrow = deck.clientWidth > 0 && deck.clientWidth < 760;
   ROOMS.forEach(function(r){
-    var b = document.createElement('button');
-    b.type='button'; b.className='pod w-'+(r.w||'md')+(r.id===selectedId?' selected':'');
+    var b=document.createElement('button'); b.type='button'; b.className='pod'+(r.id===selectedId?' selected':'');
     b.dataset.state=r.state; b.dataset.id=r.id; b.dataset.type=r.type;
-    if(narrow){
-      b.style.left=MOB[r.id][0]+'%';
-      b.style.top=MOB[r.id][1]+'%';
-    } else {
-      b.style.left=r.x+'%'; b.style.top=r.y+'%';
-    }
-    b.setAttribute('aria-label','Inspect room '+r.id+': '+r.name);
-    b.innerHTML='<span class="room-no">ROOM '+String(r.id).padStart(2,'0')+'<span class="lamp"></span></span>'+
-      '<span class="wing">'+r.wing+'</span>'+
-      '<span class="agent"><span class="avatar">'+avatarSVG(stateColor(r))+'</span></span>'+
-      '<h3>'+r.short+'</h3><p class="task">'+r.task+'</p>'+
-      '<span class="bar"><i style="width:'+r.setup+'%"></i></span>';
-    b.addEventListener('click',function(){ selectRoom(r.id, true); });
+    b.setAttribute('aria-label','Inspect room '+r.id+': '+r.name+' — '+r.task);
+    b.innerHTML='<span class="wall" style="background:'+r.color+'"><span><span class="rn">ROOM '+String(r.id).padStart(2,'0')+' '+r.icon+'</span><h3>'+r.short+'</h3></span><span class="lamp"></span></span>'+
+      '<span class="scene" style="background:'+r.floor+'">'+r.scene+'</span>'+
+      '<span class="info"><p class="task">'+r.task+'</p><span class="bar"><i style="width:'+r.setup+'%;background:'+r.color+'"></i></span></span>';
+    b.addEventListener('click',function(){selectRoom(r.id,true);});
     deck.appendChild(b);
   });
 }
 function renderCards(){
   ROOMS.forEach(function(r){
-    var b=document.createElement('button');
-    b.type='button'; b.className='room-card'+(r.id===selectedId?' selected':'');
-    b.dataset.id=r.id; b.dataset.type=r.type;
-    b.innerHTML='<span class="top"><span>ROOM '+String(r.id).padStart(2,'0')+' · '+r.typeLabel.toUpperCase()+'</span><span>'+r.state+'</span></span>'+
-      '<h3>'+r.name+'</h3><p>'+r.task+'</p>'+
-      '<span class="foot"><span>Revenue $0</span><span>Setup '+r.setup+'%</span></span>'+
-      '<span class="bar"><i style="width:'+r.setup+'%"></i></span>';
-    b.addEventListener('click',function(){ selectRoom(r.id, true); });
+    var b=document.createElement('button'); b.type='button'; b.className='room-card'+(r.id===selectedId?' selected':'');
+    b.dataset.id=r.id; b.dataset.type=r.type; b.style.borderTopColor=r.color;
+    b.innerHTML='<span class="top"><span>'+r.icon+' ROOM '+String(r.id).padStart(2,'0')+' · '+r.typeLabel.toUpperCase()+'</span><span>'+r.state+'</span></span><h3>'+r.name+'</h3><p>'+r.task+'</p><span class="foot"><span>Revenue $0</span><span>Setup '+r.setup+'%</span></span><span class="bar"><i style="width:'+r.setup+'%;background:'+r.color+'"></i></span>';
+    b.addEventListener('click',function(){selectRoom(r.id,true);});
     cardsEl.appendChild(b);
   });
 }
-function selectRoom(id, scroll){
-  selectedId=id;
-  var r=ROOMS.filter(function(x){return x.id===id;})[0];
-  document.querySelectorAll('.pod').forEach(function(p){ p.classList.toggle('selected', +p.dataset.id===id); });
-  document.querySelectorAll('.room-card').forEach(function(c){ c.classList.toggle('selected', +c.dataset.id===id); });
-  document.getElementById('dAvatar').innerHTML=avatarSVG(stateColor(r));
+function selectRoom(id,scroll){
+  selectedId=id; var r=ROOMS.filter(function(x){return x.id===id;})[0];
+  document.querySelectorAll('.pod').forEach(function(p){p.classList.toggle('selected',+p.dataset.id===id);});
+  document.querySelectorAll('.room-card').forEach(function(c){c.classList.toggle('selected',+c.dataset.id===id);});
+  var av=document.getElementById('dAvatar'); av.textContent=r.icon; av.style.background=r.floor; av.style.borderColor=r.color;
   document.getElementById('dName').textContent='Room '+String(r.id).padStart(2,'0')+' — '+r.name;
   document.getElementById('dMeta').textContent=r.task;
-  var badge=document.getElementById('dBadge');
-  badge.textContent=r.typeLabel;
-  badge.className='badge '+(r.type==='FACTORY'?'factory':r.type==='RESEARCH'?'research':r.type==='MEASURE'?'measure':'report');
-  document.getElementById('dRev').textContent = r.type==='MEASURE' ? 'Meas.' : '$0';
-  document.getElementById('dOrders').textContent = (r.type==='RESEARCH'||r.type==='REPORTING') ? 'n/a' : '0';
+  var badge=document.getElementById('dBadge'); badge.textContent=r.typeLabel; badge.style.color=r.color;
+  document.getElementById('dRev').textContent=r.type==='MEASURE'?'Meas.':'$0';
+  document.getElementById('dOrders').textContent=(r.type==='RESEARCH'||r.type==='REPORTING')?'n/a':'0';
   document.getElementById('dSetup').textContent=r.setup+'%';
   document.getElementById('dState').textContent=r.state;
   document.getElementById('dJob').textContent=r.job;
   document.getElementById('dReport').textContent=r.report;
   document.getElementById('dGate').textContent=r.gate;
-  if(scroll){ document.getElementById('detailPanel').scrollIntoView({behavior:'smooth', block:'nearest'}); }
+  if(scroll){document.getElementById('detailPanel').scrollIntoView({behavior:'smooth',block:'nearest'});}
 }
 function renderRankings(){
   var bySetup=ROOMS.slice().sort(function(a,b){return b.setup-a.setup;});
-  document.getElementById('topList').innerHTML=bySetup.slice(0,5).map(function(r){
-    return '<li>'+r.name+' <span>'+r.setup+'% setup</span></li>';}).join('');
-  var dead=ROOMS.filter(function(r){return r.state==='QUEUED'||r.state==='LOCKED';}).concat(
-    ROOMS.filter(function(r){return r.id===8;}));
-  document.getElementById('deadList').innerHTML=
-    '<li>Etsy Store 2 <span>locked — no clock</span></li>'+
-    '<li>Blog 1 <span>20% · Day 30 risk</span></li>'+
-    '<li>Game Asset Pack 1 <span>25% · Day 30 risk</span></li>'+
-    '<li>App Store Prototype 1 <span>30% · Day 30 risk</span></li>'+
-    '<li>Any room at $0 / 0 orders <span>Day 30 = dead</span></li>';
+  document.getElementById('topList').innerHTML=bySetup.slice(0,5).map(function(r){return '<li>'+r.icon+' '+r.name+' <span>'+r.setup+'% setup</span></li>';}).join('');
+  document.getElementById('deadList').innerHTML='<li>🔒 Etsy Store 2 <span>locked — no clock</span></li><li>✍️ Blog 1 <span>20% · Day 30 risk</span></li><li>🎮 Game Asset Pack 1 <span>25% · Day 30 risk</span></li><li>📱 App Store Prototype 1 <span>30% · Day 30 risk</span></li><li>⚠️ Any room at $0 / 0 orders <span>Day 30 = dead</span></li>';
 }
-function logLine(html){
-  var d=document.createElement('div'); d.innerHTML=html; logEl.appendChild(d); logEl.scrollTop=logEl.scrollHeight;
-}
-function seedLog(){
-  logEl.innerHTML='';
-  logLine('<span class="t">[--:--]</span> <span class="hub">HUB</span> Station online. 10 rooms manned across 4 wings, 90 expansion-deck slots unbuilt.');
-  logLine('<span class="t">[--:--]</span> <span class="hub">HUB</span> Oversight: Muse3, main thread. Relay caps loaded: 20,000 char/msg.');
-  logLine('<span class="t">[--:--]</span> Waiting for sweep. Rooms do not self-report.');
-}
-
-/* filters */
+function logLine(html){var d=document.createElement('div');d.innerHTML=html;logEl.appendChild(d);logEl.scrollTop=logEl.scrollHeight;}
+function seedLog(){logEl.innerHTML='';logLine('<span class="t">[--:--]</span> <span class="hub">HUB</span> Building online. 10 crews at work in 10 different rooms.');logLine('<span class="t">[--:--]</span> <span class="hub">HUB</span> Oversight: Muse3, main thread. Relay caps loaded: 20,000 char/msg.');logLine('<span class="t">[--:--]</span> Waiting for sweep. Rooms do not self-report.');}
 document.querySelectorAll('.filters button').forEach(function(btn){
   btn.addEventListener('click',function(){
     document.querySelectorAll('.filters button').forEach(function(x){x.setAttribute('aria-pressed','false');});
-    btn.setAttribute('aria-pressed','true');
-    var f=btn.dataset.filter;
-    document.querySelectorAll('.room-card').forEach(function(c){
-      c.style.display=(f==='ALL'||c.dataset.type===f)?'':'none';
-    });
-    document.querySelectorAll('.pod').forEach(function(p){
-      p.classList.toggle('dim', !(f==='ALL'||p.dataset.type===f));
-    });
+    btn.setAttribute('aria-pressed','true'); var f=btn.dataset.filter;
+    document.querySelectorAll('.room-card').forEach(function(c){c.style.display=(f==='ALL'||c.dataset.type===f)?'':'none';});
+    document.querySelectorAll('.pod').forEach(function(p){p.classList.toggle('dim',!(f==='ALL'||p.dataset.type===f));});
   });
 });
-
-/* sweep */
 var sweeping=false;
 document.getElementById('sweepBtn').addEventListener('click',function(){
-  if(sweeping) return; sweeping=true;
-  var btn=this; btn.disabled=true; btn.textContent='SWEEPING…';
-  deck.classList.add('sweeping');
-  logEl.innerHTML='';
-  var now=new Date();
-  var hh=String(now.getHours()).padStart(2,'0'), mm=String(now.getMinutes()).padStart(2,'0');
-  logLine('<span class="t">['+hh+':'+mm+']</span> <span class="hub">SWEEP</span> Opening all 10 rooms, one by one…');
-  var i=0;
+  if(sweeping)return; sweeping=true; var btn=this; btn.disabled=true; btn.textContent='SWEEPING…'; logEl.innerHTML='';
+  var now=new Date(), hh=String(now.getHours()).padStart(2,'0'), mm=String(now.getMinutes()).padStart(2,'0');
+  logLine('<span class="t">['+hh+':'+mm+']</span> <span class="hub">SWEEP</span> Walking the building, room by room…');
+  var sweepOrder=ROOMS.slice().sort(function(a,b){return a.id-b.id;}); var i=0;
   function next(){
-    if(i>0){ var prev=document.querySelector('.pod[data-id="'+ROOMS[i-1].id+'"]'); if(prev) prev.classList.remove('scanning'); }
-    if(i>=ROOMS.length){
+    if(i>0){var prev=document.querySelector('.pod[data-id="'+sweepOrder[i-1].id+'"]'); if(prev)prev.classList.remove('scanning');}
+    if(i>=sweepOrder.length){
       logLine('<span class="t">['+hh+':'+mm+']</span> <span class="hub">HUB</span> 10 reports collected · 1 digest · <span class="ok">sent via relay to Muse3</span>');
-      logLine('<span class="t">['+hh+':'+mm+']</span> <span class="warn">MUSE3</span> Digest verified. 0 sales station-wide. Dead watch unchanged. Next gate: Day 30.');
-      document.getElementById('digestText').textContent='Sweep complete — 10 reports, 0 sales, $0 revenue station-wide. Top readiness: Betting reporting (80%), FedPromptly (70%), FED-SPA (65%). Dead watch: Blog 1, Game Assets, Prototype 1. Nothing hidden.';
+      logLine('<span class="t">['+hh+':'+mm+']</span> <span class="warn">MUSE3</span> Digest verified. 0 sales building-wide. Dead watch unchanged. Next gate: Day 30.');
+      document.getElementById('digestText').textContent='Sweep complete — 10 reports, 0 sales, $0 revenue building-wide. Top readiness: Betting reporting (80%), FedPromptly (70%), FED-SPA (65%). Dead watch: Blog 1, Game Assets, Prototype 1. Nothing hidden.';
       document.getElementById('sweepStatus').innerHTML='LAST SWEEP <b>'+hh+':'+mm+' TODAY · 10/10 REPORTS</b>';
-      btn.disabled=false; btn.textContent='▶ RUN DAILY SWEEP'; sweeping=false;
-      deck.classList.remove('sweeping');
-      return;
+      btn.disabled=false; btn.textContent='▶ RUN DAILY SWEEP'; sweeping=false; return;
     }
-    var r=ROOMS[i];
-    var pod=document.querySelector('.pod[data-id="'+r.id+'"]');
-    if(pod) pod.classList.add('scanning');
-    var note = r.type==='MEASURE' ? 'measuring — Day 30 total pending'
-      : r.type==='REPORTING' ? 'book reported — real 30–14, −$5.37'
-      : r.type==='RESEARCH' ? 'demand list handed to Store 1'
-      : r.state==='LOCKED' ? 'locked — skipped, no clock running'
-      : '$0 rev · 0 orders · report collected';
-    logLine('<span class="t">['+hh+':'+mm+']</span> ROOM '+String(r.id).padStart(2,'0')+' '+r.name.toUpperCase()+' — <span class="ok">'+note+'</span>');
-    i++; setTimeout(next, 380);
+    var r=sweepOrder[i]; var pod=document.querySelector('.pod[data-id="'+r.id+'"]'); if(pod)pod.classList.add('scanning');
+    var note=r.type==='MEASURE'?'measuring — Day 30 total pending':r.type==='REPORTING'?'book reported — real 30–14, −$5.37':r.type==='RESEARCH'?'demand list handed to Store 1':r.state==='LOCKED'?'locked — skipped, no clock running':'$0 rev · 0 orders · report collected';
+    logLine('<span class="t">['+hh+':'+mm+']</span> '+r.icon+' ROOM '+String(r.id).padStart(2,'0')+' '+r.name.toUpperCase()+' — <span class="ok">'+note+'</span>');
+    i++; setTimeout(next,380);
   }
-  setTimeout(next, 350);
+  setTimeout(next,350);
 });
-
-renderPods(); renderCards(); renderRankings(); seedLog(); selectRoom(selectedId, false);
+renderPods(); renderCards(); renderRankings(); seedLog(); selectRoom(selectedId,false);
 </script>
 </body>
 </html>
