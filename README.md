@@ -5,7 +5,7 @@
 
 [![Live Site](https://img.shields.io/badge/Live%20Site-GitHub%20Pages-2ea44f?style=for-the-badge&logo=github)](https://git-fed.github.io/MuseAi-ecosystem/)
 [![Space](https://img.shields.io/badge/Space-Muse%20AI%20Ecosystem-6e40c9?style=for-the-badge)](https://git-fed.github.io/MuseAi-ecosystem/)
-[![Status](https://img.shields.io/badge/Status-v0.4.0-yellow?style=for-the-badge)](#)
+[![Status](https://img.shields.io/badge/Status-v0.5.0-yellow?style=for-the-badge)](#)
 [![Rooms](https://img.shields.io/badge/Rooms-10%20first%20%2F%20100%20planned-blue?style=for-the-badge)](#the-first-10-rooms)
 [![Money](https://img.shields.io/badge/First%2090%20days-%240%E2%80%93%241%2C000%20profit-orange?style=for-the-badge)](#realistic-money)
 
@@ -204,6 +204,7 @@ All three checks were run Nov 25, 2026, by separate workers, with receipts in [`
 
 ## Status
 
+- **v0.5.0 — Nov 25, 2026:** Rebuilt to match the ULTRON-OS reel Git-FED approved: top-down satellite grid, right-angle streets, 38 agent dots travelling room to room like busy traffic, each room with its own interior, no emojis anywhere. Mobile truncation fixed.
 - **v0.4.0 — Nov 25, 2026:** Renamed Muse AI Ecosystem. Rebuilt as a colorful video game building: 10 distinct rooms, each its own color with its own crew and props, little workers bobbing and working, people walking the main hall. No more wheel, no more blueprint, no more one dull blue.
 - **v0.3.0 — Nov 25, 2026:** Wheel layout killed, asymmetric deck plan with wings, spine and trunk. Repo renamed ai-ecosystem-test to MuseAi-ecosystem.
 - **v0.2.0 — Nov 25, 2026:** Old AI Ecosystem Test space deleted. New Space Station built, repo updated with the new `index.html`, beautiful README, GitHub Pages on, Discussions on.

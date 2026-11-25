@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<meta name="color-scheme" content="light dark" />
+<meta name="color-scheme" content="dark" />
 <link rel="icon" href="data:," />
 <title>Muse AI Ecosystem</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,126 +11,150 @@
 <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#fff7e8; --panel:#ffffff; --panel2:#fffdf7; --ink:#1c1917; --muted:#57534e;
-  --line:#e7ddd0; --line-strong:#c9bba6;
-  --amber:#d97706; --teal:#0f766e; --red:#dc2626; --blue:#2563eb;
-  --good:#16a34a; --warn:#f59e0b; --bad:#ef4444; --lock:#78716c;
-  --radius:16px;
-}
-@media (prefers-color-scheme: dark){
-  :root{ --bg:#1c1917; --panel:#292524; --panel2:#1c1917; --ink:#fafaf9; --muted:#d6d3d1; --line:#44403c; --line-strong:#78716c; }
+  --bg:#050807; --panel:#0a100c; --panel2:#0d140f; --ink:#e7f0e9; --muted:#9db3a4;
+  --line:#1e2f23; --line-strong:#33513c;
+  --green:#22ff88; --green-dim:#4ade80; --amber:#f59e0b; --red:#ef4444; --blue:#7dd3fc;
+  --radius:10px;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans",system-ui,sans-serif;line-height:1.5}
 button{font:inherit;min-height:44px;cursor:pointer}
-.wrap{max-width:1240px;margin:0 auto;padding:18px 16px 56px}
+.wrap{max-width:1280px;margin:0 auto;padding:18px 16px 56px}
 .status-strip{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
-.chip{display:inline-flex;align-items:center;gap:8px;border:2px solid var(--line);background:var(--panel);border-radius:999px;padding:8px 13px;font-family:"IBM Plex Mono",monospace;font-size:.78rem;font-weight:600}
-.dot{width:9px;height:9px;border-radius:50%;background:var(--good);flex:none}
-.dot.amber{background:var(--warn)} .dot.grey{background:var(--lock)}
+.chip{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line-strong);background:var(--panel);border-radius:4px;padding:8px 13px;font-family:"IBM Plex Mono",monospace;font-size:.78rem;font-weight:600;color:var(--ink)}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--green);flex:none;box-shadow:0 0 8px var(--green)}
+.dot.amber{background:var(--amber);box-shadow:0 0 8px var(--amber)} .dot.grey{background:#78716c;box-shadow:none}
 .strip-note{margin-left:auto;font-family:"IBM Plex Mono",monospace;font-size:.78rem;color:var(--muted)}
 @media(max-width:640px){.strip-note{margin-left:0;width:100%}}
 h1{font-family:"Chakra Petch",sans-serif;font-size:clamp(1.8rem,4.5vw,2.7rem);line-height:1.05;margin:2px 0 8px}
-h1 .c1{color:#ea580c} h1 .c2{color:#9333ea} h1 .c3{color:#0891b2}
-.lede{max-width:74ch;color:var(--muted);font-size:1.02rem;margin:0 0 18px}
+h1 .c1{color:#fb923c} h1 .c2{color:var(--green)} h1 .c3{color:var(--blue)}
+.lede{max-width:76ch;color:var(--muted);font-size:1.02rem;margin:0 0 18px}
 .lede strong{color:var(--ink)}
 
-/* ===== GAME BOARD ===== */
-.station{background:#292524;border:3px solid #1c1917;border-radius:20px;overflow:hidden;box-shadow:0 20px 44px rgba(28,25,23,.35);color:#fff}
-.station-head{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;padding:13px 16px;background:linear-gradient(90deg,#7c3aed,#db2777,#ea580c)}
-.station-head .hud{font-family:"IBM Plex Mono",monospace;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:#fff;font-weight:700}
-.sweep-btn{background:#facc15;color:#422006;border:3px solid #422006;border-radius:10px;padding:10px 18px;font-family:"Chakra Petch",sans-serif;font-weight:700;box-shadow:0 4px 0 #422006}
-.sweep-btn:active{transform:translateY(2px);box-shadow:0 2px 0 #422006}
-.sweep-btn:disabled{opacity:.6;cursor:wait}
-.hallway{position:relative;height:34px;background:repeating-linear-gradient(90deg,#44403c 0 34px,#3a3532 34px 68px);border-bottom:3px solid #1c1917;overflow:hidden}
-.hallway .walker{position:absolute;top:1px;font-size:24px;animation:walk 11s linear infinite}
-.hallway .walker2{animation-duration:17s;animation-delay:-6s;font-size:20px;top:5px}
-.hallway .sign{position:absolute;right:10px;top:7px;font-family:"IBM Plex Mono",monospace;font-size:.6rem;letter-spacing:.14em;color:#fde68a}
-@keyframes walk{from{left:-40px}to{left:102%}}
-.deck{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:12px;background:radial-gradient(circle at 20% 20%,#3b332e,#292524 70%)}
-.core{grid-column:span 2;display:flex;gap:14px;align-items:center;background:linear-gradient(135deg,#f59e0b,#f97316);border:3px solid #fff7ed;border-radius:14px;padding:14px;color:#431407;min-height:170px}
-.core .big{font-size:62px;line-height:1;animation:bob 2s ease-in-out infinite;filter:drop-shadow(0 4px 0 rgba(0,0,0,.2))}
-.core h2{font-family:"Chakra Petch",sans-serif;margin:0;font-size:1.15rem;letter-spacing:.04em}
-.core p{margin:3px 0 0;font-size:.8rem;font-weight:600}
-.core .relay-tag{display:inline-block;margin-top:8px;background:#431407;color:#fde68a;border-radius:999px;padding:4px 10px;font-family:"IBM Plex Mono",monospace;font-size:.64rem}
-.core .minirow{font-size:22px;margin-top:6px;letter-spacing:4px}
+/* ===== STATION — SATELLITE GRID VIEW ===== */
+.station{background:#04070a;border:2px solid var(--green);border-radius:6px;overflow:hidden;box-shadow:0 0 0 1px rgba(34,255,136,.25),0 0 42px rgba(34,255,136,.14),0 24px 50px rgba(0,0,0,.6);color:#e7f0e9}
+.station-head{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;padding:11px 14px;background:#07130b;border-bottom:2px solid var(--green)}
+.station-head .hud{font-family:"IBM Plex Mono",monospace;font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--green);font-weight:700}
+.station-head .hud .blink{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green);margin-right:8px;box-shadow:0 0 8px var(--green);animation:blink 1.6s steps(1) infinite}
+@keyframes blink{0%,70%{opacity:1}71%,100%{opacity:.2}}
+.sweep-btn{background:var(--green);color:#04150a;border:2px solid #baffd9;border-radius:4px;padding:9px 18px;font-family:"Chakra Petch",sans-serif;font-weight:700;letter-spacing:.06em;box-shadow:0 0 16px rgba(34,255,136,.45)}
+.sweep-btn:active{transform:translateY(1px)}
+.sweep-btn:disabled{opacity:.55;cursor:wait}
+.station-body{display:flex;align-items:stretch}
+.term{width:148px;flex:none;background:#050a07;border-right:1px solid var(--line);padding:10px 9px;font-family:"IBM Plex Mono",monospace;font-size:.6rem;line-height:1.75;color:#57d98a;overflow:hidden;white-space:nowrap}
+.term.right{border-right:none;border-left:1px solid var(--line)}
+.term .dim{color:#2f5c3d}.term .hi{color:#baffd9}.term .warn{color:#fbbf24}.term .feed div{animation:feedin .3s ease-out}
+@keyframes feedin{from{opacity:0}to{opacity:1}}
+@media(max-width:980px){.term{display:none}}
+.map-wrap{flex:1;min-width:0;padding:10px;background:#04070a}
+.map{position:relative;height:clamp(500px,60vw,660px);background:
+  repeating-linear-gradient(0deg,transparent 0 39px,rgba(74,222,128,.07) 39px 40px),
+  repeating-linear-gradient(90deg,transparent 0 39px,rgba(74,222,128,.07) 39px 40px),
+  radial-gradient(circle at 50% 42%,#0a140d,#04070a 75%);
+  border:1px solid var(--line);overflow:hidden}
+@media(max-width:640px){.map{height:620px}}
+.map svg.routes{position:absolute;inset:0;width:100%;height:100%;z-index:1}
+.hub-node{position:absolute;z-index:2;background:#1a0505;border:2px solid var(--red);border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;box-shadow:0 0 18px rgba(239,68,68,.35)}
+.hub-node .pulse{width:12px;height:12px;border-radius:50%;background:var(--red);box-shadow:0 0 12px var(--red);animation:blink 1.2s steps(1) infinite}
+.hub-node span{font-family:"IBM Plex Mono",monospace;font-size:.52rem;letter-spacing:.12em;color:#fecaca;font-weight:700}
+.core{position:absolute;z-index:3;background:#07130b;border:2px solid var(--green);border-radius:4px;box-shadow:0 0 26px rgba(34,255,136,.4),inset 0 0 30px rgba(34,255,136,.12);display:flex;flex-direction:column;overflow:hidden;text-align:left;padding:0;color:#e7f0e9}
+.core .wall{padding:6px 9px;background:rgba(34,255,136,.14);border-bottom:1px solid rgba(34,255,136,.4);font-family:"IBM Plex Mono",monospace;font-size:.58rem;font-weight:700;letter-spacing:.1em;color:#baffd9;display:flex;justify-content:space-between;gap:6px}
+.core .stage{flex:1;position:relative;background:repeating-linear-gradient(0deg,transparent 0 15px,rgba(74,222,128,.09) 15px 16px),repeating-linear-gradient(90deg,transparent 0 15px,rgba(74,222,128,.09) 15px 16px)}
+.core .platform{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);width:78px;height:46px;background:rgba(34,255,136,.3);border:1px solid var(--green);box-shadow:0 0 28px rgba(34,255,136,.85);display:flex;align-items:flex-end;justify-content:center}
+.core .figure{width:11px;height:40px;background:#eef7f0;border-radius:5px 5px 2px 2px;box-shadow:0 0 12px rgba(255,255,255,.9);margin-bottom:4px}
+.core .mach{position:absolute;width:14px;height:10px;border:1px solid rgba(34,255,136,.6);background:rgba(34,255,136,.12)}
+.core p{margin:0;padding:6px 9px 8px;font-size:.62rem;color:#9db3a4;font-family:"IBM Plex Mono",monospace;line-height:1.5}
+.core p b{color:#baffd9}
 
-/* ===== ROOMS / PODS ===== */
-.pod{position:relative;border:3px solid rgba(0,0,0,.55);border-radius:14px;padding:0;text-align:left;color:#1c1917;overflow:hidden;background:#fff;transition:transform .15s, box-shadow .15s;display:flex;flex-direction:column}
-.pod:hover{transform:translateY(-2px)}
-.pod.selected{box-shadow:0 0 0 4px #facc15,0 10px 24px rgba(0,0,0,.4);z-index:2}
-.pod.scanning{box-shadow:0 0 0 4px #4ade80,0 0 30px #4ade80;z-index:2}
-.pod.dim{opacity:.25;filter:saturate(.3)}
-.pod .wall{padding:7px 10px 6px;color:#fff;display:flex;justify-content:space-between;align-items:center;gap:6px}
-.pod .wall .rn{font-family:"IBM Plex Mono",monospace;font-size:.6rem;font-weight:700;letter-spacing:.1em;opacity:.95}
-.pod .lamp{width:9px;height:9px;border-radius:50%;background:#4ade80;border:2px solid rgba(255,255,255,.8);flex:none;animation:blink 2.4s steps(1) infinite}
-.pod[data-state="QUEUED"] .lamp{background:#facc15}.pod[data-state="LOCKED"] .lamp{background:#a8a29e;animation:none}.pod[data-state="REPORTING"] .lamp{background:#7dd3fc}
-@keyframes blink{0%,70%{opacity:1}71%,100%{opacity:.25}}
-.pod .wall h3{font-family:"Chakra Petch",sans-serif;font-size:.86rem;margin:0;line-height:1.1;color:#fff;text-shadow:0 1px 0 rgba(0,0,0,.25)}
-.pod .scene{position:relative;height:108px;flex:none;overflow:hidden;border-top:2px solid rgba(0,0,0,.15);border-bottom:2px solid rgba(0,0,0,.12)}
-.pod .scene::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 26px,rgba(0,0,0,.05) 26px 27px),repeating-linear-gradient(90deg,transparent 0 26px,rgba(0,0,0,.05) 26px 27px);pointer-events:none}
-.person{position:absolute;font-size:30px;line-height:1;z-index:3;animation:bob 1.7s ease-in-out infinite;filter:drop-shadow(0 3px 2px rgba(0,0,0,.25))}
-.person.slow{animation-duration:2.6s}.person.fast{animation-duration:1s}
-@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
-.prop{position:absolute;font-size:21px;line-height:1;z-index:2}
-.prop.big{font-size:30px}.prop.sm{font-size:15px}
-.bubble{position:absolute;z-index:4;background:#fff;border:2px solid #1c1917;border-radius:8px;font-size:12px;padding:1px 4px;animation:bob 2.2s ease-in-out infinite}
-.spin{animation:spinA 5s linear infinite;display:inline-block}@keyframes spinA{to{transform:rotate(360deg)}}
-.pod .info{padding:7px 10px 9px;background:#fff;flex:1}
-.pod .task{font-size:.68rem;color:#57534e;line-height:1.35;margin:0;min-height:2.6em;font-weight:600}
-.pod .bar{display:block;height:6px;background:#e7e5e4;border-radius:99px;margin-top:6px;overflow:hidden}
-.pod .bar i{display:block;height:100%;border-radius:99px}
-.pod[data-state="LOCKED"] .scene{filter:grayscale(.9) brightness(.75)}
-.station-foot{display:flex;flex-wrap:wrap;gap:8px 22px;padding:11px 16px;background:#1c1917;font-family:"IBM Plex Mono",monospace;font-size:.72rem;color:#d6d3d1}
-.station-foot b{color:#facc15}
-@media(max-width:900px){.deck{grid-template-columns:repeat(2,1fr)} .core{grid-column:span 2;order:-1}}
-@media(max-width:420px){.pod .scene{height:92px}.person{font-size:25px}}
+/* ===== MODULES / ROOMS ===== */
+.pod{position:absolute;z-index:3;border:2px solid var(--acc,#4ade80);border-radius:4px;padding:0;text-align:left;color:#e7f0e9;overflow:hidden;background:#0a100c;display:flex;flex-direction:column;min-height:0;transition:box-shadow .15s}
+.pod:hover{box-shadow:0 0 0 1px rgba(255,255,255,.35),0 0 18px rgba(34,255,136,.25)}
+.pod.selected{box-shadow:0 0 0 2px #ffffff,0 0 26px rgba(34,255,136,.55);z-index:5}
+.pod.scanning{box-shadow:0 0 0 3px var(--green),0 0 34px var(--green);z-index:5}
+.pod.dim{opacity:.22;filter:saturate(.3)}
+.pod .wall{padding:5px 8px 4px;background:#12241a;border-bottom:1px solid var(--acc);display:flex;justify-content:space-between;align-items:center;gap:6px;flex:none}
+.pod .wall .rn{font-family:"IBM Plex Mono",monospace;font-size:.56rem;font-weight:700;letter-spacing:.09em;color:#e7f0e9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pod .lamp{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 7px var(--green);flex:none;animation:blink 2.4s steps(1) infinite}
+.pod[data-state="QUEUED"] .lamp{background:var(--amber);box-shadow:0 0 7px var(--amber)}.pod[data-state="LOCKED"] .lamp{background:#78716c;box-shadow:none;animation:none}.pod[data-state="REPORTING"] .lamp{background:var(--blue);box-shadow:0 0 7px var(--blue)}
+.pod .scene{position:relative;flex:1;min-height:26px;background:repeating-linear-gradient(0deg,transparent 0 15px,rgba(255,255,255,.045) 15px 16px),repeating-linear-gradient(90deg,transparent 0 15px,rgba(255,255,255,.045) 15px 16px),var(--floor,#0a100c)}
+.pod .desk{position:absolute;border:1px solid rgba(231,240,233,.28);background:rgba(231,240,233,.07);border-radius:1px}
+.pod .desk::after{content:"";position:absolute;left:2px;top:2px;width:5px;height:4px;background:var(--acc);opacity:.75}
+.pod .scene.bright{background:repeating-linear-gradient(0deg,transparent 0 11px,rgba(190,225,255,.22) 11px 12px),repeating-linear-gradient(90deg,transparent 0 11px,rgba(190,225,255,.22) 11px 12px),#0d1c2a}
+.prop{position:absolute;border:1px solid rgba(231,240,233,.32);background:rgba(231,240,233,.06);border-radius:1px}
+.prop i{display:block;position:absolute;background:var(--acc);opacity:.55}
+.mock i{left:32%;top:24%;width:36%;height:46%}
+.scr{background:rgba(231,240,233,.13)}
+.scr i{left:8%;top:10%;width:84%;height:55%;opacity:.85}
+.board{background:repeating-linear-gradient(0deg,rgba(231,240,233,.13) 0 3px,transparent 3px 8px),rgba(231,240,233,.05)}
+.chart i{left:8%;right:8%;bottom:10%;height:12%;width:auto}
+.bed{background:rgba(231,240,233,.09)}
+.bed::before{content:"";position:absolute;left:6%;top:6%;width:88%;height:16%;background:rgba(231,240,233,.35)}
+.paper{background:rgba(231,240,233,.5);border:none}
+.rig i{left:24%;top:8%;width:52%;height:84%;opacity:.35}
+.counter{background:rgba(231,240,233,.1)}
+.counter::after{content:"";position:absolute;left:4%;right:4%;top:38%;height:3px;background:var(--acc);opacity:.7}
+.pod .warnmark{position:absolute;right:6px;top:5px;width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:14px solid #f59e0b;z-index:2}
+.pod .warnmark i{position:absolute;left:-1.5px;top:5px;font-style:normal;font-size:9px;font-weight:700;color:#1c1005;font-family:"IBM Plex Mono",monospace}
+.pod .sealed{position:absolute;inset:0;display:grid;place-items:center;font-family:"IBM Plex Mono",monospace;font-size:.6rem;letter-spacing:.22em;color:#a8a29e;font-weight:700;background:rgba(4,7,10,.45)}
+.pod[data-state="LOCKED"] .scene{filter:grayscale(.8) brightness(.6)}
+.pod .info{padding:5px 8px 6px;background:#0a100c;flex:none;border-top:1px solid var(--line)}
+.pod .task{font-size:.6rem;color:#9db3a4;line-height:1.35;margin:0;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pod .bar{display:block;height:4px;background:#1e2f23;border-radius:99px;margin-top:4px;overflow:hidden}
+.pod .bar i{display:block;height:100%;border-radius:99px;background:var(--acc)}
+.pod.compact .task{display:none}
+@media(max-width:640px){.pod .task{display:none}.pod .wall .rn{font-size:.5rem}}
+.agent{position:absolute;z-index:4;width:5px;height:5px;border-radius:50%;margin:-2.5px 0 0 -2.5px;pointer-events:none;background:#eef7f0;box-shadow:0 0 6px rgba(255,255,255,.85)}
+.agent.b{background:#93c5fd;box-shadow:0 0 6px rgba(147,197,253,.85)}
+.agent.g{background:#4ade80;box-shadow:0 0 6px rgba(74,222,128,.85)}
+.station-foot{display:flex;flex-wrap:wrap;gap:8px 22px;padding:11px 16px;background:#07130b;border-top:2px solid var(--green);font-family:"IBM Plex Mono",monospace;font-size:.72rem;color:#9db3a4}
+.station-foot b{color:var(--green)}
 
 /* ===== BELOW ===== */
 .grid{display:grid;grid-template-columns:1.55fr 1fr;gap:16px;margin-top:16px;align-items:start}
 @media(max-width:920px){.grid{grid-template-columns:1fr}}
-.panel{background:var(--panel);border:2px solid var(--line);border-radius:var(--radius);padding:18px}
+.panel{background:var(--panel);border:1px solid var(--line-strong);border-radius:var(--radius);padding:18px}
 .panel h2{font-family:"Chakra Petch",sans-serif;font-size:1.12rem;margin:0 0 4px}
 .panel h3{font-family:"Chakra Petch",sans-serif;font-size:.95rem;margin:18px 0 6px}
 .panel .sub{color:var(--muted);font-size:.9rem;margin:0 0 12px}
-.kicker{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:#9333ea;font-weight:700;margin:0 0 6px}
+.kicker{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--green-dim);font-weight:700;margin:0 0 6px}
 .detail-head{display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap}
-.detail-avatar{width:56px;height:56px;border-radius:14px;border:2px solid var(--line);display:grid;place-items:center;flex:none;font-size:30px}
-.badge{display:inline-block;border-radius:999px;padding:3px 10px;font-family:"IBM Plex Mono",monospace;font-size:.68rem;font-weight:700;border:2px solid currentColor}
+.detail-avatar{width:56px;height:56px;border-radius:6px;border:2px solid var(--line-strong);display:grid;place-items:center;flex:none;font-family:"IBM Plex Mono",monospace;font-weight:700;font-size:1rem;background:var(--panel2)}
+.badge{display:inline-block;border-radius:4px;padding:3px 10px;font-family:"IBM Plex Mono",monospace;font-size:.68rem;font-weight:700;border:2px solid currentColor}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0}
 @media(max-width:560px){.stats{grid-template-columns:repeat(2,1fr)}}
-.stat{background:var(--panel2);border:2px solid var(--line);border-radius:10px;padding:10px 12px}
+.stat{background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:10px 12px}
 .stat .v{font-family:"Chakra Petch",sans-serif;font-size:1.25rem;font-weight:700}
 .stat .l{font-family:"IBM Plex Mono",monospace;font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
-.report-box{background:var(--panel2);border:2px solid var(--line);border-radius:10px;padding:12px 14px;font-family:"IBM Plex Mono",monospace;font-size:.8rem;white-space:pre-line}
-.gate-note{border:2px solid var(--line);border-left:6px solid var(--warn);border-radius:8px;padding:10px 12px;font-size:.88rem;background:var(--panel2)}
-.log{background:#1c1917;color:#e7e5e4;border-radius:10px;padding:12px 14px;font-family:"IBM Plex Mono",monospace;font-size:.74rem;height:308px;overflow:auto}
-.log div{padding:3px 0;border-bottom:1px solid rgba(255,255,255,.07)}
-.log .t{color:#a8a29e}.log .ok{color:#4ade80}.log .warn{color:#facc15}.log .hub{color:#fb923c}
-.digest{margin-top:12px;border:2px dashed var(--line-strong);border-radius:10px;padding:12px 14px;font-size:.88rem}
+.report-box{background:#04070a;border:1px solid var(--line);border-radius:6px;padding:12px 14px;font-family:"IBM Plex Mono",monospace;font-size:.8rem;white-space:pre-line;color:#a7e8c0}
+.gate-note{border:1px solid var(--line);border-left:6px solid var(--amber);border-radius:6px;padding:10px 12px;font-size:.88rem;background:var(--panel2)}
+.log{background:#04070a;color:#a7e8c0;border:1px solid var(--line);border-radius:6px;padding:12px 14px;font-family:"IBM Plex Mono",monospace;font-size:.74rem;height:308px;overflow:auto}
+.log div{padding:3px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+.log .t{color:#5b7a66}.log .ok{color:#4ade80}.log .warn{color:#facc15}.log .hub{color:#fb923c}
+.digest{margin-top:12px;border:1px dashed var(--line-strong);border-radius:6px;padding:12px 14px;font-size:.88rem}
 .digest b{font-family:"Chakra Petch",sans-serif}
 .filters{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 12px}
-.filters button{background:var(--panel);color:var(--ink);border:2px solid var(--line-strong);border-radius:999px;padding:9px 16px;font-weight:700;font-size:.88rem}
-.filters button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.filters button{background:var(--panel);color:var(--ink);border:1px solid var(--line-strong);border-radius:4px;padding:9px 16px;font-weight:700;font-size:.88rem;display:inline-flex;align-items:center;gap:8px}
+.filters button .fdot{width:10px;height:10px;border-radius:2px;flex:none}
+.filters button[aria-pressed="true"]{background:var(--green);color:#04150a;border-color:var(--green)}
 .rooms{display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));gap:12px}
-.room-card{background:var(--panel);border:2px solid var(--line);border-top:8px solid #999;border-radius:var(--radius);padding:15px;text-align:left;color:var(--ink);width:100%}
-.room-card.selected{box-shadow:0 0 0 3px #facc15}
+.room-card{background:var(--panel);border:1px solid var(--line);border-top:6px solid #999;border-radius:var(--radius);padding:15px;text-align:left;color:var(--ink);width:100%}
+.room-card.selected{box-shadow:0 0 0 2px #ffffff}
 .room-card .top{display:flex;justify-content:space-between;font-family:"IBM Plex Mono",monospace;font-size:.68rem;color:var(--muted)}
 .room-card h3{font-family:"Chakra Petch",sans-serif;font-size:1rem;margin:7px 0 4px}
 .room-card p{font-size:.85rem;color:var(--muted);margin:0 0 10px;min-height:2.5em}
 .room-card .foot{display:flex;justify-content:space-between;font-family:"IBM Plex Mono",monospace;font-size:.72rem}
-.room-card .bar{display:block;width:100%;height:6px;background:rgba(0,0,0,.08);border-radius:99px;margin-top:9px;overflow:hidden}
+.room-card .bar{display:block;width:100%;height:5px;background:#1e2f23;border-radius:99px;margin-top:9px;overflow:hidden}
 .room-card .bar i{display:block;height:100%}
 .steps{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:12px}
 @media(max-width:920px){.steps{grid-template-columns:1fr 1fr}} @media(max-width:520px){.steps{grid-template-columns:1fr}}
-.step{background:var(--panel);border:2px solid var(--line);border-radius:var(--radius);padding:14px}
+.step{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:14px}
 .step .n{font-family:"IBM Plex Mono",monospace;font-size:.7rem;font-weight:700;letter-spacing:.12em}
 .step h3{font-family:"Chakra Petch",sans-serif;font-size:.92rem;margin:5px 0 4px}
 .step p{font-size:.83rem;color:var(--muted);margin:0}
 .money{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
 @media(max-width:700px){.money{grid-template-columns:1fr}}
-.money .box{border-radius:var(--radius);padding:16px;border:2px solid var(--line);background:var(--panel)}
+.money .box{border-radius:var(--radius);padding:16px;border:1px solid var(--line);background:var(--panel)}
 .money .box.claim{border-style:dashed}
 .money .big{font-family:"Chakra Petch",sans-serif;font-size:1.6rem;font-weight:700}
 .money p{font-size:.88rem;color:var(--muted);margin:4px 0 0}
@@ -138,51 +162,83 @@ h1 .c1{color:#ea580c} h1 .c2{color:#9333ea} h1 .c3{color:#0891b2}
 @media(max-width:560px){.rank-cols{grid-template-columns:1fr}}
 .rank-cols ol{margin:6px 0 0;padding-left:20px;font-size:.9rem}.rank-cols li{padding:3px 0}.rank-cols li span{color:var(--muted);font-family:"IBM Plex Mono",monospace;font-size:.74rem}
 section.block{margin-top:30px}
-footer{margin-top:36px;border-top:2px solid var(--line);padding-top:14px;color:var(--muted);font-size:.84rem}
-@media (prefers-reduced-motion: reduce){.person,.bubble,.core .big,.hallway .walker,.pod .lamp{animation:none} html{scroll-behavior:auto}}
+footer{margin-top:36px;border-top:1px solid var(--line);padding-top:14px;color:var(--muted);font-size:.84rem}
+@media (prefers-reduced-motion: reduce){.pod .lamp,.station-head .hud .blink,.hub-node .pulse{animation:none} html{scroll-behavior:auto}}
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="status-strip" role="status">
     <span class="chip"><span class="dot"></span> MUSE AI ECOSYSTEM <b>ONLINE</b></span>
-    <span class="chip"><span class="dot amber"></span> ROOMS <b>10 / 100</b></span>
+    <span class="chip"><span class="dot amber"></span> MODULES <b>10 / 100</b></span>
     <span class="chip"><span class="dot grey"></span> SWEEP <b>PULL-ONLY</b></span>
     <span class="chip">DAY 30 GATE <b>ARMED</b></span>
-    <span class="strip-note">Workers first · No live listings opened by this page</span>
+    <span class="strip-note">Top-down satellite grid · Agents in transit at all times</span>
   </div>
 
   <h1>Inside the <span class="c1">Muse</span> <span class="c2">AI</span> <span class="c3">Ecosystem</span></h1>
-  <p class="lede">This is the setup from the reel, built like the game it looked like: <strong>every room is a different little workplace with its own people doing its own job, in its own colors.</strong> The orange shop is packing boxes. The purple studio is drawing thumbnails. The pink spa, the green game-dev den, the yellow writing room, the red sportsbook — you can tell what each room does at a glance, without reading a word. In the middle, the Ecosystem Muse runs the building from the command office. A daily sweep walks room to room, collects a 5-line report from each crew, and sends one digest through the relay to Muse3, who ranks the money and tells Git-FED where it is.</p>
+  <p class="lede">The station the way it looks in the reel: <strong>a top-down satellite view on a grid.</strong> The rooms are blocks on that grid, the corridors between them run like streets, and the agents are small moving dots in constant traffic — room to room, desk to desk, never sitting still. The Ecosystem Muse holds the big green module at the top right and keeps every crew working. A red relay hub sits at the centre junction. Tap any module to inspect it.</p>
 
-  <div class="station" aria-label="Muse AI Ecosystem game board">
+  <div class="station" aria-label="Muse AI Ecosystem satellite grid station">
     <div class="station-head">
-      <span class="hud">🎮 MUSE AI ECOSYSTEM · LIVE BUILDING · 10 CREWS AT WORK</span>
-      <button class="sweep-btn" id="sweepBtn" type="button">▶ RUN DAILY SWEEP</button>
+      <span class="hud"><span class="blink"></span>MUSE-OS · SATELLITE GRID · TOP-DOWN LIVE VIEW · 10 MODULES</span>
+      <button class="sweep-btn" id="sweepBtn" type="button">RUN DAILY SWEEP</button>
     </div>
-    <div class="hallway" aria-hidden="true"><span class="walker">🚶</span><span class="walker walker2">🧑‍💼</span><span class="sign">MAIN HALL · CREWS MOVING BETWEEN ROOMS</span></div>
-    <div class="deck" id="deck">
-      <div class="core" aria-label="Ecosystem Muse, central hub">
-        <div class="big">🤖</div>
-        <div>
-          <h2>ECOSYSTEM MUSE — COMMAND OFFICE</h2>
-          <p>Boss of the building · owns all 10 rooms · does no shop work, checks everything</p>
-          <div class="minirow" aria-hidden="true">🖥️ 📋 ☕ 🪴</div>
-          <span class="relay-tag">RELAY → MUSE3 → GIT-FED</span>
+    <div class="station-body">
+      <div class="term" aria-hidden="true">
+        <div>&gt; STATION .... <span class="hi">OK</span></div>
+        <div>&gt; GRID SYNC .. <span class="hi">100%</span></div>
+        <div>&gt; VIEW ... <span class="hi">TOP-DOWN</span></div>
+        <div>&gt; MODULES .... <span class="hi">10</span></div>
+        <div>&gt; AGENTS ..... <span class="hi" id="agentCount">--</span></div>
+        <div>&gt; RELAY ...... MUSE3</div>
+        <div>&gt; UPLINK .. 20,000 CH</div>
+        <div>&gt; INBOX ...... 200</div>
+        <div class="dim">----------------</div>
+        <div>&gt; ETSY .. <span class="warn">$16,046.57*</span></div>
+        <div>&gt; FIVERR . <span class="warn">$3,394.79*</span></div>
+        <div class="dim">* FROM THE REEL.</div>
+        <div class="dim"> NOT OUR REVENUE.</div>
+        <div class="dim"> OURS IS $0.</div>
+        <div class="dim">----------------</div>
+        <div>&gt; DAY 30 GATE <span class="warn">ARMED</span></div>
+        <div>&gt; DEAD WATCH . 3</div>
+        <div>&gt; NEXT SWEEP . MANUAL</div>
+      </div>
+      <div class="map-wrap">
+        <div class="map" id="map">
+          <svg class="routes" id="routes" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
+          <div class="hub-node" id="hubNode"><span class="pulse"></span><span>RELAY HUB</span></div>
+          <div class="core" id="coreModule" aria-label="Ecosystem Muse, command module">
+            <div class="wall"><span>CMD · ECOSYSTEM MUSE</span><span>HUB</span></div>
+            <div class="stage">
+              <span class="mach" style="left:8%;top:12%"></span>
+              <span class="mach" style="right:9%;top:16%"></span>
+              <span class="mach" style="left:12%;bottom:14%"></span>
+              <span class="mach" style="right:12%;bottom:12%"></span>
+              <div class="platform"><div class="figure"></div></div>
+            </div>
+            <p><b>ECOSYSTEM MUSE</b> · runs the station, keeps every agent working · relay to Muse3</p>
+          </div>
+          <!-- modules injected by JS -->
         </div>
       </div>
-      <!-- rooms injected by JS -->
+      <div class="term right" aria-hidden="true">
+        <div>&gt; AGENT TRAFFIC</div>
+        <div class="dim">----------------</div>
+        <div class="feed" id="trafficFeed"></div>
+      </div>
     </div>
     <div class="station-foot">
-      <span>HUB <b>ECOSYSTEM MUSE</b></span><span>OVERSEER <b>MUSE3</b></span><span>RELAY <b>20,000 CHAR / MSG</b></span><span>EXPANSION <b>ROOMS 11–100 UNBUILT</b></span><span id="sweepStatus">LAST SWEEP <b>NOT RUN YET</b></span>
+      <span>HUB <b>ECOSYSTEM MUSE</b></span><span>OVERSEER <b>MUSE3</b></span><span>RELAY <b>20,000 CHAR / MSG</b></span><span>EXPANSION <b>MODULES 11–100 UNBUILT</b></span><span id="sweepStatus">LAST SWEEP <b>NOT RUN YET</b></span>
     </div>
   </div>
 
   <div class="grid">
     <div class="panel" id="detailPanel" aria-live="polite">
-      <p class="kicker">Room inspector — tap any room in the building</p>
+      <p class="kicker">Module inspector — tap any module on the grid</p>
       <div class="detail-head">
-        <div class="detail-avatar" id="dAvatar">🎨</div>
+        <div class="detail-avatar" id="dAvatar">TH</div>
         <div><h2 id="dName">—</h2><p class="sub" id="dMeta" style="margin:0">—</p></div>
         <span class="badge" id="dBadge" style="margin-left:auto">—</span>
       </div>
@@ -201,12 +257,12 @@ footer{margin-top:36px;border-top:2px solid var(--line);padding-top:14px;color:v
     <div class="panel">
       <p class="kicker">Sweep feed</p>
       <h2>Relay log</h2>
-      <p class="sub">Rooms stay silent until the sweep opens them. Watch each room light up green as its crew hands over its report.</p>
+      <p class="sub">Rooms stay silent until the sweep opens them. Watch each module flash green on the grid as its crew hands over its report.</p>
       <div class="log" id="log" aria-label="Sweep log"></div>
       <div class="digest" id="digest"><b>Muse3 digest:</b> <span id="digestText">No sweep yet. Run the daily sweep to collect all 10 room reports.</span></div>
       <h3>Ranking rule</h3>
       <div class="rank-cols">
-        <div><p class="kicker" style="color:var(--teal)">Top 5 — by readiness*</p><ol id="topList"></ol></div>
+        <div><p class="kicker" style="color:var(--green-dim)">Top 5 — by readiness*</p><ol id="topList"></ol></div>
         <div><p class="kicker" style="color:var(--red)">Dead watch</p><ol id="deadList"></ol></div>
       </div>
       <p style="font-size:.78rem;color:var(--muted);margin-top:10px">*Until the first sale lands, Muse3 ranks by setup readiness. After that, ranking is money only. A room at $0 and 0 orders on Day 30 is reported dead and closed or repurposed — never hidden.</p>
@@ -215,10 +271,10 @@ footer{margin-top:36px;border-top:2px solid var(--line);padding-top:14px;color:v
 
   <div class="filters" role="group" aria-label="Filter rooms">
     <button type="button" data-filter="ALL" aria-pressed="true">All 10 rooms</button>
-    <button type="button" data-filter="FACTORY" aria-pressed="false">🟧 Factory — sells</button>
-    <button type="button" data-filter="RESEARCH" aria-pressed="false">🟦 Research — feeds sellers</button>
-    <button type="button" data-filter="MEASURE" aria-pressed="false">🟩 Measure — existing payers</button>
-    <button type="button" data-filter="REPORTING" aria-pressed="false">🟥 Reporting only</button>
+    <button type="button" data-filter="FACTORY" aria-pressed="false"><span class="fdot" style="background:#fb923c"></span>Factory — sells</button>
+    <button type="button" data-filter="RESEARCH" aria-pressed="false"><span class="fdot" style="background:#38bdf8"></span>Research — feeds sellers</button>
+    <button type="button" data-filter="MEASURE" aria-pressed="false"><span class="fdot" style="background:#4ade80"></span>Measure — existing payers</button>
+    <button type="button" data-filter="REPORTING" aria-pressed="false"><span class="fdot" style="background:#ef4444"></span>Reporting only</button>
   </div>
   <div class="rooms" id="roomCards"></div>
 
@@ -226,11 +282,11 @@ footer{margin-top:36px;border-top:2px solid var(--line);padding-top:14px;color:v
     <p class="kicker">The loop</p>
     <h2 style="font-family:'Chakra Petch',sans-serif;margin:0">How a day runs in the Muse AI Ecosystem</h2>
     <div class="steps">
-      <div class="step"><div class="n" style="color:#ea580c">STEP 1</div><h3>Crews work their rooms</h3><p>One crew per room, one job per room. Research finds what is selling; factories build and list. A human reviews every live listing and delivery.</p></div>
-      <div class="step"><div class="n" style="color:#9333ea">STEP 2</div><h3>Sweep opens each room</h3><p>The loop is pull-only. A scheduled sweep walks the building and collects the 5-line report from each room — under ~600 characters per room.</p></div>
-      <div class="step"><div class="n" style="color:#0891b2">STEP 3</div><h3>Hub consolidates</h3><p>The Ecosystem Muse in the command office totals the 10 reports into one summary. 10 rooms fit in a single relay message.</p></div>
-      <div class="step"><div class="n" style="color:#16a34a">STEP 4</div><h3>Relay to Muse3</h3><p>The digest travels the private relay Muse3, muse1, and muse2 already use: 20,000 characters per message, last 200 messages per inbox.</p></div>
-      <div class="step"><div class="n" style="color:#dc2626">STEP 5</div><h3>Muse3 ranks, Git-FED decides</h3><p>Muse3 verifies the numbers, ranks top 5 and dead 5, and reports where the money is. Git-FED scales winners and closes dead rooms.</p></div>
+      <div class="step"><div class="n" style="color:#fb923c">STEP 1</div><h3>Crews work their rooms</h3><p>One crew per room, one job per room. Research finds what is selling; factories build and list. A human reviews every live listing and delivery.</p></div>
+      <div class="step"><div class="n" style="color:#4ade80">STEP 2</div><h3>Sweep opens each room</h3><p>The loop is pull-only. A scheduled sweep walks the grid and collects the 5-line report from each room — under ~600 characters per room.</p></div>
+      <div class="step"><div class="n" style="color:#7dd3fc">STEP 3</div><h3>Hub consolidates</h3><p>The Ecosystem Muse in the command module totals the 10 reports into one summary. 10 rooms fit in a single relay message.</p></div>
+      <div class="step"><div class="n" style="color:#4ade80">STEP 4</div><h3>Relay to Muse3</h3><p>The digest travels the private relay Muse3, muse1, and muse2 already use: 20,000 characters per message, last 200 messages per inbox.</p></div>
+      <div class="step"><div class="n" style="color:#ef4444">STEP 5</div><h3>Muse3 ranks, Git-FED decides</h3><p>Muse3 verifies the numbers, ranks top 5 and dead 5, and reports where the money is. Git-FED scales winners and closes dead rooms.</p></div>
     </div>
   </section>
 
@@ -238,69 +294,153 @@ footer{margin-top:36px;border-top:2px solid var(--line);padding-top:14px;color:v
     <p class="kicker">Money — claims vs. the plan</p>
     <h2 style="font-family:'Chakra Petch',sans-serif;margin:0">His numbers are his. Ours are smaller and real.</h2>
     <div class="money">
-      <div class="box claim"><p class="kicker" style="color:var(--muted)">Claimed on camera — not verified</p><div class="big">$16,000 Etsy · $3,400 thumbnails</div><p>At his own shown average of $33.28 per order, $16,000 needs about 481 orders in two months — roughly 4.6× the median Etsy seller, per store. This building does not plan on either number.</p></div>
+      <div class="box claim"><p class="kicker" style="color:var(--muted)">Claimed on camera — not verified</p><div class="big">$16,000 Etsy · $3,400 thumbnails</div><p>At his own shown average of $33.28 per order, $16,000 needs about 481 orders in two months — roughly 4.6× the median Etsy seller, per store. This station does not plan on either number.</p></div>
       <div class="box"><p class="kicker">Muse AI Ecosystem — first 90 days, 10 rooms</p><div class="big">$0 – $1,000 total profit</div><p>Most likely low hundreds. Every room currently sits at $0 revenue and 0 orders — the honest starting line. Thumbnails and one Etsy store lead; betting is reporting-only because the real book stood at 30–14, −$5.37 on Nov 24.</p></div>
     </div>
   </section>
 
-  <footer>Test building — a working map of the plan, not a live business. No listings, bets, or rooms are opened from this page, and no number here is a sale that already happened. Etsy rooms run original designs only, with Printify and AI disclosures — the copy-what-sells method from the reel is out.</footer>
+  <footer>Test station — a working map of the plan, modelled on the top-down satellite-grid station from the ULTRON-OS reel. Not a live business: no listings, bets, or rooms are opened from this page, and no number here is a sale that already happened. The dollar figures marked with an asterisk are the reel's on-screen terminal numbers, shown for comparison only. Etsy rooms run original designs only, with Printify and AI disclosures — the copy-what-sells method from the reel is out.</footer>
 </div>
 
 <script>
+var HUB={x:45.5,y:47,w:9,h:11};
+var CORE={x:71,y:2.5,w:26.5,h:24};
 var ROOMS=[
-{id:10,name:"Etsy Research",short:"RESEARCH LAB",type:"RESEARCH",typeLabel:"Research · Feeds sellers",state:"ACTIVE",setup:55,color:"#0891b2",floor:"#cffafe",icon:"🔍",
- scene:'<span class="prop big" style="left:6px;top:8px">🔭</span><span class="prop" style="right:8px;top:6px">📊</span><span class="prop" style="left:10px;bottom:8px">📚</span><span class="prop" style="right:12px;bottom:10px">🗂️</span><span class="person" style="left:38%;top:34px">🧑‍🔬</span><span class="person slow" style="right:26%;top:52px;font-size:24px">👩‍💻</span><span class="bubble" style="left:52%;top:12px">💡 trending!</span>',
- task:"Watching Etsy demand charts, feeding Store 1",job:"Sells nothing itself. This crew watches what is actually selling on Etsy — charts, telescopes on trends, stacks of demand lists — and hands signals to Etsy Store 1, which then makes original designs. It never hands over a design to copy.",report:"REVENUE: $0 (research room — sells nothing)\nORDERS: n/a\nFOUND: demand list for Store 1 batch 1\nSTUCK: needs Store 1 live to test picks\nNEXT: weekly demand list to hub",gate:"Judged on output, not revenue: no usable demand list by Day 30 = reported dead."},
-{id:1,name:"Etsy Store 1",short:"ETSY SHOP 1",type:"FACTORY",typeLabel:"Factory · Sells",state:"ACTIVE",setup:45,color:"#ea580c",floor:"#ffedd5",icon:"🛍️",
- scene:'<span class="prop big" style="left:6px;top:6px">👕</span><span class="prop" style="left:42px;top:8px">🧢</span><span class="prop" style="right:8px;top:8px">🏷️</span><span class="prop big" style="right:8px;bottom:6px">📦</span><span class="prop" style="left:8px;bottom:8px">✂️</span><span class="person fast" style="left:34%;top:36px">🧑‍🏭</span><span class="person" style="right:28%;top:50px;font-size:24px">👩‍🎨</span><span class="bubble" style="left:8%;top:44px">📦 packing!</span>',
- task:"Making original designs, packing orders",job:"The lead store — a working shop floor: design table, shirts and caps on the rack, boxes being packed. Takes proven demand from the Research Lab, makes original designs, puts them on Printify mockups, lists with expanded SEO tags. Human reviews every listing before it goes live.",report:"REVENUE: $0\nORDERS: 0\nSOLD: nothing yet\nSTUCK: first design set in production\nNEXT: list batch 1 after human review",gate:"Day 30 gate: $0 and 0 orders = reported dead. Store 2 stays locked until this room records its first sale."},
-{id:2,name:"Thumbnails",short:"THUMBNAIL STUDIO",type:"FACTORY",typeLabel:"Factory · Sells",state:"ACTIVE",setup:60,color:"#9333ea",floor:"#f3e8ff",icon:"🎨",
- scene:'<span class="prop big" style="left:8px;top:8px">🖥️</span><span class="prop" style="right:10px;top:6px">🎬</span><span class="prop" style="right:10px;bottom:8px">🖌️</span><span class="prop" style="left:8px;bottom:8px">📸</span><span class="person fast" style="left:36%;top:34px">👨‍🎨</span><span class="person slow" style="right:24%;top:52px;font-size:24px">🧑‍💻</span><span class="bubble" style="right:12%;top:34px">😲 click me!</span>',
- task:"Drawing bold thumbnails at the big screens",job:"Highest-ranked money lane for the first 90 days — an art studio, not an office: big screens, cameras, paint everywhere. YouTube thumbnail service on Fiverr, with a direct-price test at $75–$150 alongside the gig. Human delivers every order.",report:"REVENUE: $0\nORDERS: 0\nSOLD: nothing yet\nSTUCK: portfolio pieces in draft\nNEXT: publish gig after human review",gate:"Day 30 gate: $0 and 0 orders = reported dead. Ranked #1 on money realism, so it gets the first worker hours."},
-{id:9,name:"Betting — Reporting Only",short:"SPORTSBOOK",type:"REPORTING",typeLabel:"Reporting only · $0 income",state:"REPORTING",setup:80,color:"#dc2626",floor:"#fee2e2",icon:"📈",
- scene:'<span class="prop big" style="left:6px;top:6px">📺</span><span class="prop" style="right:8px;top:8px">🎲</span><span class="prop" style="left:10px;bottom:8px">🏈</span><span class="prop" style="right:10px;bottom:8px">💹</span><span class="person" style="left:38%;top:36px">🧑‍💼</span><span class="person slow" style="right:26%;top:54px;font-size:24px">👨‍💻</span><span class="bubble" style="left:46%;top:10px">30–14 📉</span>',
- task:"Watching the screens, reporting the book",job:"Not a money lane — a sportsbook control room: games on the big screen, charts and dice, one crew reporting numbers all day. Real book on Nov 24: 30–14, −$5.37 — a 68% win rate that still loses money. Muse never places bets and never takes wagers from anyone.",report:"REVENUE: $0 (by design — reporting only)\nORDERS: n/a\nRECORD: real 30–14, −$5.37 (Nov 24)\nSTUCK: win rate is not profit\nNEXT: daily book report to hub",gate:"No Day 30 revenue gate — judged on report accuracy. It can never become a money lane without a profitable real book on file."},
-{id:8,name:"Blog 1",short:"WRITING ROOM",type:"FACTORY",typeLabel:"Factory · Sells",state:"QUEUED",setup:20,color:"#ca8a04",floor:"#fef9c3",icon:"✍️",
- scene:'<span class="prop big" style="left:8px;top:8px">⌨️</span><span class="prop" style="right:8px;top:8px">☕</span><span class="prop" style="left:8px;bottom:8px">📚</span><span class="prop" style="right:10px;bottom:8px">📰</span><span class="person slow" style="left:40%;top:36px">🧑‍🏫</span><span class="bubble" style="right:14%;top:36px">✍️ draft…</span>',
- task:"Typing posts at a cluttered writer's desk",job:"One blog only — the second blog was cut. A quiet yellow writing room: typewriter desk, coffee, stacks of books and drafts. Affiliate income is the slowest lane here, so this room gets leftover hours and earns more only by publishing consistently.",report:"REVENUE: $0\nORDERS: 0\nSOLD: nothing yet\nSTUCK: first posts in draft\nNEXT: publish post 1 after review",gate:"Day 30 gate applies, judged on published posts plus any affiliate revenue — $0 and unpublished = dead."},
-{id:4,name:"FED-SPA",short:"SPA DESK",type:"MEASURE",typeLabel:"Measure · Existing payer",state:"ACTIVE",setup:65,color:"#db2777",floor:"#fce7f3",icon:"🌿",
- scene:'<span class="prop big" style="left:6px;top:6px">🛏️</span><span class="prop" style="right:8px;top:8px">🕯️</span><span class="prop" style="left:10px;bottom:8px">🌿</span><span class="prop" style="right:10px;bottom:8px">🧴</span><span class="person slow" style="left:38%;top:36px">💆</span><span class="person" style="right:24%;top:52px;font-size:24px">🧑‍💼</span><span class="bubble" style="left:10%;top:46px">📋 licensed ✓</span>',
- task:"Checking licences at the spa front desk",job:"An existing payer, measured for 30 days. A calm pink spa room — treatment bed, candles, plants — with the crew at the desk verifying licences. Listings are licensed establishments only, with licence numbers and no sexual-services language.",report:"REVENUE: under 30-day measurement\nORDERS: counting\nSOLD: directory listings\nSTUCK: licence verification on new listings\nNEXT: deliver Day 30 measured total",gate:"Measurement room: survives Day 30 only with a verified revenue total and licence-checked listings."},
-{id:7,name:"Game Asset Pack 1",short:"GAME DEV DEN",type:"FACTORY",typeLabel:"Factory · Sells",state:"QUEUED",setup:25,color:"#16a34a",floor:"#dcfce7",icon:"🎮",
- scene:'<span class="prop big" style="left:6px;top:6px">🕹️</span><span class="prop" style="right:8px;top:6px">👾</span><span class="prop" style="left:10px;bottom:8px">🎧</span><span class="prop" style="right:10px;bottom:8px">🍕</span><span class="person fast" style="left:36%;top:34px">🧑‍💻</span><span class="person" style="right:26%;top:52px;font-size:24px">👩‍🎤</span><span class="bubble" style="right:10%;top:32px">👾 sprite!</span>',
- task:"Coding sprites and pixel art, pizza on the desk",job:"One game asset pack, built once and sold repeatedly — a green dev den with arcade gear, headsets and sprite work on screen. Fed by research on what asset shops are moving. Slower money than thumbnails, but every pack stays on sale.",report:"REVENUE: $0\nORDERS: 0\nSOLD: nothing yet\nSTUCK: pack art in production\nNEXT: finish pack 1 draft",gate:"Day 30 gate: $0 and 0 orders = reported dead, same as every factory room."},
-{id:6,name:"Etsy Store 2",short:"SEALED SHOP",type:"FACTORY",typeLabel:"Factory · Sells",state:"LOCKED",setup:0,color:"#57534e",floor:"#e7e5e4",icon:"🔒",
- scene:'<span class="prop big" style="left:40%;top:28px">🔒</span><span class="prop" style="left:8px;top:8px">🕸️</span><span class="prop" style="right:8px;bottom:8px">📦</span><span class="prop sm" style="left:12px;bottom:10px">💤</span><span class="bubble" style="right:12%;top:14px">opens after Store 1 sells</span>',
- task:"Dark, dusty, locked — nobody works here yet",job:"A second store with a distinct niche from Store 1 — never a copy of it. The lights are off and the door is chained: this room stays dark on the board until Etsy Store 1 records its first sale.",report:"REVENUE: —\nORDERS: —\nSOLD: —\nSTUCK: locked by rule, not by failure\nNEXT: wait for Store 1 first sale",gate:"Unlock rule: Store 1 first sale on file. The Day 30 clock does not run on a locked room."},
-{id:5,name:"App Store Prototype 1",short:"APP LAB",type:"FACTORY",typeLabel:"Factory · Sells",state:"QUEUED",setup:30,color:"#2563eb",floor:"#dbeafe",icon:"📱",
- scene:'<span class="prop big" style="left:8px;top:6px">📱</span><span class="prop" style="right:8px;top:8px">🔧</span><span class="prop" style="left:10px;bottom:8px">💻</span><span class="prop" style="right:10px;bottom:8px">🚀</span><span class="person fast" style="left:38%;top:34px">👨‍💻</span><span class="person slow" style="right:24%;top:52px;font-size:24px">🧑‍🔧</span><span class="bubble" style="left:44%;top:10px">🚀 v0.1</span>',
- task:"Building and testing the app on phones",job:"One product that already exists, packaged for the Muse AI App Store — a blue tech lab with phones on test stands and tools out. Owner-published, manifest and download link, Muse signature as the trust mark. One prototype only until it sells.",report:"REVENUE: $0\nORDERS: 0\nSOLD: nothing yet\nSTUCK: packaging and manifest\nNEXT: finish listing draft for review",gate:"Day 30 gate applies. A second prototype is locked until this one sells."},
-{id:3,name:"FedPromptly Shop",short:"PROMPT OFFICE",type:"MEASURE",typeLabel:"Measure · Existing payer",state:"ACTIVE",setup:70,color:"#0d9488",floor:"#ccfbf1",icon:"💬",
- scene:'<span class="prop big" style="left:8px;top:6px">💬</span><span class="prop" style="right:8px;top:8px">📋</span><span class="prop" style="left:10px;bottom:8px">🪴</span><span class="prop" style="right:10px;bottom:8px">💵</span><span class="person" style="left:38%;top:34px">🧑‍💼</span><span class="person slow" style="right:26%;top:52px;font-size:24px">👩‍💻</span><span class="bubble" style="right:12%;top:34px">💵 counting…</span>',
- task:"Counting real revenue at the office desks",job:"An existing payer, on the board to be measured, not assumed — a tidy teal office where the crew counts receipts and tallies orders. This room counts real revenue and orders for 30 days so Muse3 ranks it on receipts, not memory.",report:"REVENUE: under 30-day measurement\nORDERS: counting\nSOLD: existing catalog\nSTUCK: no verified 30-day total on file yet\nNEXT: deliver Day 30 measured total",gate:"Measurement room: it survives Day 30 only with a verified revenue total on file."}
+{id:10,name:"Etsy Research",short:"RESEARCH LAB",code:"RL",type:"RESEARCH",typeLabel:"Research · Feeds sellers",state:"ACTIVE",setup:55,color:"#f97316",floor:"#140b06",x:3,y:3,w:29,h:20,warn:true,
+ task:"Watching Etsy demand charts, feeding Store 1",job:"Sells nothing itself. This crew watches what is actually selling on Etsy — demand charts, trend scans, stacks of demand lists — and hands signals to Etsy Store 1, which then makes original designs. It never hands over a design to copy.",report:"REVENUE: $0 (research room — sells nothing)\nORDERS: n/a\nFOUND: demand list for Store 1 batch 1\nSTUCK: needs Store 1 live to test picks\nNEXT: weekly demand list to hub",gate:"Judged on output, not revenue: no usable demand list by Day 30 = reported dead."},
+{id:1,name:"Etsy Store 1",short:"ETSY FACTORY 1",code:"E1",type:"FACTORY",typeLabel:"Factory · Sells",state:"ACTIVE",setup:45,color:"#7dd3fc",floor:"#0a141d",bright:true,x:3,y:31,w:29,h:28,
+ task:"Making original designs, packing orders",job:"The lead store — the light blue gridded factory block on the left of the grid, like Factory Room 1 in the reel. Takes proven demand from the Research Lab, makes original designs, puts them on Printify mockups, lists with expanded SEO tags. Human reviews every listing before it goes live.",report:"REVENUE: $0\nORDERS: 0\nSOLD: nothing yet\nSTUCK: first design set in production\nNEXT: list batch 1 after human review",gate:"Day 30 gate: $0 and 0 orders = reported dead. Store 2 stays locked until this room records its first sale."},
+{id:2,name:"Thumbnails",short:"THUMBNAIL FACTORY",code:"TH",type:"FACTORY",typeLabel:"Factory · Sells",state:"ACTIVE",setup:60,color:"#c084fc",floor:"#100a18",x:36,y:26,w:24,h:16,
+ task:"Drawing bold thumbnails at the big screens",job:"Highest-ranked money lane for the first 90 days — the second factory block, the output terminal: screens, edit bays, artwork in production. YouTube thumbnail service on Fiverr, with a direct-price test at $75–$150 alongside the gig. Human delivers every order.",report:"REVENUE: $0\nORDERS: 0\nSOLD: nothing yet\nSTUCK: portfolio pieces in draft\nNEXT: publish gig after human review",gate:"Day 30 gate: $0 and 0 orders = reported dead. Ranked #1 on money realism, so it gets the first worker hours."},
+{id:9,name:"Betting — Reporting Only",short:"SPORTSBOOK",code:"SB",type:"REPORTING",typeLabel:"Reporting only · $0 income",state:"REPORTING",setup:80,color:"#ef4444",floor:"#170808",x:66,y:33,w:31,h:24,
+ task:"Watching the screens, reporting the book",job:"Not a money lane — a sportsbook control room: games on the big screen, odds boards, one crew reporting numbers all day. Real book on Nov 24: 30–14, −$5.37 — a 68% win rate that still loses money. Muse never places bets and never takes wagers from anyone.",report:"REVENUE: $0 (by design — reporting only)\nORDERS: n/a\nRECORD: real 30–14, −$5.37 (Nov 24)\nSTUCK: win rate is not profit\nNEXT: daily book report to hub",gate:"No Day 30 revenue gate — judged on report accuracy. It can never become a money lane without a profitable real book on file."},
+{id:8,name:"Blog 1",short:"WRITING ROOM",code:"WR",type:"FACTORY",typeLabel:"Factory · Sells",state:"QUEUED",setup:20,color:"#eab308",floor:"#141106",x:36,y:62,w:21,h:15,
+ task:"Typing posts at a cluttered writer's desk",job:"One blog only — the second blog was cut. A quiet writing room: desks, drafts, publishing queue. Affiliate income is the slowest lane here, so this room gets leftover hours and earns more only by publishing consistently.",report:"REVENUE: $0\nORDERS: 0\nSOLD: nothing yet\nSTUCK: first posts in draft\nNEXT: publish post 1 after review",gate:"Day 30 gate applies, judged on published posts plus any affiliate revenue — $0 and unpublished = dead."},
+{id:4,name:"FED-SPA",short:"SPA DESK",code:"SPA",type:"MEASURE",typeLabel:"Measure · Existing payer",state:"ACTIVE",setup:65,color:"#f472b6",floor:"#170a12",x:3,y:66,w:26,h:29,
+ task:"Checking licences at the spa front desk",job:"An existing payer, measured for 30 days. A calm spa module — front desk, treatment rooms — with the crew verifying licences. Listings are licensed establishments only, with licence numbers and no sexual-services language.",report:"REVENUE: under 30-day measurement\nORDERS: counting\nSOLD: directory listings\nSTUCK: licence verification on new listings\nNEXT: deliver Day 30 measured total",gate:"Measurement room: survives Day 30 only with a verified revenue total and licence-checked listings."},
+{id:7,name:"Game Asset Pack 1",short:"GAME DEV DEN",code:"GD",type:"FACTORY",typeLabel:"Factory · Sells",state:"QUEUED",setup:25,color:"#4ade80",floor:"#08130b",x:64,y:63,w:17,h:21,
+ task:"Coding sprites at dev desks",job:"One game asset pack, built once and sold repeatedly — a dev den with workstations and sprite work on screen. Fed by research on what asset shops are moving. Slower money than thumbnails, but every pack stays on sale.",report:"REVENUE: $0\nORDERS: 0\nSOLD: nothing yet\nSTUCK: pack art in production\nNEXT: finish pack 1 draft",gate:"Day 30 gate: $0 and 0 orders = reported dead, same as every factory room."},
+{id:6,name:"Etsy Store 2",short:"SEALED SHOP",code:"S2",type:"FACTORY",typeLabel:"Factory · Sells",state:"LOCKED",setup:0,color:"#78716c",floor:"#0c0c0c",x:36,y:79,w:21,h:16,
+ task:"Dark, sealed, locked — nobody works here yet",job:"A second store with a distinct niche from Store 1 — never a copy of it. The lights are off and the module is sealed: this block stays dark on the grid until Etsy Store 1 records its first sale.",report:"REVENUE: —\nORDERS: —\nSOLD: —\nSTUCK: locked by rule, not by failure\nNEXT: wait for Store 1 first sale",gate:"Unlock rule: Store 1 first sale on file. The Day 30 clock does not run on a locked room."},
+{id:5,name:"App Store Prototype 1",short:"APP LAB",code:"AL",type:"FACTORY",typeLabel:"Factory · Sells",state:"QUEUED",setup:30,color:"#60a5fa",floor:"#0a1120",x:83,y:63,w:14.5,h:29,
+ task:"Building, testing the app",job:"One product that already exists, packaged for the Muse AI App Store — a tech lab with test rigs and build stations. Owner-published, manifest and download link, Muse signature as the trust mark. One prototype only until it sells.",report:"REVENUE: $0\nORDERS: 0\nSOLD: nothing yet\nSTUCK: packaging and manifest\nNEXT: finish listing draft for review",gate:"Day 30 gate applies. A second prototype is locked until this one sells."},
+{id:3,name:"FedPromptly Shop",short:"PROMPT OFFICE",code:"FP",type:"MEASURE",typeLabel:"Measure · Existing payer",state:"ACTIVE",setup:70,color:"#fb923c",floor:"#171006",x:39,y:3,w:22,h:16,
+ task:"Counting real revenue at the office desks",job:"An existing payer, on the board to be measured, not assumed — the orange module at the top centre of the grid. This room counts real revenue and orders for 30 days so Muse3 ranks it on receipts, not memory.",report:"REVENUE: under 30-day measurement\nORDERS: counting\nSOLD: existing catalog\nSTUCK: no verified 30-day total on file yet\nNEXT: deliver Day 30 measured total",gate:"Measurement room: it survives Day 30 only with a verified revenue total on file."}
 ];
-var ORDER=[10,1,2,9,8,4,7,6,5,3];
-ROOMS.sort(function(a,b){return ORDER.indexOf(a.id)-ORDER.indexOf(b.id);});
 var selectedId=2;
-var deck=document.getElementById('deck'), cardsEl=document.getElementById('roomCards'), logEl=document.getElementById('log');
-function stateColor(r){return r.color;}
+var mapEl=document.getElementById('map'), cardsEl=document.getElementById('roomCards'), logEl=document.getElementById('log');
+function center(r){return {x:r.x+r.w/2,y:r.y+r.h/2};}
+function desksFor(r,cap){
+  var n=Math.max(2,Math.min(cap||6,Math.round(r.w*r.h/170))), out='', seed=r.id*131;
+  for(var i=0;i<n;i++){
+    seed=(seed*37+11)%997;
+    var dx=6+(seed%78), dy=10+((seed>>3)%68), dw=13+((seed>>5)%10), dh=11+((seed>>4)%7);
+    out+='<span class="desk" style="left:'+dx+'%;top:'+dy+'%;width:'+dw+'%;height:'+dh+'%"></span>';
+  }
+  return out;
+}
+function propsFor(r){
+  if(r.state==='LOCKED') return '';
+  var P={
+   10:'<span class="prop chart" style="left:6%;top:14%;width:40%;height:36%"><i></i></span><span class="prop chart" style="left:54%;top:14%;width:40%;height:36%"><i></i></span>',
+   1:'<span class="prop mock" style="left:7%;top:12%;width:38%;height:34%"><i></i></span><span class="prop mock" style="left:55%;top:12%;width:38%;height:34%"><i></i></span><span class="prop mock" style="left:7%;top:56%;width:38%;height:34%"><i></i></span><span class="prop mock" style="left:55%;top:56%;width:38%;height:34%"><i></i></span>',
+   2:'<span class="prop scr" style="left:5%;top:14%;width:27%;height:40%"><i></i></span><span class="prop scr" style="left:37%;top:14%;width:27%;height:40%"><i></i></span><span class="prop scr" style="left:69%;top:14%;width:27%;height:40%"><i></i></span>',
+   9:'<span class="prop board" style="left:5%;top:10%;width:90%;height:34%"></span>',
+   8:'<span class="prop paper" style="left:10%;top:16%;width:20%;height:26%"></span><span class="prop paper" style="left:64%;top:52%;width:20%;height:26%"></span>',
+   4:'<span class="prop bed" style="left:7%;top:16%;width:24%;height:52%"></span><span class="prop bed" style="left:38%;top:16%;width:24%;height:52%"></span><span class="prop bed" style="left:69%;top:16%;width:24%;height:52%"></span>',
+   7:'<span class="prop scr" style="left:8%;top:14%;width:36%;height:30%"><i></i></span><span class="prop scr" style="left:56%;top:14%;width:36%;height:30%"><i></i></span><span class="prop scr" style="left:8%;top:56%;width:36%;height:30%"><i></i></span><span class="prop scr" style="left:56%;top:56%;width:36%;height:30%"><i></i></span>',
+   5:'<span class="prop rig" style="left:10%;top:12%;width:32%;height:22%"><i></i></span><span class="prop rig" style="left:56%;top:12%;width:32%;height:22%"><i></i></span><span class="prop rig" style="left:10%;top:44%;width:32%;height:22%"><i></i></span><span class="prop rig" style="left:56%;top:44%;width:32%;height:22%"><i></i></span><span class="prop rig" style="left:10%;top:76%;width:32%;height:20%"><i></i></span><span class="prop rig" style="left:56%;top:76%;width:32%;height:20%"><i></i></span>',
+   3:'<span class="prop counter" style="left:6%;top:12%;width:88%;height:20%"></span>'
+  };
+  var base=P[r.id]||'';
+  return base+desksFor(r,base?3:6);
+}
 function renderPods(){
   ROOMS.forEach(function(r){
-    var b=document.createElement('button'); b.type='button'; b.className='pod'+(r.id===selectedId?' selected':'');
+    var b=document.createElement('button'); b.type='button';
+    b.className='pod'+(r.id===selectedId?' selected':'')+(r.h<18?' compact':'');
     b.dataset.state=r.state; b.dataset.id=r.id; b.dataset.type=r.type;
+    b.style.left=r.x+'%'; b.style.top=r.y+'%'; b.style.width=r.w+'%'; b.style.height=r.h+'%';
+    b.style.setProperty('--acc',r.color); b.style.setProperty('--floor',r.floor);
     b.setAttribute('aria-label','Inspect room '+r.id+': '+r.name+' — '+r.task);
-    b.innerHTML='<span class="wall" style="background:'+r.color+'"><span><span class="rn">ROOM '+String(r.id).padStart(2,'0')+' '+r.icon+'</span><h3>'+r.short+'</h3></span><span class="lamp"></span></span>'+
-      '<span class="scene" style="background:'+r.floor+'">'+r.scene+'</span>'+
-      '<span class="info"><p class="task">'+r.task+'</p><span class="bar"><i style="width:'+r.setup+'%;background:'+r.color+'"></i></span></span>';
+    var lbl=window.innerWidth<640?('R'+String(r.id).padStart(2,'0')):('R'+String(r.id).padStart(2,'0')+' · '+r.short);
+    b.innerHTML='<span class="wall"><span class="rn">'+lbl+'</span><span class="lamp"></span></span>'+
+      '<span class="scene'+(r.bright?' bright':'')+'">'+propsFor(r)+(r.warn?'<span class="warnmark"><i>!</i></span>':'')+(r.state==='LOCKED'?'<span class="sealed">SEALED</span>':'')+'</span>'+
+      '<span class="info"><p class="task">'+r.task+'</p><span class="bar"><i style="width:'+r.setup+'%"></i></span></span>';
     b.addEventListener('click',function(){selectRoom(r.id,true);});
-    deck.appendChild(b);
+    mapEl.appendChild(b);
   });
+  var hub=document.getElementById('hubNode');
+  hub.style.left=HUB.x+'%'; hub.style.top=HUB.y+'%'; hub.style.width=HUB.w+'%'; hub.style.height=HUB.h+'%';
+  var core=document.getElementById('coreModule');
+  core.style.left=CORE.x+'%'; core.style.top=CORE.y+'%'; core.style.width=CORE.w+'%'; core.style.height=CORE.h+'%';
+}
+/* ===== STREET GRID — right-angle corridors, like streets seen from a satellite ===== */
+var STREETS=[
+ {axis:'v',at:34,from:4,to:96},
+ {axis:'v',at:63,from:14.5,to:60.5},
+ {axis:'v',at:81.5,from:60.5,to:92},
+ {axis:'h',at:24.5,from:4,to:63},
+ {axis:'h',at:52.5,from:34,to:63},
+ {axis:'h',at:60.5,from:4,to:97.5},
+ {axis:'h',at:14.5,from:63,to:71}
+];
+var STUBS=[[32,13,34,13],[50,19,50,24.5],[48,42,48,52.5],[63,45,66,45],[46.5,60.5,46.5,62],[72.5,60.5,72.5,63],[29,80,34,80],[34,87,36,87],[81.5,77,83,77]];
+var DOORS={10:{x:34,y:13},3:{x:50,y:24.5},1:{x:34,y:45},2:{x:48,y:52.5},9:{x:63,y:45},8:{x:46.5,y:60.5},4:{x:34,y:80},7:{x:72.5,y:60.5},6:{x:34,y:87},5:{x:81.5,y:77}};
+function drawStreets(){
+  var svg=document.getElementById('routes'), s='';
+  function ln(x1,y1,x2,y2,c,w,dash){return '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="'+c+'" stroke-width="'+w+'"'+(dash?' stroke-dasharray="'+dash+'"':'')+'/>';}
+  STREETS.forEach(function(st){
+    var x1=st.axis==='v'?st.at:st.from, y1=st.axis==='v'?st.from:st.at;
+    var x2=st.axis==='v'?st.at:st.to, y2=st.axis==='v'?st.to:st.at;
+    s+=ln(x1,y1,x2,y2,'#1c2620',1.9)+ln(x1,y1,x2,y2,'#3d4f3a',0.32,'1.4 1.6');
+  });
+  STUBS.forEach(function(b){s+=ln(b[0],b[1],b[2],b[3],'#2c3a30',0.7);});
+  svg.innerHTML=s;
+}
+function gkey(x,y){return Math.round(x*10)+':'+Math.round(y*10);}
+var GRAPH=(function(){
+  var nodes={};
+  function add(x,y){var k=gkey(x,y); if(!nodes[k])nodes[k]={x:x,y:y,adj:[]}; return k;}
+  function edge(a,b){if(a!==b){if(nodes[a].adj.indexOf(b)<0)nodes[a].adj.push(b); if(nodes[b].adj.indexOf(a)<0)nodes[b].adj.push(a);}}
+  STREETS.forEach(function(s){
+    var pts=[];
+    function push(x,y){pts.push({x:x,y:y});}
+    if(s.axis==='v'){push(s.at,s.from);push(s.at,s.to);}else{push(s.from,s.at);push(s.to,s.at);}
+    STREETS.forEach(function(o){
+      if(o===s||o.axis===s.axis)return;
+      var ix,iy;
+      if(s.axis==='v'){ix=s.at;iy=o.at; if(iy<s.from||iy>s.to||ix<o.from||ix>o.to)return;}
+      else{ix=o.at;iy=s.at; if(ix<s.from||ix>s.to||iy<o.from||iy>o.to)return;}
+      push(ix,iy);
+    });
+    Object.keys(DOORS).forEach(function(id){var d=DOORS[id];
+      if(s.axis==='v'&&d.x===s.at&&d.y>=s.from&&d.y<=s.to)push(d.x,d.y);
+      if(s.axis==='h'&&d.y===s.at&&d.x>=s.from&&d.x<=s.to)push(d.x,d.y);
+    });
+    pts.sort(function(a,b){return s.axis==='v'?a.y-b.y:a.x-b.x;});
+    var keys=[],seen={};
+    pts.forEach(function(p){var k=add(p.x,p.y); if(!seen[k]){seen[k]=1;keys.push(k);}});
+    for(var i=0;i<keys.length-1;i++)edge(keys[i],keys[i+1]);
+  });
+  return nodes;
+})();
+function routeBetween(fromDoor,toDoor){
+  var start=gkey(fromDoor.x,fromDoor.y), goal=gkey(toDoor.x,toDoor.y);
+  if(start===goal||!GRAPH[start]||!GRAPH[goal])return [{x:toDoor.x,y:toDoor.y}];
+  var prev={}, q=[start]; prev[start]=null;
+  while(q.length){var cur=q.shift(); if(cur===goal)break;
+    GRAPH[cur].adj.forEach(function(n){if(!(n in prev)){prev[n]=cur;q.push(n);}});}
+  if(!(goal in prev))return [{x:toDoor.x,y:toDoor.y}];
+  var path=[],k=goal;
+  while(k){path.unshift({x:GRAPH[k].x,y:GRAPH[k].y}); k=prev[k];}
+  return path;
 }
 function renderCards(){
   ROOMS.forEach(function(r){
     var b=document.createElement('button'); b.type='button'; b.className='room-card'+(r.id===selectedId?' selected':'');
     b.dataset.id=r.id; b.dataset.type=r.type; b.style.borderTopColor=r.color;
-    b.innerHTML='<span class="top"><span>'+r.icon+' ROOM '+String(r.id).padStart(2,'0')+' · '+r.typeLabel.toUpperCase()+'</span><span>'+r.state+'</span></span><h3>'+r.name+'</h3><p>'+r.task+'</p><span class="foot"><span>Revenue $0</span><span>Setup '+r.setup+'%</span></span><span class="bar"><i style="width:'+r.setup+'%;background:'+r.color+'"></i></span>';
+    b.innerHTML='<span class="top"><span>'+r.code+' · ROOM '+String(r.id).padStart(2,'0')+' · '+r.typeLabel.toUpperCase()+'</span><span>'+r.state+'</span></span><h3>'+r.name+'</h3><p>'+r.task+'</p><span class="foot"><span>Revenue $0</span><span>Setup '+r.setup+'%</span></span><span class="bar"><i style="width:'+r.setup+'%;background:'+r.color+'"></i></span>';
     b.addEventListener('click',function(){selectRoom(r.id,true);});
     cardsEl.appendChild(b);
   });
@@ -309,7 +449,7 @@ function selectRoom(id,scroll){
   selectedId=id; var r=ROOMS.filter(function(x){return x.id===id;})[0];
   document.querySelectorAll('.pod').forEach(function(p){p.classList.toggle('selected',+p.dataset.id===id);});
   document.querySelectorAll('.room-card').forEach(function(c){c.classList.toggle('selected',+c.dataset.id===id);});
-  var av=document.getElementById('dAvatar'); av.textContent=r.icon; av.style.background=r.floor; av.style.borderColor=r.color;
+  var av=document.getElementById('dAvatar'); av.textContent=r.code; av.style.borderColor=r.color; av.style.color=r.color;
   document.getElementById('dName').textContent='Room '+String(r.id).padStart(2,'0')+' — '+r.name;
   document.getElementById('dMeta').textContent=r.task;
   var badge=document.getElementById('dBadge'); badge.textContent=r.typeLabel; badge.style.color=r.color;
@@ -324,11 +464,11 @@ function selectRoom(id,scroll){
 }
 function renderRankings(){
   var bySetup=ROOMS.slice().sort(function(a,b){return b.setup-a.setup;});
-  document.getElementById('topList').innerHTML=bySetup.slice(0,5).map(function(r){return '<li>'+r.icon+' '+r.name+' <span>'+r.setup+'% setup</span></li>';}).join('');
-  document.getElementById('deadList').innerHTML='<li>🔒 Etsy Store 2 <span>locked — no clock</span></li><li>✍️ Blog 1 <span>20% · Day 30 risk</span></li><li>🎮 Game Asset Pack 1 <span>25% · Day 30 risk</span></li><li>📱 App Store Prototype 1 <span>30% · Day 30 risk</span></li><li>⚠️ Any room at $0 / 0 orders <span>Day 30 = dead</span></li>';
+  document.getElementById('topList').innerHTML=bySetup.slice(0,5).map(function(r){return '<li>'+r.name+' <span>'+r.setup+'% setup</span></li>';}).join('');
+  document.getElementById('deadList').innerHTML='<li>Etsy Store 2 <span>locked — no clock</span></li><li>Blog 1 <span>20% · Day 30 risk</span></li><li>Game Asset Pack 1 <span>25% · Day 30 risk</span></li><li>App Store Prototype 1 <span>30% · Day 30 risk</span></li><li>Any room at $0 / 0 orders <span>Day 30 = dead</span></li>';
 }
 function logLine(html){var d=document.createElement('div');d.innerHTML=html;logEl.appendChild(d);logEl.scrollTop=logEl.scrollHeight;}
-function seedLog(){logEl.innerHTML='';logLine('<span class="t">[--:--]</span> <span class="hub">HUB</span> Building online. 10 crews at work in 10 different rooms.');logLine('<span class="t">[--:--]</span> <span class="hub">HUB</span> Oversight: Muse3, main thread. Relay caps loaded: 20,000 char/msg.');logLine('<span class="t">[--:--]</span> Waiting for sweep. Rooms do not self-report.');}
+function seedLog(){logEl.innerHTML='';logLine('<span class="t">[--:--]</span> <span class="hub">HUB</span> Station online. Satellite grid locked. Agent traffic flowing.');logLine('<span class="t">[--:--]</span> <span class="hub">HUB</span> Oversight: Muse3, main thread. Relay caps loaded: 20,000 char/msg.');logLine('<span class="t">[--:--]</span> Waiting for sweep. Rooms do not self-report.');}
 document.querySelectorAll('.filters button').forEach(function(btn){
   btn.addEventListener('click',function(){
     document.querySelectorAll('.filters button').forEach(function(x){x.setAttribute('aria-pressed','false');});
@@ -341,7 +481,7 @@ var sweeping=false;
 document.getElementById('sweepBtn').addEventListener('click',function(){
   if(sweeping)return; sweeping=true; var btn=this; btn.disabled=true; btn.textContent='SWEEPING…'; logEl.innerHTML='';
   var now=new Date(), hh=String(now.getHours()).padStart(2,'0'), mm=String(now.getMinutes()).padStart(2,'0');
-  logLine('<span class="t">['+hh+':'+mm+']</span> <span class="hub">SWEEP</span> Walking the building, room by room…');
+  logLine('<span class="t">['+hh+':'+mm+']</span> <span class="hub">SWEEP</span> Walking the grid, module by module…');
   var sweepOrder=ROOMS.slice().sort(function(a,b){return a.id-b.id;}); var i=0;
   function next(){
     if(i>0){var prev=document.querySelector('.pod[data-id="'+sweepOrder[i-1].id+'"]'); if(prev)prev.classList.remove('scanning');}
@@ -350,16 +490,79 @@ document.getElementById('sweepBtn').addEventListener('click',function(){
       logLine('<span class="t">['+hh+':'+mm+']</span> <span class="warn">MUSE3</span> Digest verified. 0 sales building-wide. Dead watch unchanged. Next gate: Day 30.');
       document.getElementById('digestText').textContent='Sweep complete — 10 reports, 0 sales, $0 revenue building-wide. Top readiness: Betting reporting (80%), FedPromptly (70%), FED-SPA (65%). Dead watch: Blog 1, Game Assets, Prototype 1. Nothing hidden.';
       document.getElementById('sweepStatus').innerHTML='LAST SWEEP <b>'+hh+':'+mm+' TODAY · 10/10 REPORTS</b>';
-      btn.disabled=false; btn.textContent='▶ RUN DAILY SWEEP'; sweeping=false; return;
+      btn.disabled=false; btn.textContent='RUN DAILY SWEEP'; sweeping=false; return;
     }
     var r=sweepOrder[i]; var pod=document.querySelector('.pod[data-id="'+r.id+'"]'); if(pod)pod.classList.add('scanning');
     var note=r.type==='MEASURE'?'measuring — Day 30 total pending':r.type==='REPORTING'?'book reported — real 30–14, −$5.37':r.type==='RESEARCH'?'demand list handed to Store 1':r.state==='LOCKED'?'locked — skipped, no clock running':'$0 rev · 0 orders · report collected';
-    logLine('<span class="t">['+hh+':'+mm+']</span> '+r.icon+' ROOM '+String(r.id).padStart(2,'0')+' '+r.name.toUpperCase()+' — <span class="ok">'+note+'</span>');
+    logLine('<span class="t">['+hh+':'+mm+']</span> '+r.code+' ROOM '+String(r.id).padStart(2,'0')+' '+r.name.toUpperCase()+' — <span class="ok">'+note+'</span>');
     i++; setTimeout(next,380);
   }
   setTimeout(next,350);
 });
-renderPods(); renderCards(); renderRankings(); seedLog(); selectRoom(selectedId,false);
+
+/* ===== AGENT TRAFFIC — small dots moving along the streets, room to room ===== */
+var reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var agents=[], trafficFeed=document.getElementById('trafficFeed'), feedTimer=0;
+var FEED={10:'RESEARCH',1:'ETSY F1',2:'THUMBNAILS',9:'SPORTSBOOK',8:'BLOG',4:'SPA',7:'GAME DEV',6:'SEALED',5:'APP LAB',3:'PROMPTS'};
+function openRooms(){return ROOMS.filter(function(r){return r.state!=='LOCKED';});}
+function interiorPoint(r){return {x:r.x+2+Math.random()*(r.w-4), y:r.y+3+Math.random()*(r.h-5)};}
+function pickRoom(){var o=openRooms(); return o[Math.floor(Math.random()*o.length)];}
+function buildAgents(){
+  var n=window.innerWidth<640?22:38;
+  document.getElementById('agentCount').textContent=n;
+  for(var i=0;i<n;i++){
+    var el=document.createElement('span');
+    el.className='agent'+(i%3===1?' b':i%3===2?' g':'');
+    el.setAttribute('aria-hidden','true');
+    mapEl.appendChild(el);
+    var room=pickRoom(), p=interiorPoint(room);
+    agents.push({el:el,room:room,x:p.x,y:p.y,wp:[],mode:'work',destRoom:null,workLeft:1+Math.floor(Math.random()*3),speed:4.5+Math.random()*3,num:i+1});
+  }
+}
+function nextMove(a){
+  if(a.mode==='work'){
+    if(a.workLeft>0){a.workLeft--; a.wp=[interiorPoint(a.room)];}
+    else{
+      var dest=pickRoom();
+      if(dest.id===a.room.id){a.workLeft=2; a.wp=[interiorPoint(a.room)]; return;}
+      var path=routeBetween(DOORS[a.room.id],DOORS[dest.id]);
+      a.wp=[DOORS[a.room.id]].concat(path,[interiorPoint(dest)]);
+      a.mode='travel'; a.destRoom=dest;
+    }
+  }
+}
+function stepAgents(ts){
+  agents.forEach(function(a){
+    if(!a.wp.length) nextMove(a);
+    var t=a.wp[0];
+    if(t){
+      var dx=t.x-a.x, dy=t.y-a.y, dist=Math.sqrt(dx*dx+dy*dy);
+      if(dist<0.3){
+        a.wp.shift();
+        if(!a.wp.length&&a.mode==='travel'){
+          a.room=a.destRoom; a.mode='work'; a.workLeft=2+Math.floor(Math.random()*3);
+          if(ts-feedTimer>2600){feedTimer=ts; feedLine(a);}
+        }
+      } else {
+        var step=a.speed/60;
+        a.x+=dx/dist*Math.min(step,dist); a.y+=dy/dist*Math.min(step,dist);
+      }
+    }
+    a.el.style.left=a.x+'%'; a.el.style.top=a.y+'%';
+  });
+  if(!reduced) requestAnimationFrame(stepAgents);
+}
+function feedLine(a){
+  if(!trafficFeed) return;
+  var d=document.createElement('div');
+  d.textContent='AGT-'+String(a.num).padStart(3,'0')+' > '+(FEED[a.room.id]||a.room.short);
+  trafficFeed.insertBefore(d,trafficFeed.firstChild);
+  while(trafficFeed.children.length>13) trafficFeed.removeChild(trafficFeed.lastChild);
+}
+renderPods(); drawStreets(); renderCards(); renderRankings(); seedLog(); selectRoom(selectedId,false);
+buildAgents();
+agents.forEach(function(a){a.el.style.left=a.x+'%'; a.el.style.top=a.y+'%';});
+if(!reduced) requestAnimationFrame(stepAgents);
 </script>
 </body>
 </html>
