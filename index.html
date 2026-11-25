@@ -46,7 +46,7 @@
   .lede{max-width:72ch;color:var(--muted);font-size:1.02rem;margin:0 0 18px}
   .lede strong{color:var(--ink)}
 
-  /* ---------- station viewport ---------- */
+  /* ---------- station viewport : blueprint floorplan, not a wheel ---------- */
   .station{
     position:relative;background:
       radial-gradient(1.5px 1.5px at 12% 22%, #ffffffcc 50%, transparent 51%),
@@ -54,9 +54,10 @@
       radial-gradient(1.5px 1.5px at 88% 68%, #ffffffaa 50%, transparent 51%),
       radial-gradient(1px 1px at 34% 84%, #ffffff88 50%, transparent 51%),
       radial-gradient(1px 1px at 58% 34%, #ffffff77 50%, transparent 51%),
-      radial-gradient(1.5px 1.5px at 5% 62%, #ffffff99 50%, transparent 51%),
-      radial-gradient(1px 1px at 95% 34%, #ffffff88 50%, transparent 51%),
+      linear-gradient(rgba(70,110,135,.10) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(70,110,135,.10) 1px, transparent 1px),
       var(--station-bg);
+    background-size:auto,auto,auto,auto,auto,44px 44px,44px 44px,auto;
     border:1px solid #2b3d4c;border-radius:18px;overflow:hidden;color:#e8f1f4;
     box-shadow:0 18px 44px rgba(4,10,14,.35);
   }
@@ -65,58 +66,88 @@
   .station-head .hud b{color:#fff}
   .sweep-btn{background:var(--core);color:var(--core-ink);border:0;border-radius:9px;padding:10px 18px;font-family:"Chakra Petch",sans-serif;font-weight:700;letter-spacing:.04em}
   .sweep-btn:disabled{opacity:.55;cursor:wait}
-  .deck{position:relative;height:600px}
-  @media(max-width:760px){.deck{height:560px}}
+  .deck{position:relative;height:640px}
   .deck svg.wires{position:absolute;inset:0;width:100%;height:100%}
-  .future-ring{position:absolute;left:50%;top:50%;width:min(88%,880px);aspect-ratio:1.72;transform:translate(-50%,-50%);border:1px dashed #2e475a;border-radius:50%;pointer-events:none}
-  .future-ring span{position:absolute;top:-9px;left:50%;transform:translateX(-50%);background:var(--station-bg);padding:0 8px;font-family:"IBM Plex Mono",monospace;font-size:.62rem;letter-spacing:.16em;color:#6f8b9c;white-space:nowrap}
+  /* structural corridors drawn under the modules */
+  .spine{position:absolute;left:6%;right:5%;top:calc(46% - 19px);height:38px;background:linear-gradient(180deg,#101c26,#0c1620);border-top:1px solid #2b4457;border-bottom:1px solid #2b4457;pointer-events:none}
+  .spine::after{content:"";position:absolute;left:0;right:0;top:50%;height:2px;margin-top:-1px;background:repeating-linear-gradient(90deg,#3d6076 0 26px, transparent 26px 44px)}
+  .trunk{position:absolute;top:5%;bottom:4%;left:calc(52% - 15px);width:30px;background:linear-gradient(90deg,#101c26,#0c1620);border-left:1px solid #2b4457;border-right:1px solid #2b4457;pointer-events:none}
+  .trunk::after{content:"";position:absolute;top:0;bottom:0;left:50%;width:2px;margin-left:-1px;background:repeating-linear-gradient(180deg,#3d6076 0 26px, transparent 26px 44px)}
+  .deck.sweeping .spine,.deck.sweeping .trunk{border-color:#2dd4a8;box-shadow:0 0 22px rgba(45,212,168,.25)}
+  .sector{position:absolute;font-family:"IBM Plex Mono",monospace;font-size:.6rem;letter-spacing:.18em;color:#5f7d8f;pointer-events:none;white-space:nowrap}
+  .sector::before{content:"";display:inline-block;width:7px;height:7px;background:#2dd4a8;margin-right:7px;animation:blink 2.6s steps(1) infinite}
+  .sector.s-tl{left:14px;top:10px}.sector.s-tr{right:14px;top:10px;text-align:right}
+  .sector.s-bl{left:14px;bottom:10px}.sector.s-br{right:14px;bottom:10px;text-align:right}
+  .sector.s-br::before{background:var(--warn)}
+  @keyframes blink{0%,72%{opacity:1}73%,100%{opacity:.15}}
+  /* future expansion: a construction row of unbuilt module slots, not a ring */
+  .future-bay{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);display:flex;align-items:center;gap:6px;pointer-events:none}
+  .future-bay .slot{width:20px;height:14px;border:1px dashed #3a5a70;background:rgba(255,255,255,.02)}
+  .future-bay .slot.locked-slot{background:repeating-linear-gradient(45deg,rgba(138,154,165,.16) 0 4px, transparent 4px 8px)}
+  .future-bay span{font-family:"IBM Plex Mono",monospace;font-size:.58rem;letter-spacing:.14em;color:#6f8b9c;white-space:nowrap;margin-left:4px}
 
-  /* core */
-  .core{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:196px;text-align:center;z-index:3}
-  .core-orb{position:relative;width:118px;height:118px;margin:0 auto 10px;border-radius:50%;
+  /* command core — a housed reactor module sitting on the spine, off-centre */
+  .core{position:absolute;left:52%;top:46%;transform:translate(-50%,-50%);width:208px;text-align:center;z-index:3;background:rgba(10,19,27,.92);border:1px solid #4a3a10;border-top:3px solid var(--core);padding:14px 12px 12px;box-shadow:0 0 0 5px rgba(8,13,18,.55),0 0 44px rgba(255,176,32,.20)}
+  .core::before,.core::after{content:"";position:absolute;width:10px;height:10px;border:2px solid #6b5510}
+  .core::before{left:-2px;top:-2px;border-right:0;border-bottom:0}
+  .core::after{right:-2px;bottom:-2px;border-left:0;border-top:0}
+  .core-orb{position:relative;width:92px;height:92px;margin:0 auto 9px;border-radius:50%;
     background:radial-gradient(circle at 36% 32%, #ffe3a1, var(--core) 46%, #c47f06 78%, #7a4d02);
-    box-shadow:0 0 0 6px rgba(255,176,32,.14),0 0 54px rgba(255,176,32,.45), inset 0 -14px 26px rgba(0,0,0,.35)}
-  .core-orb::before{content:"";position:absolute;inset:-17px;border-radius:50%;border:2px solid rgba(255,176,32,.5);border-top-color:transparent;border-bottom-color:transparent;animation:spin 14s linear infinite}
-  .core-orb::after{content:"";position:absolute;inset:-30px;border-radius:50%;border:1px dashed rgba(157,192,207,.4);animation:spin 30s linear infinite reverse}
+    box-shadow:0 0 0 6px rgba(255,176,32,.14),0 0 54px rgba(255,176,32,.45), inset 0 -14px 26px rgba(0,0,0,.35);animation:pulse 3.4s ease-in-out infinite}
+  .core-orb::before{content:"";position:absolute;inset:-13px;border-radius:50%;border:2px solid rgba(255,176,32,.5);border-top-color:transparent;border-bottom-color:transparent;animation:spin 14s linear infinite}
   @keyframes spin{to{transform:rotate(360deg)}}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 6px rgba(255,176,32,.14),0 0 40px rgba(255,176,32,.35), inset 0 -14px 26px rgba(0,0,0,.35)}50%{box-shadow:0 0 0 8px rgba(255,176,32,.18),0 0 64px rgba(255,176,32,.55), inset 0 -14px 26px rgba(0,0,0,.35)}}
   .core-face{position:absolute;inset:0;display:grid;place-items:center}
   .core h2{font-family:"Chakra Petch",sans-serif;font-size:1rem;margin:0;letter-spacing:.08em;color:#fff}
   .core p{margin:2px 0 0;font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.1em;color:#a9c4d2;text-transform:uppercase}
   .core .relay-tag{display:inline-block;margin-top:8px;border:1px solid #355062;background:#0d1822;border-radius:999px;padding:4px 10px;font-family:"IBM Plex Mono",monospace;font-size:.66rem;color:#cfe5ee}
 
-  /* pods */
-  .pod{position:absolute;transform:translate(-50%,-50%);width:138px;z-index:2;background:var(--station-panel);border:1.5px solid var(--station-line);border-radius:12px;padding:9px 10px 8px;text-align:left;color:#e8f1f4;transition:border-color .2s, box-shadow .2s}
+  /* pods — station modules: different sizes, clipped corners, type-coloured airlocks */
+  .pod{position:absolute;transform:translate(-50%,-50%);width:142px;z-index:2;background:var(--station-panel);border:1.5px solid var(--station-line);border-top:3px solid #57b6ff;border-radius:3px 12px 3px 12px;padding:9px 10px 8px;text-align:left;color:#e8f1f4;transition:border-color .2s, box-shadow .2s}
+  .pod.w-lg{width:176px;border-radius:12px 3px 12px 3px}
+  .pod.w-sm{width:118px}
+  .pod[data-type="FACTORY"]{border-top-color:var(--good)}
+  .pod[data-type="RESEARCH"]{border-top-color:#57b6ff}
+  .pod[data-type="MEASURE"]{border-top-color:var(--warn)}
+  .pod[data-type="REPORTING"]{border-top-color:#b48cff}
+  .pod[data-state="LOCKED"]{border-style:dashed;background:repeating-linear-gradient(45deg,#0c141b 0 10px,#0a1118 10px 20px)}
   .pod:hover{border-color:#4d7189}
   .pod.selected{border-color:var(--core);box-shadow:0 0 0 3px rgba(255,176,32,.22),0 0 26px rgba(255,176,32,.18)}
   .pod.scanning{border-color:var(--good);box-shadow:0 0 0 3px rgba(45,212,168,.25),0 0 26px rgba(45,212,168,.3)}
   .pod.dim{opacity:.28}
+  .pod .wing{display:block;font-family:"IBM Plex Mono",monospace;font-size:.56rem;letter-spacing:.14em;color:#5f7d8f;margin-top:2px}
   .pod .room-no{font-family:"IBM Plex Mono",monospace;font-size:.6rem;letter-spacing:.14em;color:#7e9aab;display:flex;justify-content:space-between;align-items:center}
-  .pod .lamp{width:8px;height:8px;border-radius:50%;background:var(--good)}
+  .pod .lamp{width:8px;height:8px;border-radius:50%;background:var(--good);animation:blink 3s steps(1) infinite}
   .pod[data-state="QUEUED"] .lamp{background:var(--warn)}
-  .pod[data-state="LOCKED"] .lamp{background:var(--lock)}
+  .pod[data-state="LOCKED"] .lamp{background:var(--lock);animation:none}
   .pod[data-state="REPORTING"] .lamp{background:#57b6ff}
   .pod .agent{display:flex;align-items:center;gap:7px;margin:6px 0 4px}
   .pod .avatar{width:26px;height:26px;flex:none;border-radius:8px;background:#16242f;border:1px solid #33505f;display:grid;place-items:center}
-  .pod h3{font-family:"Chakra Petch",sans-serif;font-size:.8rem;line-height:1.15;margin:0}
+  .pod h3{font-family:"Chakra Petch",sans-serif;font-size:.82rem;line-height:1.15;margin:0}
+  .pod.w-lg h3{font-size:.95rem}
   .pod .task{font-size:.66rem;color:#9db8c6;line-height:1.3;margin:0;min-height:2em}
   .pod .bar{display:block;height:4px;background:#1b2c3a;border-radius:99px;margin-top:6px;overflow:hidden}
   .pod .bar i{display:block;height:100%;background:var(--good);border-radius:99px}
   .pod[data-state="QUEUED"] .bar i{background:var(--warn)}
   .pod[data-state="LOCKED"] .bar i{background:var(--lock)}
   @media(max-width:760px){
-    .deck{height:700px}
+    .deck{height:880px}
     .deck svg.wires{display:none}
-    .pod{width:80px;padding:6px 7px}
-    .pod h3{font-size:.54rem;letter-spacing:-.01em;white-space:nowrap}.pod .task{display:none}
+    .spine{display:none}
+    .trunk{left:calc(50% - 13px);width:26px;top:3%;bottom:2%}
+    .sector.s-tr,.sector.s-bl{display:none}
+    .sector.s-tl{left:10px;top:8px}.sector.s-br{right:10px;bottom:8px}
+    .future-bay{display:none}
+    .pod,.pod.w-lg,.pod.w-sm{width:118px;padding:6px 7px}
+    .pod h3,.pod.w-lg h3{font-size:.62rem;line-height:1.2}.pod .task{display:none}
+    .pod .wing{font-size:.5rem}
     .pod .agent{margin:4px 0 2px}
     .pod .avatar{width:19px;height:19px;border-radius:6px}
     .pod .avatar svg{width:15px;height:15px}
     .pod .bar{margin-top:4px;height:3px}
-    .future-ring{width:88%;aspect-ratio:.56}
-    .future-ring span{display:none}
-    .core{width:132px}.core-orb{width:70px;height:70px}.core h2{font-size:.78rem}
-    .core .core-face svg{width:34px;height:34px}
-    .core p{font-size:.56rem}.core .relay-tag{font-size:.56rem;padding:3px 7px}
+    .core{left:50%;top:15%;width:168px;padding:10px 8px 9px}.core-orb{width:58px;height:58px}.core h2{font-size:.78rem}
+    .core .core-face svg{width:30px;height:30px}
+    .core p{font-size:.54rem}.core .relay-tag{font-size:.54rem;padding:3px 7px}
   }
 
   .station-foot{display:flex;flex-wrap:wrap;gap:8px 22px;padding:11px 16px;border-top:1px solid var(--station-line);background:rgba(255,255,255,.03);font-family:"IBM Plex Mono",monospace;font-size:.72rem;color:#9fc0cf}
@@ -191,7 +222,7 @@
   section.block{margin-top:30px}
   footer{margin-top:36px;border-top:1px solid var(--line);padding-top:14px;color:var(--muted);font-size:.84rem}
   @media (prefers-reduced-motion: reduce){
-    .core-orb::before,.core-orb::after{animation:none}
+    .core-orb,.core-orb::before,.pod .lamp,.sector::before{animation:none}
     html{scroll-behavior:auto}
   }
 </style>
@@ -207,27 +238,42 @@
     <span class="strip-note">Workers first · No live listings opened by this page</span>
   </div>
 
-  <h1>The station, not a spreadsheet.</h1>
-  <p class="lede">This is the setup from the reel, built real: <strong>one agent per room, one venture per room, and the Ecosystem Muse in the middle</strong> — the seat Ultron sits in on his screen. Rooms don't report on their own. A scheduled sweep walks the deck, collects a 5-line report from each room, and passes one digest through the relay to Muse3, who ranks the money and tells Git-FED where it is.</p>
+  <h1>Built like a station. Run like a business.</h1>
+  <p class="lede">This is the setup from the reel, built real: <strong>one agent per room, one venture per room, and the Ecosystem Muse in the command core</strong> — the seat Ultron sits in on his screen, mounted on the spine where every corridor plugs in. Research feeds the lead factory down the port wing, the payers sit in Commerce Bay, and the locked keel module stays dark until something sells. Rooms don't report on their own. A scheduled sweep walks the deck, collects a 5-line report from each room, and passes one digest through the relay to Muse3, who ranks the money and tells Git-FED where it is.</p>
 
   <!-- ============ STATION ============ -->
   <div class="station" aria-label="Space station deck map">
     <div class="station-head">
-      <span class="hud">DECK VIEW · <b>AI ECOSYSTEM STATION</b> · SECTOR 01</span>
+      <span class="hud">DECK PLAN · <b>AI ECOSYSTEM STATION</b> · BLUEPRINT 01 · NOT TO SCALE</span>
       <button class="sweep-btn" id="sweepBtn" type="button">▶ RUN DAILY SWEEP</button>
     </div>
 
     <div class="deck" id="deck">
-      <svg class="wires" viewBox="0 0 1000 600" preserveAspectRatio="none" aria-hidden="true">
-        <g stroke="#2b4a5e" stroke-width="1.5" stroke-dasharray="5 6">
-          <line x1="500" y1="300" x2="500" y2="72"/><line x1="500" y1="300" x2="710" y2="120"/>
-          <line x1="500" y1="300" x2="860" y2="228"/><line x1="500" y1="300" x2="860" y2="372"/>
-          <line x1="500" y1="300" x2="710" y2="480"/><line x1="500" y1="300" x2="500" y2="528"/>
-          <line x1="500" y1="300" x2="290" y2="480"/><line x1="500" y1="300" x2="140" y2="372"/>
-          <line x1="500" y1="300" x2="140" y2="228"/><line x1="500" y1="300" x2="290" y2="120"/>
+      <div class="spine" aria-hidden="true"></div>
+      <div class="trunk" aria-hidden="true"></div>
+      <svg class="wires" viewBox="0 0 1000 640" preserveAspectRatio="none" aria-hidden="true">
+        <g fill="none" stroke="#2b4a5e" stroke-width="1.5" stroke-dasharray="5 6">
+          <path d="M520 294 H360 V109 H150"/>
+          <path d="M520 294 H450 V83 H380"/>
+          <path d="M520 294 H700 V90 H840"/>
+          <path d="M520 294 H130 V282"/>
+          <path d="M520 294 H870 V269"/>
+          <path d="M520 294 H300 V435"/>
+          <path d="M520 294 H215 V538 H140"/>
+          <path d="M520 294 H620 V448 H680"/>
+          <path d="M520 294 H765 V525 H880"/>
+          <path d="M520 294 H440 V563"/>
         </g>
+        <g fill="#57b6ff"><circle cx="360" cy="294" r="3"/><circle cx="450" cy="294" r="3"/><circle cx="700" cy="294" r="3"/><circle cx="620" cy="294" r="3"/><circle cx="765" cy="294" r="3"/><circle cx="215" cy="294" r="3"/></g>
       </svg>
-      <div class="future-ring" aria-hidden="true"><span>ROOMS 11–100 · OUTER RING · LOCKED UNTIL A LANE SELLS</span></div>
+      <span class="sector s-tl" aria-hidden="true">PORT WING · RESEARCH + LEAD FACTORY</span>
+      <span class="sector s-tr" aria-hidden="true">STARBOARD · THUMBNAIL FACTORY</span>
+      <span class="sector s-bl" aria-hidden="true">ASSET DOCK · KEEL MODULES</span>
+      <span class="sector s-br" aria-hidden="true">COMMERCE BAY · EXISTING PAYERS</span>
+      <div class="future-bay" aria-hidden="true">
+        <span class="slot"></span><span class="slot"></span><span class="slot locked-slot"></span><span class="slot"></span><span class="slot locked-slot"></span><span class="slot"></span>
+        <span>EXPANSION DECK · ROOMS 11–100 UNBUILT · LOCKED UNTIL A LANE SELLS</span>
+      </div>
 
       <div class="core" aria-label="Ecosystem Muse, central hub">
         <div class="core-orb">
@@ -246,7 +292,7 @@
       <span>HUB <b>ECOSYSTEM MUSE</b></span>
       <span>OVERSEER <b>MUSE3 (MAIN THREAD)</b></span>
       <span>RELAY <b>20,000 CHAR / MSG · LAST 200</b></span>
-      <span>OUTER RING <b>ROOMS 11–100 LOCKED UNTIL A LANE SELLS</b></span>
+      <span>EXPANSION DECK <b>ROOMS 11–100 UNBUILT · LOCKED UNTIL A LANE SELLS</b></span>
       <span id="sweepStatus">LAST SWEEP <b>NOT RUN YET THIS SESSION</b></span>
     </div>
   </div>
@@ -316,7 +362,7 @@
     <div class="steps">
       <div class="step"><div class="n">STEP 1</div><h3>Workers work the rooms</h3><p>One worker per room, one job per room. Research rooms find what is selling; factory rooms build and list. A human reviews and does every live listing and delivery step.</p></div>
       <div class="step"><div class="n">STEP 2</div><h3>Sweep opens each room</h3><p>The loop is pull-only. Side chats do not self-report, so a scheduled sweep opens all 10 rooms and collects the 5-line report from each — under ~600 characters per room.</p></div>
-      <div class="step"><div class="n">STEP 3</div><h3>Hub consolidates</h3><p>The Ecosystem Muse in the center collects the 10 reports into one summary. It does no store work itself — it checks, totals, and passes it on. 10 rooms fit in a single relay message.</p></div>
+      <div class="step"><div class="n">STEP 3</div><h3>Hub consolidates</h3><p>The Ecosystem Muse in the command core collects the 10 reports into one summary. It does no store work itself — it checks, totals, and passes it on. 10 rooms fit in a single relay message.</p></div>
       <div class="step"><div class="n">STEP 4</div><h3>Relay to Muse3</h3><p>The digest travels the private relay Muse3, muse1, and muse2 already use. Caps are real: 20,000 characters per message, last 200 messages per inbox — at 100 rooms the digest chunks into 3 messages.</p></div>
       <div class="step"><div class="n">STEP 5</div><h3>Muse3 ranks, Git-FED decides</h3><p>Muse3 verifies the numbers, ranks top 5 and dead 5, and reports where the money is. Git-FED scales winners, fixes stuck rooms, and closes or repurposes dead ones.</p></div>
     </div>
@@ -347,43 +393,43 @@
 
 <script>
 var ROOMS = [
-  {id:1, name:"Etsy Store 1", short:"ETSY 1", type:"FACTORY", typeLabel:"Factory · Sells", state:"ACTIVE", x:50, y:12, setup:45,
+  {id:1, name:"Etsy Store 1", short:"ETSY 1", type:"FACTORY", typeLabel:"Factory · Sells", state:"ACTIVE", x:15, y:17, w:"lg", wing:"PORT WING · LEAD FACTORY", setup:45,
    task:"Building first original design set, one niche", job:"The lead store. Takes proven demand from the Research room, makes original designs, puts them on Printify mockups, lists with expanded SEO tags. Human reviews every listing before it goes live.",
    report:"REVENUE: $0\nORDERS: 0\nSOLD: nothing yet\nSTUCK: first design set in production\nNEXT: list batch 1 after human review",
    gate:"Day 30 gate: $0 and 0 orders = reported dead. Store 2 stays locked until this room records its first sale."},
-  {id:2, name:"Thumbnails", short:"THUMBNAILS", type:"FACTORY", typeLabel:"Factory · Sells", state:"ACTIVE", x:71, y:20, setup:60,
+  {id:2, name:"Thumbnails", short:"THUMBNAILS", type:"FACTORY", typeLabel:"Factory · Sells", state:"ACTIVE", x:84, y:14, w:"lg", wing:"STARBOARD · FACTORY", setup:60,
    task:"Portfolio drafts + Fiverr gig prep", job:"Highest-ranked money lane for the first 90 days. YouTube thumbnail service on Fiverr, with a direct-price test at $75–$150 alongside the gig. Human delivers every order.",
    report:"REVENUE: $0\nORDERS: 0\nSOLD: nothing yet\nSTUCK: portfolio pieces in draft\nNEXT: publish gig after human review",
    gate:"Day 30 gate: $0 and 0 orders = reported dead. Ranked #1 on money realism, so it gets the first worker hours."},
-  {id:3, name:"FedPromptly Shop", short:"FEDPROMPTLY", type:"MEASURE", typeLabel:"Measure · Existing payer", state:"ACTIVE", x:86, y:38, setup:70,
+  {id:3, name:"FedPromptly Shop", short:"FEDPROMPTLY", type:"MEASURE", typeLabel:"Measure · Existing payer", state:"ACTIVE", x:87, y:42, w:"md", wing:"COMMERCE BAY", setup:70,
    task:"Measuring — 30-day revenue count running", job:"An existing payer, on the deck to be measured, not assumed. This room counts real revenue and orders for 30 days so Muse3 ranks it on receipts, not memory.",
    report:"REVENUE: under 30-day measurement\nORDERS: counting\nSOLD: existing catalog\nSTUCK: no verified 30-day total on file yet\nNEXT: deliver Day 30 measured total",
    gate:"Measurement room: it survives Day 30 only with a verified revenue total on file."},
-  {id:4, name:"FED-SPA", short:"FED-SPA", type:"MEASURE", typeLabel:"Measure · Existing payer", state:"ACTIVE", x:86, y:62, setup:65,
+  {id:4, name:"FED-SPA", short:"FED-SPA", type:"MEASURE", typeLabel:"Measure · Existing payer", state:"ACTIVE", x:88, y:82, w:"md", wing:"COMMERCE BAY", setup:65,
    task:"Measuring — licensed listings only", job:"An existing payer, measured for 30 days like the others. Listings are licensed establishments only, with licence numbers and no sexual-services language — that criteria control is what keeps this lane legitimate.",
    report:"REVENUE: under 30-day measurement\nORDERS: counting\nSOLD: directory listings\nSTUCK: licence verification on new listings\nNEXT: deliver Day 30 measured total",
    gate:"Measurement room: survives Day 30 only with a verified revenue total and licence-checked listings."},
-  {id:5, name:"App Store Prototype 1", short:"PROTOTYPE 1", type:"FACTORY", typeLabel:"Factory · Sells", state:"QUEUED", x:71, y:80, setup:30,
+  {id:5, name:"App Store Prototype 1", short:"PROTOTYPE 1", type:"FACTORY", typeLabel:"Factory · Sells", state:"QUEUED", x:68, y:70, w:"md", wing:"KEEL · SOFTWARE BAY", setup:30,
    task:"One existing product, listing prep", job:"One product that already exists, packaged for the Muse AI App Store — owner-published, manifest and download link, Muse signature as the trust mark. One prototype only until it sells.",
    report:"REVENUE: $0\nORDERS: 0\nSOLD: nothing yet\nSTUCK: packaging and manifest\nNEXT: finish listing draft for review",
    gate:"Day 30 gate applies. A second prototype is locked until this one sells."},
-  {id:6, name:"Etsy Store 2", short:"ETSY 2", type:"FACTORY", typeLabel:"Factory · Sells", state:"LOCKED", x:50, y:88, setup:0,
+  {id:6, name:"Etsy Store 2", short:"ETSY 2", type:"FACTORY", typeLabel:"Factory · Sells", state:"LOCKED", x:44, y:88, w:"sm", wing:"KEEL · SEALED BAY", setup:0,
    task:"Locked — opens only after Store 1 sells", job:"A second store with a distinct niche and distinct product line from Store 1 — never a copy of it. This pod stays dark on the deck until Etsy Store 1 records its first sale.",
    report:"REVENUE: —\nORDERS: —\nSOLD: —\nSTUCK: locked by rule, not by failure\nNEXT: wait for Store 1 first sale",
    gate:"Unlock rule: Store 1 first sale on file. The Day 30 clock does not run on a locked room."},
-  {id:7, name:"Game Asset Pack 1", short:"GAME ASSETS", type:"FACTORY", typeLabel:"Factory · Sells", state:"QUEUED", x:29, y:80, setup:25,
+  {id:7, name:"Game Asset Pack 1", short:"GAME ASSETS", type:"FACTORY", typeLabel:"Factory · Sells", state:"QUEUED", x:14, y:84, w:"md", wing:"ASSET DOCK", setup:25,
    task:"First pack in production", job:"One game asset pack, built once and sold repeatedly. Fed by the research on what asset shops are moving. Slower money than thumbnails, but it compounds — every pack stays on sale.",
    report:"REVENUE: $0\nORDERS: 0\nSOLD: nothing yet\nSTUCK: pack art in production\nNEXT: finish pack 1 draft",
    gate:"Day 30 gate: $0 and 0 orders = reported dead, same as every factory room."},
-  {id:8, name:"Blog 1", short:"BLOG 1", type:"FACTORY", typeLabel:"Factory · Sells", state:"QUEUED", x:14, y:62, setup:20,
+  {id:8, name:"Blog 1", short:"BLOG 1", type:"FACTORY", typeLabel:"Factory · Sells", state:"QUEUED", x:30, y:68, w:"sm", wing:"KEEL · PRESS BAY", setup:20,
    task:"First posts drafted, affiliate links pending", job:"One blog only — the second blog was cut from the plan. Affiliate income is the slowest lane here, so this room gets leftover hours, not first hours, and earns more only by publishing consistently.",
    report:"REVENUE: $0\nORDERS: 0\nSOLD: nothing yet\nSTUCK: first posts in draft\nNEXT: publish post 1 after review",
    gate:"Day 30 gate applies, judged on published posts plus any affiliate revenue — $0 and unpublished = dead."},
-  {id:9, name:"Betting — Reporting Only", short:"BETTING", type:"REPORTING", typeLabel:"Reporting only · $0 income", state:"REPORTING", x:14, y:38, setup:80,
+  {id:9, name:"Betting — Reporting Only", short:"BETTING", type:"REPORTING", typeLabel:"Reporting only · $0 income", state:"REPORTING", x:13, y:44, w:"sm", wing:"PORT WING · VAULT", setup:80,
    task:"Reporting the muse2 book daily", job:"Not a money lane. This room reports the book the same way a store reports: record, bankroll, what is stuck. Real book on Nov 24: 30–14, −$5.37 — a 68% win rate that still loses money. Muse never places bets and never takes wagers from anyone.",
    report:"REVENUE: $0 (by design — reporting only)\nORDERS: n/a\nRECORD: real 30–14, −$5.37 (Nov 24)\nSTUCK: win rate is not profit\nNEXT: daily book report to hub",
    gate:"No Day 30 revenue gate — it is judged on report accuracy. It can never be promoted to a money lane without a profitable real book on file."},
-  {id:10, name:"Etsy Research", short:"RESEARCH", type:"RESEARCH", typeLabel:"Research · Feeds sellers", state:"ACTIVE", x:29, y:20, setup:55,
+  {id:10, name:"Etsy Research", short:"RESEARCH", type:"RESEARCH", typeLabel:"Research · Feeds sellers", state:"ACTIVE", x:38, y:13, w:"sm", wing:"PORT WING · LAB", setup:55,
    task:"Watching Etsy demand, feeding Store 1", job:"Sells nothing itself. This room watches what is actually selling on Etsy and hands demand signals to Etsy Store 1 — which then makes original designs. It never hands over a design to copy.",
    report:"REVENUE: $0 (research room — sells nothing)\nORDERS: n/a\nFOUND: demand list for Store 1 batch 1\nSTUCK: needs Store 1 live to test picks\nNEXT: weekly demand list to hub",
    gate:"Judged on output, not revenue: a research room that hands over no usable demand list by Day 30 is reported dead."}
@@ -399,22 +445,23 @@ function avatarSVG(color){
 }
 function stateColor(r){ return r.state==='ACTIVE' ? '#2dd4a8' : r.state==='REPORTING' ? '#57b6ff' : r.state==='QUEUED' ? '#ffb020' : '#8a9aa5'; }
 
-var ANGLES={1:-90,2:-54,3:-18,4:18,5:54,6:90,7:126,8:162,9:198,10:234};
+/* phone layout: modules zig-zag down the vertical trunk under the core — no circle */
+var MOB={1:[27,32],2:[73,32],10:[27,45],9:[73,45],3:[27,58],8:[73,58],7:[27,71],5:[73,71],4:[27,85],6:[73,85]};
 function renderPods(){
   var narrow = deck.clientWidth > 0 && deck.clientWidth < 760;
   ROOMS.forEach(function(r){
     var b = document.createElement('button');
-    b.type='button'; b.className='pod'+(r.id===selectedId?' selected':'');
+    b.type='button'; b.className='pod w-'+(r.w||'md')+(r.id===selectedId?' selected':'');
     b.dataset.state=r.state; b.dataset.id=r.id; b.dataset.type=r.type;
     if(narrow){
-      var rad=ANGLES[r.id]*Math.PI/180;
-      b.style.left=(50+38*Math.cos(rad))+'%';
-      b.style.top=(50+43*Math.sin(rad))+'%';
+      b.style.left=MOB[r.id][0]+'%';
+      b.style.top=MOB[r.id][1]+'%';
     } else {
       b.style.left=r.x+'%'; b.style.top=r.y+'%';
     }
     b.setAttribute('aria-label','Inspect room '+r.id+': '+r.name);
     b.innerHTML='<span class="room-no">ROOM '+String(r.id).padStart(2,'0')+'<span class="lamp"></span></span>'+
+      '<span class="wing">'+r.wing+'</span>'+
       '<span class="agent"><span class="avatar">'+avatarSVG(stateColor(r))+'</span></span>'+
       '<h3>'+r.short+'</h3><p class="task">'+r.task+'</p>'+
       '<span class="bar"><i style="width:'+r.setup+'%"></i></span>';
@@ -473,7 +520,7 @@ function logLine(html){
 }
 function seedLog(){
   logEl.innerHTML='';
-  logLine('<span class="t">[--:--]</span> <span class="hub">HUB</span> Station online. 10 rooms manned, 90 outer-ring slots locked.');
+  logLine('<span class="t">[--:--]</span> <span class="hub">HUB</span> Station online. 10 rooms manned across 4 wings, 90 expansion-deck slots unbuilt.');
   logLine('<span class="t">[--:--]</span> <span class="hub">HUB</span> Oversight: Muse3, main thread. Relay caps loaded: 20,000 char/msg.');
   logLine('<span class="t">[--:--]</span> Waiting for sweep. Rooms do not self-report.');
 }
@@ -498,6 +545,7 @@ var sweeping=false;
 document.getElementById('sweepBtn').addEventListener('click',function(){
   if(sweeping) return; sweeping=true;
   var btn=this; btn.disabled=true; btn.textContent='SWEEPING…';
+  deck.classList.add('sweeping');
   logEl.innerHTML='';
   var now=new Date();
   var hh=String(now.getHours()).padStart(2,'0'), mm=String(now.getMinutes()).padStart(2,'0');
@@ -511,6 +559,7 @@ document.getElementById('sweepBtn').addEventListener('click',function(){
       document.getElementById('digestText').textContent='Sweep complete — 10 reports, 0 sales, $0 revenue station-wide. Top readiness: Betting reporting (80%), FedPromptly (70%), FED-SPA (65%). Dead watch: Blog 1, Game Assets, Prototype 1. Nothing hidden.';
       document.getElementById('sweepStatus').innerHTML='LAST SWEEP <b>'+hh+':'+mm+' TODAY · 10/10 REPORTS</b>';
       btn.disabled=false; btn.textContent='▶ RUN DAILY SWEEP'; sweeping=false;
+      deck.classList.remove('sweeping');
       return;
     }
     var r=ROOMS[i];
