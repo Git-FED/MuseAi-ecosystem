@@ -3,14 +3,14 @@
 > **A real test station, not a game on a screen.**
 > One room, one job. Workers first. Rooms report up, Muse3 ranks the money, Git-FED decides.
 
-[![Live Site](https://img.shields.io/badge/Live%20Site-GitHub%20Pages-2ea44f?style=for-the-badge&logo=github)](https://git-fed.github.io/ai-ecosystem-test/)
-[![Space](https://img.shields.io/badge/Space-AI%20Ecosystem%20Space%20Station-6e40c9?style=for-the-badge)](https://git-fed.github.io/ai-ecosystem-test/)
+[![Live Site](https://img.shields.io/badge/Live%20Site-GitHub%20Pages-2ea44f?style=for-the-badge&logo=github)](https://git-fed.github.io/MuseAi-ecosystem/)
+[![Space](https://img.shields.io/badge/Space-AI%20Ecosystem%20Space%20Station-6e40c9?style=for-the-badge)](https://git-fed.github.io/MuseAi-ecosystem/)
 [![Status](https://img.shields.io/badge/Status-Test%20v0.2.0-yellow?style=for-the-badge)](#)
 [![Rooms](https://img.shields.io/badge/Rooms-10%20first%20%2F%20100%20planned-blue?style=for-the-badge)](#the-first-10-rooms)
 [![Money](https://img.shields.io/badge/First%2090%20days-%240%E2%80%93%241%2C000%20profit-orange?style=for-the-badge)](#realistic-money)
 
 <p align="center">
-  <a href="https://git-fed.github.io/ai-ecosystem-test/"><strong>▶ Open the live station</strong></a> &nbsp;·&nbsp;
+  <a href="https://git-fed.github.io/MuseAi-ecosystem/"><strong>▶ Open the live station</strong></a> &nbsp;·&nbsp;
   <a href="#how-it-works">How it works</a> &nbsp;·&nbsp;
   <a href="#the-first-10-rooms">The 10 rooms</a> &nbsp;·&nbsp;
   <a href="#realistic-money">Realistic money</a> &nbsp;·&nbsp;
@@ -186,7 +186,7 @@ ai-ecosystem-test/
 └── .nojekyll                       # Pages serves index.html as-is
 ```
 
-**Live site:** https://git-fed.github.io/ai-ecosystem-test/
+**Live site:** https://git-fed.github.io/MuseAi-ecosystem/
 **Space:** AI Ecosystem Space Station, slug `ai-ecosystem-space-station`
 **Discussions:** enabled on this repo — use them for room ideas, niche picks, and Day 30 calls.
 
